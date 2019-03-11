@@ -15,6 +15,15 @@ body {
   width: 100px;
   top: 0;
   height: 100vh;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.side-bar-container li {
+  padding-bottom: 30px;
+  cursor: pointer;
 }
 
 .map {
@@ -38,4 +47,18 @@ body {
   font-size: 30pt;
 }
 
+.nav-logo {
+    color: #ff6347;
+    font-size: 15pt;
+}
 
+ul {
+    list-style: none;
+    padding: 0
+}
+
+.logout {
+  position: absolute;
+  bottom: 20px;
+  cursor: pointer;
+}

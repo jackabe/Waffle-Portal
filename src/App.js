@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import './App.css';
-import SideBar from "./components/SideBar";
 import MapComponent from "./components/Map";
 import LotHandler from "./components/LotHandler";
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
 import axios from 'axios';
+import FontAwesome from "react-fontawesome";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
@@ -50,7 +50,7 @@ class App extends Component {
         formData.append('city', city);
         formData.append('latitude', lat);
         formData.append('longitude', lng);
-        
+
         // Post to flask and get parking lot response
         axios({
             method: 'post',
@@ -114,6 +114,58 @@ class App extends Component {
         );
     };
 
+    loadUserLocations = () => {
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:8000/getUserLocations',
+            config: { headers: {'Content-Type': 'multipart/form-data' }}
+        })
+            .then((response) => {
+                let data = response.data;
+                let i = 0;
+                let markers = [];
+                for (i; i < data.length; i++) {
+                    let marker = {
+                        details: {
+                            lot_id : i
+                        },
+                        coords: {
+                            latitude: data[i]['latitude'],
+                            longitude: data[i]['longitude']
+                        }
+                    };
+
+                    markers.push(marker);
+
+                    // As not async, check all done before updating state
+                    if (i === data.length - 1) {
+                        this.setState({markers: markers});
+                        this.setState({loading: false});
+                    }
+                }
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
+    };
+
+    onSideBarClick = (route) => {
+        if (route === 'home') {
+            window.open('/', '_self');
+        }
+        else if (route === 'users') {
+            this.loadUserLocations();
+        }
+        else {
+            this.setState({
+                showAlert: true,
+                alertTitle: 'No route yet',
+                alertInfo: 'Sorry, no route has been added for '+route+' yet!'
+            });
+        }
+    };
+
     onRegionChange = (region) => {
         this.setState({ region });
     };
@@ -132,7 +184,7 @@ class App extends Component {
                     cancelButtonText='Close'
                     animation="slide-from-top"
                     type="info"
-                    onCancel={() => this.setState({ showError: false })}
+                    onCancel={() => this.setState({ showAlert: false })}
                 />
             </div>
 
@@ -144,7 +196,57 @@ class App extends Component {
                 containerElement={<div className='map'/>}
                 mapElement={<div className='map'/>}
             />
-            <SideBar/>
+
+            <div className="side-bar-container">
+                <h3 className='nav-logo'>waffle</h3>
+                <ul>
+                    <li onClick={() => this.onSideBarClick('home')}><FontAwesome
+                        name='home'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('dashboard')}><FontAwesome
+                        name='rocket'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('lots')}><FontAwesome
+                        name='car'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('users')}><FontAwesome
+                        name='users'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('user')}><FontAwesome
+                        name='user'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('settings')}><FontAwesome
+                        name='cog'
+                        size='2x'
+                        style={{ color: '#ffffff' }}
+                    /></li>
+                </ul>
+
+                <FontAwesome
+                    onClick={() => this.onSideBarClick('logout')}
+                    name='sign-out'
+                    className='logout'
+                    size='2x'
+                    style={{ color: '#ffffff' }}
+                />
+
+            </div>
+
             <div className='logo-container'>
                 <h3 className='logo'>waffle</h3>
             </div>
