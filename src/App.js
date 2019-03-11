@@ -6,6 +6,7 @@ import LotHandler from "./components/LotHandler";
 import SweetAlert from 'sweetalert-react';
 import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
+import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
@@ -24,15 +25,18 @@ class App extends Component {
             },
             showAlert: false,
             alertTitle: '',
-            alertInfo: ''
+            alertInfo: '',
+            markers: []
         };
+
+        this.getLotsByLocation = this.getLotsByLocation.bind(this);
     }
 
     componentDidMount() {
         this.findLocation();
     }
 
-    getLotsByLocation = (lat, lng, city) => {
+    getLotsByLocation (lat, lng, city)  {
         let region = {
             latitude: lat,
             longitude: lng,
@@ -46,24 +50,54 @@ class App extends Component {
         formData.append('city', city);
         formData.append('latitude', lat);
         formData.append('longitude', lng);
-
+        
         // Post to flask and get parking lot response
-        fetch('http://18.188.105.214/getCarParks', {
+        axios({
             method: 'post',
-            headers: {
-                'Content-Type': 'multipart/form-data',
-            },
-            mode: 'cors',
-            body: formData
-        }).then(response => {
-            let markers = [];
-            console.log(response)
-            let data = JSON.parse(response['_bodyText']);
-        }).catch(error => {
-            const { code, message } = error;
-            console.log(message);
-        });
+            url: 'http://127.0.0.1:8000/getCarParks',
+            data: formData,
+            config: { headers: {'Content-Type': 'multipart/form-data' }}
+        })
+            .then((response) => {
+                let data = response.data;
+                let i = 0;
+                let markers = [];
+                for (i; i < data.length; i++) {
+                    let details = LotHandler.getLotDetails(data[i]);
+                    let prices = LotHandler.getLotPrices(data[i]);
+                    let spaces = LotHandler.getLotSpaces(data[i], details);
 
+                    let marker = {
+                        details: details,
+                        price: prices['1'].toFixed(2),
+                        spaces: spaces,
+                        coords: {
+                            latitude: details.lat,
+                            longitude: details.long
+                        }
+                    };
+
+                    markers.push(marker);
+
+                    // As not async, check all done before updating state
+                    if (i === data.length - 1) {
+                        this.setState({markers: markers});
+                        this.setState({loading: false});
+                    }
+                }
+                if (markers.length === 0) {
+                    this.setState({loading: false});
+                    this.setState({
+                        showAlert: true,
+                        alertTitle: 'No Parking Lots',
+                        alertInfo: 'Sorry, but we currently do not support this area! Check our website to see when we are coming to you!'
+                    });
+                }
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+            });
     };
 
     findLocation = () => {
@@ -72,7 +106,7 @@ class App extends Component {
             response => {
                 const city = response.results[0]['address_components'][2]
                 const { lat, lng } = response.results[0].geometry.location;
-                this.getLotsByLocation(lat, lng, city)
+                this.getLotsByLocation(lat, lng, city['long_name'])
             },
             error => {
                 console.error(error);
@@ -83,7 +117,6 @@ class App extends Component {
     onRegionChange = (region) => {
         this.setState({ region });
     };
-
 
     render() {
 
@@ -105,6 +138,7 @@ class App extends Component {
 
             <MapComponent
                 data={this.state.region}
+                markers={this.state.markers}
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                 loadingElement={<div className='map'/>}
                 containerElement={<div className='map'/>}

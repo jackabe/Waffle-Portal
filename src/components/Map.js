@@ -18,15 +18,18 @@ class MapComponent extends Component {
 
     render() {
         let data = this.props.data;
-        let markers = this.props.data.markers;
+        let markers = this.props.markers;
         return (
             <GoogleMap
                 defaultZoom={10}
                 defaultCenter={{ lat: data.latitude, lng: data.longitude }}
             >
-                <Marker
-                    position={{ lat: data.latitude, lng: data.longitude }}
-                />
+                {markers.map(marker => (
+                    <Marker
+                        key={marker.details.lot_id}
+                        position={{ lat: marker.coords.latitude, lng: marker.coords.longitude }}
+                    />
+                ))}
             </GoogleMap>
         );
     }
