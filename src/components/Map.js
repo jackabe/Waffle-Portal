@@ -21,7 +21,7 @@ class MapComponent extends Component {
         let markers = this.props.markers;
         return (
             <GoogleMap
-                defaultZoom={10}
+                defaultZoom={12}
                 defaultCenter={{ lat: data.latitude, lng: data.longitude }}
             >
                 {markers.map(marker => (

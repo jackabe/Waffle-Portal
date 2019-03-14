@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import '../App.css';
 import axios from "axios";
-import LotHandler from "./LotHandler";
+import { css } from '@emotion/core';
+import { ClipLoader } from 'react-spinners';
 
 class UserFilter extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-
+            users: [],
+            noUsers: false,
+            loading: true
         };
     }
 
@@ -47,8 +50,22 @@ class UserFilter extends Component {
                     });
                 }
             })
-            .catch(function (response) {
+            .catch((response) => {
                 console.log(response);
+                let users = [
+                    {
+                        id: 'Z67YnrL30DOOxlzYFhcqXWAbmJm2',
+                        firstName: 'Jack',
+                        lastName: 'Allcock',
+                    },
+                    {
+                        id: 'iSpLh7cFf0W8qCxd48eL4Gk0zAr2',
+                        firstName: 'Morgan',
+                        lastName: 'Jones',
+                    }
+                ];
+                this.setState({users: users});
+                this.setState({loading: false});
             });
     };
 
@@ -57,6 +74,12 @@ class UserFilter extends Component {
         return (
           <div className="user-filter-container">
               <h3>Show by User</h3>
+              <ClipLoader
+                  sizeUnit={"px"}
+                  size={50}
+                  color={'#ffffff'}
+                  loading={this.state.loading}
+              />
               <div className="user-list">
                   <div className='user'>
                       <label className='user-label'>

@@ -8,6 +8,7 @@ import Geocode from "react-geocode";
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import UserFilter from "./components/UserFilter";
+import {ClipLoader} from "react-spinners";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
@@ -27,7 +28,8 @@ class App extends Component {
             showAlert: false,
             alertTitle: '',
             alertInfo: '',
-            markers: []
+            markers: [],
+            loading: true
         };
 
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -38,6 +40,7 @@ class App extends Component {
     }
 
     getLotsByLocation (lat, lng, city)  {
+        this.setState({loading: true});
         let region = {
             latitude: lat,
             longitude: lng,
@@ -97,6 +100,7 @@ class App extends Component {
             })
             .catch(function (response) {
                 //handle error
+                this.setState({loading: false});
                 console.log(response);
             });
     };
@@ -116,6 +120,7 @@ class App extends Component {
     };
 
     loadUserLocations = () => {
+        this.setState({loading: true});
         axios({
             method: 'get',
             url: 'http://18.188.105.214/getUserLocations',
@@ -145,8 +150,8 @@ class App extends Component {
                     }
                 }
             })
-            .catch(function (response) {
-                //handle error
+            .catch((response) => {
+                this.setState({loading: false});
                 console.log(response);
             });
     };
@@ -188,6 +193,18 @@ class App extends Component {
                     onCancel={() => this.setState({ showAlert: false })}
                 />
             </div>
+
+            {this.state.loading ?
+                <div className='sweet-loading'>
+                    <ClipLoader
+                        sizeUnit={"px"}
+                        size={50}
+                        color={'#ffffff'}
+                        loading={this.state.loading}
+                    />
+                </div>
+                : null
+            }
 
             <MapComponent
                 data={this.state.region}

@@ -82,3 +82,18 @@ ul {
   margin-left: 10px!important;
 }
 
+.sweet-loading {
+  background: #282c34;
+  width: 100px;
+  height: 100px;
+  left: calc(50% - 50px);
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  top: calc(50% - 50px);
+  z-index: 1;
+  text-align: center;
+  border-radius: 50px;
+}
+
