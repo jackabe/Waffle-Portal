@@ -7,7 +7,7 @@ import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
-
+import Lots from "./components/Lots";
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
 Geocode.enableDebug();
@@ -154,6 +154,11 @@ class App extends Component {
         if (route === 'home') {
             window.open('/', '_self');
         }
+
+        else if(route === 'lots') {
+            console.log("Lots opened")
+        }
+
         else if (route === 'users') {
             this.loadUserLocations();
         }
@@ -188,18 +193,10 @@ class App extends Component {
                 />
             </div>
 
-            <MapComponent
-                data={this.state.region}
-                markers={this.state.markers}
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div className='map'/>}
-                containerElement={<div className='map'/>}
-                mapElement={<div className='map'/>}
-            />
+            <Lots />
 
             <div className="side-bar-container">
                 <h3 className='nav-logo'>waffle</h3>
-                <ul>
                     <li onClick={() => this.onSideBarClick('home')}><FontAwesome
                         name='home'
                         size='2x'
