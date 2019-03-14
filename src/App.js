@@ -55,7 +55,7 @@ class App extends Component {
         // Post to flask and get parking lot response
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/getCarParks',
+            url: 'http://18.188.105.214/getCarParks',
             data: formData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
@@ -118,7 +118,7 @@ class App extends Component {
     loadUserLocations = () => {
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/getUserLocations',
+            url: 'http://18.188.105.214/getUserLocations',
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
             .then((response) => {

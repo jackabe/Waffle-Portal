@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
+import axios from "axios";
+import LotHandler from "./LotHandler";
 
 class UserFilter extends Component {
 
@@ -9,6 +11,46 @@ class UserFilter extends Component {
 
         };
     }
+
+    componentDidMount() {
+        this.loadUsers();
+    }
+
+    loadUsers = () => {
+        let formData = new FormData();
+        formData.append('table', 'user_details');
+        axios({
+            method: 'post',
+            data: formData,
+            url: 'http://18.188.105.214/collections',
+            config: { headers: {'Content-Type': 'multipart/form-data' }}
+        })
+            .then((response) => {
+                let data = response.data;
+                let i = 0;
+                let users = [];
+                for (i; i < data.length; i++) {
+                    let user = {
+
+                    };
+                    users.push(user);
+                    // As not async, check all done before updating state
+                    if (i === data.length - 1) {
+                        this.setState({users: users});
+                        this.setState({loading: false});
+                    }
+                }
+                if (users.length === 0) {
+                    this.setState({loading: false});
+                    this.setState({
+                        noUsers: true
+                    });
+                }
+            })
+            .catch(function (response) {
+                console.log(response);
+            });
+    };
 
     render() {
         // let data = this.props.data;
