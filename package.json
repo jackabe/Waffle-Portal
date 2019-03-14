@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@emotion/core": "^10.0.9",
     "axios": "^0.18.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
@@ -10,6 +11,7 @@
     "react-geocode": "^0.1.2",
     "react-google-maps": "^9.4.5",
     "react-scripts": "2.1.5",
+    "react-spinners": "^0.5.3",
     "sweetalert-react": "^0.4.11"
   },
   "scripts": {

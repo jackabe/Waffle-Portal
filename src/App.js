@@ -7,6 +7,8 @@ import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
+import UserFilter from "./components/UserFilter";
+import {ClipLoader} from "react-spinners";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
@@ -26,7 +28,10 @@ class App extends Component {
             showAlert: false,
             alertTitle: '',
             alertInfo: '',
-            markers: []
+            markers: [],
+            markersStatic: [],
+            loading: true,
+            showAllUsers: false
         };
 
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -37,6 +42,7 @@ class App extends Component {
     }
 
     getLotsByLocation (lat, lng, city)  {
+        this.setState({loading: true});
         let region = {
             latitude: lat,
             longitude: lng,
@@ -54,7 +60,7 @@ class App extends Component {
         // Post to flask and get parking lot response
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/getCarParks',
+            url: 'http://18.188.105.214/getCarParks',
             data: formData,
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
@@ -96,6 +102,7 @@ class App extends Component {
             })
             .catch(function (response) {
                 //handle error
+                this.setState({loading: false});
                 console.log(response);
             });
     };
@@ -115,9 +122,10 @@ class App extends Component {
     };
 
     loadUserLocations = () => {
+        this.setState({loading: true});
         axios({
             method: 'get',
-            url: 'http://127.0.0.1:8000/getUserLocations',
+            url: 'http://18.188.105.214/getUserLocations',
             config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
             .then((response) => {
@@ -126,6 +134,8 @@ class App extends Component {
                 let markers = [];
                 for (i; i < data.length; i++) {
                     let marker = {
+                        userId: data[i]['uuid'],
+                        show: true,
                         details: {
                             lot_id : i
                         },
@@ -140,12 +150,13 @@ class App extends Component {
                     // As not async, check all done before updating state
                     if (i === data.length - 1) {
                         this.setState({markers: markers});
+                        this.setState({markersStatic: markers});
                         this.setState({loading: false});
                     }
                 }
             })
-            .catch(function (response) {
-                //handle error
+            .catch((response) => {
+                this.setState({loading: false});
                 console.log(response);
             });
     };
@@ -153,11 +164,20 @@ class App extends Component {
     onSideBarClick = (route) => {
         if (route === 'home') {
             window.open('/', '_self');
+            this.setState({
+                showAllUsers: false
+            });
         }
         else if (route === 'users') {
             this.loadUserLocations();
+            this.setState({
+               showAllUsers: true
+            });
         }
         else {
+            this.setState({
+                showAllUsers: true
+            });
             this.setState({
                 showAlert: true,
                 alertTitle: 'No route yet',
@@ -168,6 +188,10 @@ class App extends Component {
 
     onRegionChange = (region) => {
         this.setState({ region });
+    };
+
+    filterUsers = (locations) => {
+        this.setState({markers: locations});
     };
 
     render() {
@@ -187,6 +211,18 @@ class App extends Component {
                     onCancel={() => this.setState({ showAlert: false })}
                 />
             </div>
+
+            {this.state.loading ?
+                <div className='sweet-loading'>
+                    <ClipLoader
+                        sizeUnit={"px"}
+                        size={50}
+                        color={'#ffffff'}
+                        loading={this.state.loading}
+                    />
+                </div>
+                : null
+            }
 
             <MapComponent
                 data={this.state.region}
@@ -246,6 +282,11 @@ class App extends Component {
                 />
 
             </div>
+
+            {this.state.showAllUsers && !this.state.loading ?
+                <UserFilter data={this.state.markersStatic} userCallback={this.filterUsers}/>
+                : null
+            }
 
             <div className='logo-container'>
                 <h3 className='logo'>waffle</h3>
