@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import '../App.css';
 import axios from "axios";
-import { css } from '@emotion/core';
 import { ClipLoader } from 'react-spinners';
 
 class UserFilter extends Component {
@@ -11,8 +10,12 @@ class UserFilter extends Component {
         this.state = {
             users: [],
             noUsers: false,
-            loading: true
+            loading: true,
+            showUsers: [],
+            value: true,
         };
+
+        this.handleUserChange = this.handleUserChange.bind(this);
     }
 
     componentDidMount() {
@@ -52,16 +55,25 @@ class UserFilter extends Component {
             })
             .catch((response) => {
                 console.log(response);
+                // Set first to show
                 let users = [
                     {
                         id: 'Z67YnrL30DOOxlzYFhcqXWAbmJm2',
                         firstName: 'Jack',
                         lastName: 'Allcock',
+                        show: true
                     },
                     {
                         id: 'iSpLh7cFf0W8qCxd48eL4Gk0zAr2',
                         firstName: 'Morgan',
                         lastName: 'Jones',
+                        show: true
+                    },
+                    {
+                        id: 'KUfa5sxh9efBABZmCZybDUlU5s42',
+                        firstName: 'Subash',
+                        lastName: 'Poudyal',
+                        show: true
                     }
                 ];
                 this.setState({users: users});
@@ -69,11 +81,47 @@ class UserFilter extends Component {
             });
     };
 
+    handleUserChange(event) {
+        const markers = this.props.data;
+        const target = event.target;
+        const clickToShow = target.type === 'checkbox' ? target.checked : target.value;
+        const userId = target.name;
+        const users = this.state.users;
+        let showUsers = [];
+        // Change all users to show if clicked to show and vice versa
+        let i = 0;
+        for (i; i < users.length; i++) {
+            if (users[i].id === userId) {
+                users[i]['show'] = clickToShow;
+            }
+        }
+        // Update checkbox's
+        this.setState({
+            [userId]: clickToShow,
+            users: users,
+        });
+        // Change all locations by user id if checked or not
+        i = 0;
+        for (i; i < markers.length; i++) {
+            if (markers[i].userId === userId) {
+                markers[i]['show'] = clickToShow;
+            }
+        }
+        // Only send a list of checked markers back to map
+        i = 0;
+        for (i; i < markers.length; i++) {
+            if (markers[i]['show']) {
+                showUsers.push(markers[i])
+            }
+        }
+        // callback to app.js
+        this.props.userCallback(showUsers)
+    }
+
     render() {
-        // let data = this.props.data;
         return (
           <div className="user-filter-container">
-              <h3>Show by User</h3>
+              <h3>Filter by User</h3>
               <ClipLoader
                   sizeUnit={"px"}
                   size={50}
@@ -81,28 +129,15 @@ class UserFilter extends Component {
                   loading={this.state.loading}
               />
               <div className="user-list">
-                  <div className='user'>
-                      <label className='user-label'>
-                          Jack Allcock
-                          <input
-                              name="user"
-                              type="checkbox"
-                              className="user-checkbox"
-                              checked={this.state.isGoing}
-                              onChange={this.handleInputChange} />
-                      </label>
-                  </div>
-                  <div className='user'>
-                      <label className='user-label'>
-                          Jack Name
-                          <input
-                              name="user"
-                              type="checkbox"
-                              className="user-checkbox"
-                              checked={this.state.isGoing}
-                              onChange={this.handleInputChange} />
-                      </label>
-                  </div>
+                  {this.state.users.map(user => (
+                      <div className='user' key={user.id}>
+                          <label className='user-label'>
+                              {user.id + ' (' + user.firstName + ' ' + user.lastName +')'}
+                              <input
+                                  type="checkbox" name={user.id} checked={user['show']} onChange={this.handleUserChange}/>
+                          </label>
+                      </div>
+                  ))}
               </div>
 
           </div>

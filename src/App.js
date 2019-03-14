@@ -29,7 +29,9 @@ class App extends Component {
             alertTitle: '',
             alertInfo: '',
             markers: [],
-            loading: true
+            markersStatic: [],
+            loading: true,
+            showAllUsers: false
         };
 
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -132,6 +134,8 @@ class App extends Component {
                 let markers = [];
                 for (i; i < data.length; i++) {
                     let marker = {
+                        userId: data[i]['uuid'],
+                        show: true,
                         details: {
                             lot_id : i
                         },
@@ -146,6 +150,7 @@ class App extends Component {
                     // As not async, check all done before updating state
                     if (i === data.length - 1) {
                         this.setState({markers: markers});
+                        this.setState({markersStatic: markers});
                         this.setState({loading: false});
                     }
                 }
@@ -159,11 +164,20 @@ class App extends Component {
     onSideBarClick = (route) => {
         if (route === 'home') {
             window.open('/', '_self');
+            this.setState({
+                showAllUsers: false
+            });
         }
         else if (route === 'users') {
             this.loadUserLocations();
+            this.setState({
+               showAllUsers: true
+            });
         }
         else {
+            this.setState({
+                showAllUsers: true
+            });
             this.setState({
                 showAlert: true,
                 alertTitle: 'No route yet',
@@ -174,6 +188,11 @@ class App extends Component {
 
     onRegionChange = (region) => {
         this.setState({ region });
+    };
+
+    filterUsers = (locations) => {
+        console.log(locations);
+        this.setState({markers: locations});
     };
 
     render() {
@@ -265,7 +284,10 @@ class App extends Component {
 
             </div>
 
-            <UserFilter/>
+            {this.state.showAllUsers && !this.state.loading ?
+                <UserFilter data={this.state.markersStatic} userCallback={this.filterUsers}/>
+                : null
+            }
 
             <div className='logo-container'>
                 <h3 className='logo'>waffle</h3>
