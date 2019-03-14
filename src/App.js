@@ -7,6 +7,7 @@ import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
+import UserFilter from "./components/UserFilter";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 
@@ -246,6 +247,8 @@ class App extends Component {
                 />
 
             </div>
+
+            <UserFilter/>
 
             <div className='logo-container'>
                 <h3 className='logo'>waffle</h3>
