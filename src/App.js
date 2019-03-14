@@ -191,7 +191,6 @@ class App extends Component {
     };
 
     filterUsers = (locations) => {
-        console.log(locations);
         this.setState({markers: locations});
     };
 
