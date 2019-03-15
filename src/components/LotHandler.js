@@ -10,6 +10,17 @@ function getLotDetails(data) {
     };
 }
 
+// function addNewLot(){
+//     const db = firebase.firestore();
+//     db.settings({
+//         timestampsInSnapshots: true
+//     });
+//     const userRef = db.collection(“parking_lots”).add({
+//         fullname: this.state.fullname,
+//         email: this.state.email
+//     });
+// }
+
 function getLotPrices(data) {
     let prices = data[1];
     return prices;

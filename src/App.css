@@ -99,5 +99,30 @@ ul {
   border-radius: 50px;
 }
 
+.lot-form {
+    margin-left: 120px;
+    padding: 10px;
+}
 
+.lot-form input{
+  margin: 10px;
+  padding:10px;
+  width: 400px;
+}
+
+.lot-form h3 {
+  padding: 10px;
+  color: tomato;
+}
+
+.lot-form button {
+  text-align: center;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: 200px;
+  padding: 20px;
+  border: 0;
+  background-color: tomato;
+  color: white;
+}
 

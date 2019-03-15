@@ -9,9 +9,9 @@ import axios from 'axios';
 import FontAwesome from "react-fontawesome";
 import UserFilter from "./components/UserFilter";
 import {ClipLoader} from "react-spinners";
+import Lots from "./components/Lots";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
-
 Geocode.enableDebug();
 
 class App extends Component {
@@ -31,7 +31,9 @@ class App extends Component {
             markers: [],
             markersStatic: [],
             loading: true,
-            showAllUsers: false
+            showAllUsers: false,
+            showParking: false,
+            showMap: true
         };
 
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -164,20 +166,25 @@ class App extends Component {
     onSideBarClick = (route) => {
         if (route === 'home') {
             window.open('/', '_self');
+        }
+
+        else if (route === 'lots') {
             this.setState({
-                showAllUsers: false
+                showParking: true,
+                showAllUsers: false,
+                showMap: false
             });
         }
+
         else if (route === 'users') {
             this.loadUserLocations();
             this.setState({
-               showAllUsers: true
+               showAllUsers: true,
+               showParking: false,
+               showMap: true
             });
         }
         else {
-            this.setState({
-                showAllUsers: true
-            });
             this.setState({
                 showAlert: true,
                 alertTitle: 'No route yet',
@@ -223,15 +230,6 @@ class App extends Component {
                 </div>
                 : null
             }
-
-            <MapComponent
-                data={this.state.region}
-                markers={this.state.markers}
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div className='map'/>}
-                containerElement={<div className='map'/>}
-                mapElement={<div className='map'/>}
-            />
 
             <div className="side-bar-container">
                 <h3 className='nav-logo'>waffle</h3>
@@ -280,11 +278,27 @@ class App extends Component {
                     size='2x'
                     style={{ color: '#ffffff' }}
                 />
-
             </div>
+
+            {this.state.showMap ?
+                <MapComponent
+                    data={this.state.region}
+                    markers={this.state.markers}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div className='map'/>}
+                    containerElement={<div className='map'/>}
+                    mapElement={<div className='map'/>}
+                />
+                : null
+            }
 
             {this.state.showAllUsers && !this.state.loading ?
                 <UserFilter data={this.state.markersStatic} userCallback={this.filterUsers}/>
+                : null
+            }
+
+            {this.state.showParking ?
+                <Lots />
                 : null
             }
 
