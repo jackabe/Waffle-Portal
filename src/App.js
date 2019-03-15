@@ -197,6 +197,7 @@ class App extends Component {
 
             <div className="side-bar-container">
                 <h3 className='nav-logo'>waffle</h3>
+                <ul>
                     <li onClick={() => this.onSideBarClick('home')}><FontAwesome
                         name='home'
                         size='2x'
