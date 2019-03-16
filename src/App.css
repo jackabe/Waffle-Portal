@@ -8,6 +8,18 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.nav-image {
+  color: white;
+}
+
+.nav-image :active {
+  color: tomato;
+}
+
+.nav-image :hover {
+  color: tomato;
+}
+
 .side-bar-container {
   position: absolute;
   color: white;
@@ -124,5 +136,38 @@ ul {
   border: 0;
   background-color: tomato;
   color: white;
+}
+
+.users-side-tab {
+  position: absolute;
+  background: #282c34;
+  width: 50px;
+  height: 130px;
+  border-bottom-left-radius: 30px;
+  border-top-left-radius: 30px;
+  right: 0;
+  top: calc(50% - 130px);
+}
+
+.tab-center {
+  position: absolute;
+  text-align: center;
+  width: 10px;
+  top: 40%;
+  left: 20px;
+  height: 50px;
+  color: white;
+  cursor: pointer;
+}
+
+.users-side-nav {
+  position: absolute;
+  background: #282c34 ;
+  width: 75px;
+  z-index: 1;
+  height: 100%;
+  right: 0;
+  top: 0;
+  cursor: pointer;
 }
 

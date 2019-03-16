@@ -7,7 +7,7 @@ import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
 import axios from 'axios';
 import FontAwesome from "react-fontawesome";
-import UserFilter from "./components/UserFilter";
+import Filter from "./components/Filter";
 import {ClipLoader} from "react-spinners";
 import Lots from "./components/Lots";
 
@@ -33,7 +33,9 @@ class App extends Component {
             loading: true,
             showAllUsers: false,
             showParking: false,
-            showMap: true
+            showMap: true,
+            showParkers: false,
+            parkingUsers: [],
         };
 
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -124,64 +126,76 @@ class App extends Component {
     };
 
     loadUserLocations = () => {
-        this.setState({loading: true});
-        axios({
-            method: 'get',
-            url: 'http://18.188.105.214/getUserLocations',
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-        })
-            .then((response) => {
-                let data = response.data;
-                let i = 0;
-                let markers = [];
-                for (i; i < data.length; i++) {
-                    let marker = {
-                        userId: data[i]['uuid'],
-                        show: true,
-                        details: {
-                            lot_id : i
-                        },
-                        coords: {
-                            latitude: data[i]['latitude'],
-                            longitude: data[i]['longitude']
-                        }
-                    };
-
-                    markers.push(marker);
-
-                    // As not async, check all done before updating state
-                    if (i === data.length - 1) {
-                        this.setState({markers: markers});
-                        this.setState({markersStatic: markers});
-                        this.setState({loading: false});
-                    }
-                }
+        if (this.state.markersStatic.length === 0) {
+            this.setState({loading: true});
+            axios({
+                method: 'get',
+                url: 'http://18.188.105.214/getUserLocations',
+                config: { headers: {'Content-Type': 'multipart/form-data' }}
             })
-            .catch((response) => {
-                this.setState({loading: false});
-                console.log(response);
-            });
+                .then((response) => {
+                    let data = response.data;
+                    let i = 0;
+                    let markers = [];
+                    for (i; i < data.length; i++) {
+                        let marker = {
+                            userId: data[i]['uuid'],
+                            show: true,
+                            details: {
+                                lot_id : i
+                            },
+                            coords: {
+                                latitude: data[i]['latitude'],
+                                longitude: data[i]['longitude']
+                            }
+                        };
+
+                        markers.push(marker);
+
+                        // As not async, check all done before updating state
+                        if (i === data.length - 1) {
+                            this.setState({markers: markers});
+                            this.setState({markersStatic: markers});
+                            this.setState({loading: false});
+                        }
+                    }
+                })
+                .catch((response) => {
+                    this.setState({loading: false});
+                    console.log(response);
+                });
+        }
     };
 
     onSideBarClick = (route) => {
         if (route === 'home') {
             window.open('/', '_self');
         }
-
         else if (route === 'lots') {
             this.setState({
                 showParking: true,
                 showAllUsers: false,
-                showMap: false
+                showMap: false,
+                showParkers: false
+
             });
         }
-
-        else if (route === 'users') {
+        else if (route === 'dashboard') {
             this.loadUserLocations();
+            this.setState({
+                showParking: false,
+                showAllUsers: false,
+                showMap: true,
+                showParkers: true
+            });
+        }
+        else if (route === 'users') {
+            // this.loadUserLocations();
             this.setState({
                showAllUsers: true,
                showParking: false,
-               showMap: true
+               showMap: true,
+               showParkers: false
             });
         }
         else {
@@ -199,6 +213,10 @@ class App extends Component {
 
     filterUsers = (locations) => {
         this.setState({markers: locations});
+    };
+
+    lastLocations = (locations) => {
+        this.setState({parkingUsers: locations});
     };
 
     render() {
@@ -237,37 +255,43 @@ class App extends Component {
                     <li onClick={() => this.onSideBarClick('home')}><FontAwesome
                         name='home'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
                     /></li>
 
                     <li onClick={() => this.onSideBarClick('dashboard')}><FontAwesome
                         name='rocket'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
                     /></li>
 
                     <li onClick={() => this.onSideBarClick('lots')}><FontAwesome
                         name='car'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
                     /></li>
 
                     <li onClick={() => this.onSideBarClick('users')}><FontAwesome
                         name='users'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
                     /></li>
 
-                    <li onClick={() => this.onSideBarClick('user')}><FontAwesome
-                        name='user'
+                    <li onClick={() => this.onSideBarClick('vouchers')}><FontAwesome
+                        name='money'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
+                    /></li>
+
+                    <li onClick={() => this.onSideBarClick('prices')}><FontAwesome
+                        name='dollar'
+                        size='2x'
+                        className='nav-image'
                     /></li>
 
                     <li onClick={() => this.onSideBarClick('settings')}><FontAwesome
                         name='cog'
                         size='2x'
-                        style={{ color: '#ffffff' }}
+                        className='nav-image'
                     /></li>
                 </ul>
 
@@ -276,7 +300,7 @@ class App extends Component {
                     name='sign-out'
                     className='logout'
                     size='2x'
-                    style={{ color: '#ffffff' }}
+                    style={{ color: 'tomato' }}
                 />
             </div>
 
@@ -284,6 +308,7 @@ class App extends Component {
                 <MapComponent
                     data={this.state.region}
                     markers={this.state.markers}
+                    parkingUsers={this.state.parkingUsers}
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                     loadingElement={<div className='map'/>}
                     containerElement={<div className='map'/>}
@@ -293,12 +318,12 @@ class App extends Component {
             }
 
             {this.state.showAllUsers && !this.state.loading ?
-                <UserFilter data={this.state.markersStatic} userCallback={this.filterUsers}/>
+                <Filter data={this.state.markersStatic} userCallback={this.filterUsers}/>
                 : null
             }
 
             {this.state.showParking ?
-                <Lots />
+                <Lots/>
                 : null
             }
 
