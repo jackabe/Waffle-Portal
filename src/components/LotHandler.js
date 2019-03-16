@@ -31,7 +31,7 @@ function getLotSpaces(data, details) {
     let bays = data[2];
     let i = 0;
     for (i; i < bays.length; i++) {
-        let bookings = bays[i]['bookings'];
+        let bookings = bays[i][1]
         if (bookings.length === 0) {
             // no bookings
         }
