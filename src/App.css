@@ -8,6 +8,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.heading {
+  padding: 10px;
+  color: tomato;
+}
 .nav-image {
   color: white;
 }
@@ -170,4 +174,21 @@ ul {
   top: 0;
   cursor: pointer;
 }
+
+.dashboard {
+  margin-left: 120px;
+}
+
+.prices {
+  margin-left: 120px;
+}
+
+.offers {
+  margin-left: 120px;
+}
+
+.settings {
+  margin-left: 120px;
+}
+
 

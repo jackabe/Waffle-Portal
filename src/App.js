@@ -1,16 +1,20 @@
 import React, { Component } from 'react';
-import './App.css';
-import MapComponent from "./components/Map";
-import LotHandler from "./components/LotHandler";
-import SweetAlert from 'sweetalert-react';
-import 'sweetalert/dist/sweetalert.css';
 import Geocode from "react-geocode";
-import axios from 'axios';
+import SweetAlert from 'sweetalert-react';
+import fetch from 'axios';
 import FontAwesome from "react-fontawesome";
-import Filter from "./components/Filter";
 import {ClipLoader} from "react-spinners";
-import Lots from "./components/Lots";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import LotHandler from "./scripts/LotHandler";
+import MapComponent from "./components/Map";
+import Dashboard from "./components/Dashboard";
+import Offers from "./components/Offers";
+import Settings from "./components/Settings";
+import Prices from "./components/Prices";
+import ParkingManagement from "./components/ParkingManagement";
+import Users from "./components/Users";
+import 'sweetalert/dist/sweetalert.css';
+import './App.css';
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
@@ -32,19 +36,28 @@ class App extends Component {
             markers: [],
             markersStatic: [],
             loading: true,
-            showAllUsers: false,
-            showParking: false,
-            showMap: true,
-            showParkers: false,
             parkingUsers: [],
         };
-
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
     }
 
     componentDidMount() {
         // this.findLocation();
     }
+
+    findLocation = () => {
+        // Get latidude & longitude from address.
+        Geocode.fromAddress("CF244AL").then(
+            response => {
+                const city = response.results[0]['address_components'][2]
+                const { lat, lng } = response.results[0].geometry.location;
+                this.getLotsByLocation(lat, lng, city['long_name'])
+            },
+            error => {
+                console.error(error);
+            }
+        );
+    };
 
     getLotsByLocation (lat, lng, city)  {
         this.setState({loading: true});
@@ -63,7 +76,7 @@ class App extends Component {
         formData.append('longitude', lng);
 
         // Post to flask and get parking lot response
-        axios({
+        fetch({
             method: 'post',
             url: 'http://18.188.105.214/getCarParks',
             data: formData,
@@ -112,24 +125,10 @@ class App extends Component {
             });
     };
 
-    findLocation = () => {
-        // Get latidude & longitude from address.
-        Geocode.fromAddress("CF244AL").then(
-            response => {
-                const city = response.results[0]['address_components'][2]
-                const { lat, lng } = response.results[0].geometry.location;
-                this.getLotsByLocation(lat, lng, city['long_name'])
-            },
-            error => {
-                console.error(error);
-            }
-        );
-    };
-
     loadUserLocations = () => {
         if (this.state.markersStatic.length === 0) {
             this.setState({loading: true});
-            axios({
+            fetch({
                 method: 'get',
                 url: 'http://18.188.105.214/getUserLocations',
                 config: { headers: {'Content-Type': 'multipart/form-data' }}
@@ -168,46 +167,6 @@ class App extends Component {
         }
     };
 
-    onSideBarClick = (route) => {
-        if (route === 'home') {
-            window.open('/', '_self');
-        }
-        else if (route === 'lots') {
-            this.setState({
-                showParking: true,
-                showAllUsers: false,
-                showMap: false,
-                showParkers: false
-
-            });
-        }
-        else if (route === 'dashboard') {
-            this.loadUserLocations();
-            this.setState({
-                showParking: false,
-                showAllUsers: false,
-                showMap: true,
-                showParkers: true
-            });
-        }
-        else if (route === 'users') {
-            // this.loadUserLocations();
-            this.setState({
-               showAllUsers: true,
-               showParking: false,
-               showMap: true,
-               showParkers: false
-            });
-        }
-        else {
-            this.setState({
-                showAlert: true,
-                alertTitle: 'No route yet',
-                alertInfo: 'Sorry, no route has been added for '+route+' yet!'
-            });
-        }
-    };
-
     onRegionChange = (region) => {
         this.setState({ region });
     };
@@ -223,117 +182,173 @@ class App extends Component {
     render() {
 
       return (
-        <div className='app'>
-            <div>
-                <SweetAlert
-                    show={this.state.showAlert}
-                    title={this.state.alertTitle}
-                    text={this.state.alertInfo}
-                    showConfirmButton={false}
-                    showCancelButton
-                    cancelButtonText='Close'
-                    animation="slide-from-top"
-                    type="info"
-                    onCancel={() => this.setState({ showAlert: false })}
-                />
-            </div>
+          <Router>
+            <div className='app'>
 
-            {this.state.loading ?
-                <div className='sweet-loading'>
-                    <ClipLoader
-                        sizeUnit={"px"}
-                        size={50}
-                        color={'#ffffff'}
-                        loading={this.state.loading}
+                {this.state.loading ?
+                    <div className='sweet-loading'>
+                        <ClipLoader
+                            sizeUnit={"px"}
+                            size={50}
+                            color={'#ffffff'}
+                            loading={this.state.loading}
+                        />
+                    </div>
+                    : null
+                }
+
+                <div className="side-bar-container">
+                    <h3 className='nav-logo'>waffle</h3>
+                    <ul>
+                        <Link to="/">
+                            <li>
+                                <FontAwesome
+                                    name='home'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/dashboard">
+                            <li>
+                                <FontAwesome
+                                    name='rocket'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/parking">
+                            <li>
+                                <FontAwesome
+                                    name='car'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/users">
+                            <li>
+                                <FontAwesome
+                                    name='users'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/offers">
+                            <li>
+                                <FontAwesome
+                                    name='money'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/prices">
+                            <li>
+                                <FontAwesome
+                                    name='dollar'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                        <Link to="/settings">
+                            <li>
+                                <FontAwesome
+                                    name='cog'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
+                    </ul>
+
+                    <FontAwesome
+                        onClick={() => this.onSideBarClick('logout')}
+                        name='sign-out'
+                        className='logout'
+                        size='2x'
+                        style={{ color: 'tomato' }}
                     />
                 </div>
-                : null
-            }
 
-            <div className="side-bar-container">
-                <h3 className='nav-logo'>waffle</h3>
-                <ul>
-                    <li onClick={() => this.onSideBarClick('home')}><FontAwesome
-                        name='home'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
+                <div className='logo-container'>
+                    <h3 className='logo'>waffle</h3>
+                </div>
 
-                    <li onClick={() => this.onSideBarClick('dashboard')}><FontAwesome
-                        name='rocket'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-
-                    <li onClick={() => this.onSideBarClick('lots')}><FontAwesome
-                        name='car'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-
-                    <li onClick={() => this.onSideBarClick('users')}><FontAwesome
-                        name='users'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-
-                    <li onClick={() => this.onSideBarClick('vouchers')}><FontAwesome
-                        name='money'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-
-                    <li onClick={() => this.onSideBarClick('prices')}><FontAwesome
-                        name='dollar'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-
-                    <li onClick={() => this.onSideBarClick('settings')}><FontAwesome
-                        name='cog'
-                        size='2x'
-                        className='nav-image'
-                    /></li>
-                </ul>
-
-                <FontAwesome
-                    onClick={() => this.onSideBarClick('logout')}
-                    name='sign-out'
-                    className='logout'
-                    size='2x'
-                    style={{ color: 'tomato' }}
-                />
+                <Route exact path="/" component={this.Map}/>
+                <Route exact path="/dashboard" component={this.Dashboard}/>
+                <Route exact path="/parking" component={this.ParkingManagement}/>
+                <Route exact path="/users" component={this.Users}/>
+                <Route exact path="/offers" component={this.Offers}/>
+                <Route exact path="/prices" component={this.Prices}/>
+                <Route exact path="/settings" component={this.Settings}/>
             </div>
-
-            {this.state.showMap ?
-                <MapComponent
-                    data={this.state.region}
-                    markers={this.state.markers}
-                    parkingUsers={this.state.parkingUsers}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div className='map'/>}
-                    containerElement={<div className='map'/>}
-                    mapElement={<div className='map'/>}
-                />
-                : null
-            }
-
-            {this.state.showAllUsers && !this.state.loading ?
-                <Filter data={this.state.markersStatic} userCallback={this.filterUsers}/>
-                : null
-            }
-
-            {this.state.showParking ?
-                <Lots/>
-                : null
-            }
-
-            <div className='logo-container'>
-                <h3 className='logo'>waffle</h3>
-            </div>
-        </div>
+          </Router>
     );
   }
+
+    Map = () => {
+        return (
+            <MapComponent
+                data={this.state.region}
+                markers={this.state.markers}
+                parkingUsers={this.state.parkingUsers}
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                loadingElement={<div className='map'/>}
+                containerElement={<div className='map'/>}
+                mapElement={<div className='map'/>}
+            />
+        )
+    };
+
+    Dashboard = () => {
+        return (
+            <Dashboard/>
+        )
+    };
+
+    ParkingManagement = () => {
+        return (
+            <ParkingManagement/>
+        )
+    };
+
+    Users = () => {
+        return (
+            <Users data={this.state.markersStatic} userCallback={this.filterUsers}/>
+        )
+    };
+
+    Offers = () => {
+        return (
+            <Offers/>
+        )
+    };
+
+    Prices = () => {
+        return (
+            <Prices/>
+        )
+    };
+
+    Info = () => {
+        return (
+            <SweetAlert
+                show={this.state.showAlert}
+                title={this.state.alertTitle}
+                text={this.state.alertInfo}
+                showConfirmButton={false}
+                showCancelButton
+                cancelButtonText='Close'
+                animation="slide-from-top"
+                type="info"
+                onCancel={() => this.setState({ showAlert: false })}
+            />
+        )
+    };
+
+    Settings = () => {
+        return (
+            <Settings/>
+        )
+    };
+
 }
 
 export default App;
