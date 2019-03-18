@@ -10,6 +10,7 @@ import FontAwesome from "react-fontawesome";
 import Filter from "./components/Filter";
 import {ClipLoader} from "react-spinners";
 import Lots from "./components/Lots";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
@@ -42,7 +43,7 @@ class App extends Component {
     }
 
     componentDidMount() {
-        this.findLocation();
+        // this.findLocation();
     }
 
     getLotsByLocation (lat, lng, city)  {
