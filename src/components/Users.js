@@ -5,7 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
 import PropTypes from 'prop-types';
 
-class Filter extends Component {
+class Users extends Component {
 
     constructor(props) {
         super(props);
@@ -241,8 +241,8 @@ class Filter extends Component {
     }
 }
 
-export default Filter;
+export default Users;
 
-Filter.propTypes = {
+Users.propTypes = {
     children: PropTypes.element.isRequired,
 };

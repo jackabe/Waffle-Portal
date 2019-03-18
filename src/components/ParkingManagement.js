@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import '../App.css';
 import axios from "axios";
-import LotHandler from "./LotHandler";
+import LotHandler from "../scripts/LotHandler";
 
 
-export default class Lots extends Component {
+export default class ParkingManagement extends Component {
 
     constructor(props) {
         super(props);
