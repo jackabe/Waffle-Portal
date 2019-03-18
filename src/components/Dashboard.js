@@ -4,7 +4,7 @@ import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
 
 class Dashboard extends Component {
-
+    // Initial Commit for CI
     constructor(props) {
         super(props);
         this.state = {
