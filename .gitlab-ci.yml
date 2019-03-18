@@ -28,4 +28,4 @@ pages:
     paths:
     - public # The built files for Gitlab Pages to serve
   only:
-    - ciDevOps # Only run on this branch
+    - dev # Only run on this branch
