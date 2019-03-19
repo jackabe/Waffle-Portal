@@ -5,7 +5,7 @@ import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
 import PropTypes from 'prop-types';
 import MapComponent from "./Map";
-import {Link} from "react-router-dom";
+import Locations from '../data/locations';
 
 class Users extends Component {
 
@@ -25,46 +25,8 @@ class Users extends Component {
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1,
             },
-            markers: [
-                {
-                    coords: {latitude: 51.4756882, longitude: -3.1788092},
-                    details: {lot_id: 39},
-                    show: true,
-                    userId: "KUfa5sxh9efBABZmCZybDUlU5s42"
-                 },
-                {
-                    coords: {latitude: 51.4997257, longitude: -3.1787463},
-                    details: {lot_id: 377},
-                    show: true,
-                    userId: "iSpLh7cFf0W8qCxd48eL4Gk0zAr2"
-                },
-                {
-                    coords: {latitude: 51.4880452, longitude: -3.1734272},
-                    details: {lot_id: 205},
-                    show: true,
-                    userId: "Z67YnrL30DOOxlzYFhcqXWAbmJm2"
-                },
-            ],
-            markersStatic: [
-                {
-                    coords: {latitude: 51.4756882, longitude: -3.1788092},
-                    details: {lot_id: 39},
-                    show: true,
-                    userId: "KUfa5sxh9efBABZmCZybDUlU5s42"
-                },
-                {
-                    coords: {latitude: 51.4997257, longitude: -3.1787463},
-                    details: {lot_id: 377},
-                    show: true,
-                    userId: "iSpLh7cFf0W8qCxd48eL4Gk0zAr2"
-                },
-                {
-                    coords: {latitude: 51.4880452, longitude: -3.1734272},
-                    details: {lot_id: 205},
-                    show: true,
-                    userId: "Z67YnrL30DOOxlzYFhcqXWAbmJm2"
-                },
-            ],
+            markers: [],
+            markersStatic: Locations.locations
         };
 
         this.handleUserChange = this.handleUserChange.bind(this);
@@ -99,17 +61,21 @@ class Users extends Component {
         })
         .then((response) => {
             let data = response.data;
+            console.log(data);
             let i = 0;
             let users = [];
             for (i; i < data.length; i++) {
                 let user = {
-
+                    id: data[i]['id'],
+                    firstName: data[i]['first_name'],
+                    lastName: data[i]['last_name'],
+                    show: true
                 };
                 users.push(user);
                 // As not async, check all done before updating state
                 if (i === data.length - 1) {
                     this.setState({users: users});
-                    this.setState({loading: false});
+                    this.loadUserLocations();
                 }
             }
             if (users.length === 0) {
@@ -186,6 +152,82 @@ class Users extends Component {
             markers: showUsers,
         });
     }
+
+    // loadUserLocations = () => {
+    //     if (this.state.markersStatic.length === 0) {
+    //         this.setState({loading: true});
+    //         fetch('http://18.188.105.214/getUserLocations', {
+    //             method: 'get',
+    //             headers: {'Content-Type': 'multipart/form-data' }
+    //         })
+    //             .then((response) => {
+    //                 console.log('response');
+    //                 let data = response.body;
+    //                 console.log(data)
+    //                 let i = 0;
+    //                 let markers = [];
+    //                 for (i; i < data.length; i++) {
+    //                     let marker = {
+    //                         userId: data[i]['uuid'],
+    //                         show: true,
+    //                         details: {
+    //                             lot_id : i
+    //                         },
+    //                         coords: {
+    //                             latitude: data[i]['latitude'],
+    //                             longitude: data[i]['longitude']
+    //                         }
+    //                     };
+    //
+    //                     console.log(marker);
+    //                     markers.push(marker);
+    //
+    //                     // As not async, check all done before updating state
+    //                     if (i === data.length - 1) {
+    //                         this.setState({markers: markers});
+    //                         this.setState({markersStatic: markers});
+    //                         this.setState({loading: false});
+    //                     }
+    //                 }
+    //             })
+    //             .catch((response) => {
+    //                 this.setState({loading: false});
+    //                 console.log(response);
+    //             });
+    //     }
+    //     else {
+    //         this.setState({loading: false});
+    //     }
+    // };
+
+    loadUserLocations = () => {
+        let i = 0;
+        let markers = this.state.markersStatic;
+        let marketsStatic = [];
+        for (i; i < markers.length; i++) {
+            let marker = {
+                userId: markers[i]['uuid'],
+                show: true,
+                details: {
+                    lot_id : i
+                },
+                coords: {
+                    latitude: markers[i]['latitude'],
+                    longitude: markers[i]['longitude']
+                }
+            };
+
+            marketsStatic.push(marker);
+
+            // As not async, check all done before updating state
+            if (i === markers.length - 1) {
+                console.log('done');
+                this.setState({markers: marketsStatic});
+                this.setState({markersStatic: marketsStatic});
+                this.setState({loading: false});
+            }
+        }
+    };
 
     getLastLocationsForUsers = () => {
         let locations = this.props.data;

@@ -127,52 +127,6 @@ class App extends Component {
             });
     };
 
-    loadUserLocations = () => {
-        if (this.state.markersStatic.length === 0) {
-            this.setState({loading: true});
-            fetch({
-                method: 'get',
-                url: 'http://18.188.105.214/getUserLocations',
-                config: { headers: {'Content-Type': 'multipart/form-data' }}
-            })
-                .then((response) => {
-                    let data = response.data;
-                    let i = 0;
-                    let markers = [];
-                    for (i; i < data.length; i++) {
-                        let marker = {
-                            userId: data[i]['uuid'],
-                            show: true,
-                            details: {
-                                lot_id : i
-                            },
-                            coords: {
-                                latitude: data[i]['latitude'],
-                                longitude: data[i]['longitude']
-                            }
-                        };
-
-                        console.log(marker);
-                        markers.push(marker);
-
-                        // As not async, check all done before updating state
-                        if (i === data.length - 1) {
-                            this.setState({markers: markers});
-                            this.setState({markersStatic: markers});
-                            this.setState({loading: false});
-                        }
-                    }
-                })
-                .catch((response) => {
-                    this.setState({loading: false});
-                    console.log(response);
-                });
-        }
-        else {
-            this.setState({loading: false});
-        }
-    };
-
     onRegionChange = (region) => {
         this.setState({ region });
     };
