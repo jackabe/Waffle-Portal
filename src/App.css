@@ -151,6 +151,7 @@ ul {
   border-top-left-radius: 30px;
   right: 0;
   top: calc(50% - 130px);
+  cursor: pointer;
 }
 
 .tab-center {
@@ -161,7 +162,6 @@ ul {
   left: 20px;
   height: 50px;
   color: white;
-  cursor: pointer;
 }
 
 .users-side-nav {

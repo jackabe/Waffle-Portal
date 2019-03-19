@@ -218,16 +218,19 @@ class Users extends Component {
                     userFilter: false,
                 });
             }
-            else if (route === 'close') {
-                this.setState({
-                    userFilter: false,
-                });
-            }
             else {
                 this.setState({
                     userFilter: true,
                 });
             }
+        }
+        else if (route === 'user-locations') {
+            window.location.reload();
+        }
+        else if (route === 'close') {
+            this.setState({
+                userFilter: false,
+            });
         }
         else {
             this.setState({
@@ -253,9 +256,8 @@ class Users extends Component {
                     mapElement={<div className='map'/>}
                 />
 
-                <div className='users-side-tab'>
+                <div className='users-side-tab' onClick={() => this.onSideBarClick('open-nav')}>
                     <FontAwesome
-                        onClick={() => this.onSideBarClick('open-nav')}
                         name='arrow-left'
                         className='tab-center'
                         size='2x'
