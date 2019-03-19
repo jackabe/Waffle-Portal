@@ -101,6 +101,8 @@ class App extends Component {
                         }
                     };
 
+                    console.log(marker)
+
                     markers.push(marker);
 
                     // As not async, check all done before updating state
@@ -150,6 +152,7 @@ class App extends Component {
                             }
                         };
 
+                        console.log(marker);
                         markers.push(marker);
 
                         // As not async, check all done before updating state
@@ -164,6 +167,9 @@ class App extends Component {
                     this.setState({loading: false});
                     console.log(response);
                 });
+        }
+        else {
+            this.setState({loading: false});
         }
     };
 
