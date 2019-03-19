@@ -4,6 +4,8 @@ import axios from "axios";
 import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
 import PropTypes from 'prop-types';
+import MapComponent from "./Map";
+import {Link} from "react-router-dom";
 
 class Users extends Component {
 
@@ -16,11 +18,56 @@ class Users extends Component {
             showUsers: [],
             value: true,
             showNav: false,
-            userFilter: false
+            userFilter: false,
+            region: {
+                latitude: 51.482171,
+                longitude: -3.171731,
+                latitudeDelta: 0.1,
+                longitudeDelta: 0.1,
+            },
+            markers: [
+                {
+                    coords: {latitude: 51.4756882, longitude: -3.1788092},
+                    details: {lot_id: 39},
+                    show: true,
+                    userId: "KUfa5sxh9efBABZmCZybDUlU5s42"
+                 },
+                {
+                    coords: {latitude: 51.4997257, longitude: -3.1787463},
+                    details: {lot_id: 377},
+                    show: true,
+                    userId: "iSpLh7cFf0W8qCxd48eL4Gk0zAr2"
+                },
+                {
+                    coords: {latitude: 51.4880452, longitude: -3.1734272},
+                    details: {lot_id: 205},
+                    show: true,
+                    userId: "Z67YnrL30DOOxlzYFhcqXWAbmJm2"
+                },
+            ],
+            markersStatic: [
+                {
+                    coords: {latitude: 51.4756882, longitude: -3.1788092},
+                    details: {lot_id: 39},
+                    show: true,
+                    userId: "KUfa5sxh9efBABZmCZybDUlU5s42"
+                },
+                {
+                    coords: {latitude: 51.4997257, longitude: -3.1787463},
+                    details: {lot_id: 377},
+                    show: true,
+                    userId: "iSpLh7cFf0W8qCxd48eL4Gk0zAr2"
+                },
+                {
+                    coords: {latitude: 51.4880452, longitude: -3.1734272},
+                    details: {lot_id: 205},
+                    show: true,
+                    userId: "Z67YnrL30DOOxlzYFhcqXWAbmJm2"
+                },
+            ],
         };
 
         this.handleUserChange = this.handleUserChange.bind(this);
-        this.setWrapperRef = this.setWrapperRef.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
@@ -33,20 +80,11 @@ class Users extends Component {
         document.removeEventListener('mousedown', this.handleClickOutside);
     }
 
-    /**
-     * Set the wrapper ref
-     */
-    setWrapperRef(node) {
-        this.wrapperRef = node;
-    }
-
-    /**
-     * Alert if clicked on outside of element
-     */
     handleClickOutside(event) {
-        console.log(event)
-        if (this.wrapperRef && !this.wrapperRef.contains(event.target)) {
-            alert('You clicked outside of me!');
+        if (event.target.className !== 'users-side-nav' && event.target.className === '') {
+            this.setState({
+                showNav: false,
+            });
         }
     }
 
@@ -110,12 +148,13 @@ class Users extends Component {
     };
 
     handleUserChange(event) {
-        const markers = this.props.data;
+        const markers = this.state.markersStatic;
         const target = event.target;
         const clickToShow = target.type === 'checkbox' ? target.checked : target.value;
         const userId = target.name;
         const users = this.state.users;
         let showUsers = [];
+
         // Change all users to show if clicked to show and vice versa
         let i = 0;
         for (i; i < users.length; i++) {
@@ -142,8 +181,10 @@ class Users extends Component {
                 showUsers.push(markers[i])
             }
         }
-        // callback to app.js
-        this.props.userCallback(showUsers)
+
+        this.setState({
+            markers: showUsers,
+        });
     }
 
     getLastLocationsForUsers = () => {
@@ -172,20 +213,25 @@ class Users extends Component {
             });
         }
         else if (route === 'user-filter') {
-            this.setState({
-                userFilter: true,
-            });
-        }
-        else if (route === 'lots') {
-            this.setState({
-                showParking: true,
-                showAllUsers: false,
-                showMap: false,
-                showParkers: false
-            });
+            if (this.state.userFilter) {
+                this.setState({
+                    userFilter: false,
+                });
+            }
+            else if (route === 'close') {
+                this.setState({
+                    userFilter: false,
+                });
+            }
+            else {
+                this.setState({
+                    userFilter: true,
+                });
+            }
         }
         else {
             this.setState({
+                userFilter: false,
                 showAlert: true,
                 alertTitle: 'No route yet',
                 alertInfo: 'Sorry, no route has been added for '+route+' yet!'
@@ -196,6 +242,16 @@ class Users extends Component {
     render() {
         return (
             <div>
+
+                <MapComponent
+                    data={this.state.region}
+                    parkingUsers={[]}
+                    markers={this.state.markers}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div className='map'/>}
+                    containerElement={<div className='map'/>}
+                    mapElement={<div className='map'/>}
+                />
 
                 <div className='users-side-tab'>
                     <FontAwesome
@@ -208,13 +264,50 @@ class Users extends Component {
 
                 {this.state.showNav ?
                     <div className='users-side-nav'>
-
+                        <ul>
+                            <li>
+                                <FontAwesome
+                                    onClick={() => this.onSideBarClick('user-filter')}
+                                    name='filter'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li onClick={() => this.onSideBarClick('user-locations')}>
+                                <FontAwesome
+                                    name='location-arrow'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li onClick={() => this.onSideBarClick('user-locations-circles')}>
+                                <FontAwesome
+                                    name='circle'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li onClick={() => this.onSideBarClick('user-locations-parkers')}>
+                                <FontAwesome
+                                    name='car'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li onClick={() => this.onSideBarClick('user-locations-offers')}>
+                                <FontAwesome
+                                    name='qrcode'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </ul>
                     </div>
                     : null
                 }
 
                 {this.state.userFilter ?
                     <div className="user-filter-container">
+                        <span className='close'><FontAwesome
+                            onClick={() => this.onSideBarClick('close')}
+                            name='eye-slash'
+                            size='1x'
+                            className='nav-image'/></span>
                         <h3>Filter by User</h3>
                         <ClipLoader
                             sizeUnit={"px"}
