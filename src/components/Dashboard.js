@@ -9,10 +9,13 @@ class Dashboard extends Component {
         super(props);
         this.state = {
             dailyVouchers: '',
-            topDailyStore: '',
-            topDailyStoreRedeems: '',
-            topStore: '',
-            topStoreRedeems: ''
+            mcDaily: '',
+            mcTotal: '',
+            bkDaily: '',
+            bkTotal: '',
+            subDaily: '',
+            subTotal: '',
+
         };
     }
 
@@ -23,26 +26,71 @@ class Dashboard extends Component {
 
     getInsights(){
 
-        fetch('http://18.188.105.214/getInsights', {
+        fetch('http://127.0.0.1/getInsights', {
             method: 'get',
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
         }).then(response => {
             let data = JSON.parse(response['_bodyText']);
-            let offers = data[0];
-            let bookings = data[1];
 
-            this.processInsights(offers, bookings)
+            this.processOfferInsights(data)
 
         }).catch(error => {
             const { code, message } = error;
         })
     }
 
-    processInsights(offerList, bookingList){
+    processOfferInsights(offerList){
         console.log(offerList);
-        console.log(bookingList);
+
+        let dailyRedemptions = 0
+        let mcDaily = 0;
+        let bkDaily = 0;
+        let subDaily = 0;
+        let mcTotal = 0;
+        let bkTotal = 0;
+        let subTotal = 0;
+
+        let today = new Date().getDate();
+
+        let i = 0;
+        for (i; i < offerList.length; i++){
+            let offer = {
+                logo: offerList[i]['logo'],
+                company: offerList[i]['store'],
+                offer: offerList[i]['offer'],
+                expiry: offerList[i]['expiry_date'],
+                offerId: offerList[i]['offer_id'],
+                redemptionDate: offerList[i]['redemption_date'],
+                scans: offerList[i]['scans']
+            };
+
+            // Converting String to date.
+            let parts = offer.redemptionDate.split("-");
+            let date = new Date(parts[0], parts[1] - 1, parts[2]);
+
+            if (offer.company == "McDonalds"){
+                mcTotal += 1;
+                if(date = today){
+                    dailyRedemptions += 1
+                    mcDaily += 1
+                }
+            }else if(offer.company == "Subway"){
+                subTotal += 1;
+                if(date = today){
+                    dailyRedemptions += 1
+                    subDaily += 1
+                }
+            }else{
+                bkTotal += 1;
+                if(date = today){
+                    dailyRedemptions += 1
+                    bkDaily += 1
+                }
+            }
+        }
+
 
     }
 
