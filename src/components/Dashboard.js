@@ -29,13 +29,22 @@ class Dashboard extends Component {
                 'Content-Type': 'multipart/form-data',
             },
         }).then(response => {
+            let data = JSON.parse(response['_bodyText']);
+            let offers = data[0];
+            let bookings = data[1];
+
+            this.processInsights(offers, bookings)
 
         }).catch(error => {
-
+            const { code, message } = error;
         })
-
     }
 
+    processInsights(offerList, bookingList){
+        console.log(offerList);
+        console.log(bookingList);
+
+    }
 
     render() {
         return (
