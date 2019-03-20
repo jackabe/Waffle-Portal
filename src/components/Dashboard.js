@@ -8,7 +8,11 @@ class Dashboard extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            
+            dailyVouchers: '',
+            topDailyStore: '',
+            topDailyStoreRedeems: '',
+            topStore: '',
+            topStoreRedeems: ''
         };
     }
 
