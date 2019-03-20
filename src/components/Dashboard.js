@@ -34,7 +34,7 @@ class Dashboard extends Component {
         }).then(response => {
             console.log(response.json())
 
-            let data = response.json();
+            let data = JSON.parse(response['_bodyText']);
             this.processOfferInsights(data)
 
         }).catch(error => {
