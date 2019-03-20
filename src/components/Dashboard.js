@@ -18,6 +18,9 @@ class Dashboard extends Component {
         return (
             <div className='dashboard'>
                 <h3 className='heading'>Dashboard</h3>
+                <div className='container'>
+                    
+                </div>
             </div>
         );
     }
