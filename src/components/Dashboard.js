@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { ClipLoader } from 'react-spinners';
-import FontAwesome from "react-fontawesome";
+// import { ClipLoader } from 'react-spinners';
+// import FontAwesome from "react-fontawesome";
 
 class Dashboard extends Component {
     // Initial Commit for CI
@@ -15,7 +15,6 @@ class Dashboard extends Component {
             bkTotal: '',
             subDaily: '',
             subTotal: '',
-
         };
     }
 
@@ -26,23 +25,26 @@ class Dashboard extends Component {
 
     getInsights(){
 
-        fetch('http://127.0.0.1/getInsights', {
+        fetch('http://127.0.0.1/getAllOffers', {
             method: 'get',
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
-        }).then(response => {
-            let data = JSON.parse(response['_bodyText']);
 
+        }).then(response => {
+            console.log(response.json())
+
+            let data = response.json();
             this.processOfferInsights(data)
 
         }).catch(error => {
+            console.log(error);
             const { code, message } = error;
         })
     }
 
     processOfferInsights(offerList){
-        console.log(offerList);
+        console.log("offers: " + offerList);
 
         let dailyRedemptions = 0
         let mcDaily = 0;
@@ -70,13 +72,13 @@ class Dashboard extends Component {
             let parts = offer.redemptionDate.split("-");
             let date = new Date(parts[0], parts[1] - 1, parts[2]);
 
-            if (offer.company == "McDonalds"){
+            if (offer.company === "McDonalds"){
                 mcTotal += 1;
                 if(date = today){
                     dailyRedemptions += 1
                     mcDaily += 1
                 }
-            }else if(offer.company == "Subway"){
+            }else if(offer.company === "Subway"){
                 subTotal += 1;
                 if(date = today){
                     dailyRedemptions += 1
@@ -89,9 +91,15 @@ class Dashboard extends Component {
                     bkDaily += 1
                 }
             }
+
+            // this.setState({dailyVouchers: dailyRedemptions});
+            // this.setState({mcDaily: mcDaily});
+            // this.setState({bkDaily: bkDaily});
+            // this.setState({subDaily: subDaily});
+            // this.setState({mcTotal: mcTotal});
+            // this.setState({bkTotal: bkTotal});
+            // this.setState({subTotal: subTotal});
         }
-
-
     }
 
     render() {
@@ -100,7 +108,7 @@ class Dashboard extends Component {
                 <h3 className='heading'>Dashboard</h3>
                 <div className='container'>
                     <h4 className='heading'>The total number of vouchers redeemed today is...</h4>
-                    <p></p>
+                    <p>{this.state.dailyVouchers}</p>
 
                     <h4 className='heading'>The most popular store vouchers are being used at is...</h4>
                     <p></p>
