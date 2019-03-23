@@ -60,13 +60,13 @@ body {
 }
 
 .nav-logo {
-    color: #ff6347;
-    font-size: 15pt;
+  color: #ff6347;
+  font-size: 15pt;
 }
 
 ul {
-    list-style: none;
-    padding: 0
+  list-style: none;
+  padding: 0
 }
 
 .logout {
@@ -116,8 +116,8 @@ ul {
 }
 
 .lot-form {
-    margin-left: 120px;
-    padding: 10px;
+  margin-left: 120px;
+  padding: 10px;
 }
 
 .lot-form input{
@@ -233,7 +233,7 @@ ul {
   padding: 33px 30px;
 }
 
-.geofences-manage table {
+table {
   border-collapse: collapse;
   background: white;
   border-radius: 10px;
@@ -244,39 +244,39 @@ ul {
   height: 200px;
 }
 
-.geofences-manage table * {
+table * {
   position: relative;
 }
 
-.geofences-manage table thead tr {
+table thead tr {
   height: 60px;
   background-color: tomato;
   color: white;
 }
 
-.geofences-manage table tbody tr {
+table tbody tr {
   height: 50px;
 }
 
-.table100-head th{
+th{
   font-size: 18px;
   color: #fff;
   line-height: 1.2;
   font-weight: unset;
 }
 
-.geofences-manage tbody tr:nth-child(even) {
+tbody tr:nth-child(even) {
   background-color: #f5f5f5;
 }
 
-.geofences-manage tbody tr {
+tbody tr {
   font-size: 15px;
   color: #808080;
   line-height: 1.2;
   font-weight: unset;
 }
 
-.geofences-manage tbody tr:hover {
+tbody tr:hover {
   color: #555555;
   background-color: #f5f5f5;
   cursor: pointer;
