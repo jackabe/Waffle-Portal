@@ -25,8 +25,6 @@ export default class ParkingManagement extends Component {
         this.setState({[name]: event.target.value});
     };
 
-
-
     postLotData = () => {
         let formData = new FormData();
         formData.append('lot_id', this.state.city);
