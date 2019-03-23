@@ -17,6 +17,7 @@ class Users extends Component {
             loading: true,
             showUsers: [],
             value: true,
+            cluster: false,
             showNav: false,
             userFilter: false,
             region: {
@@ -265,9 +266,17 @@ class Users extends Component {
                     userFilter: true,
                 });
             }
+            this.setState({
+                cluster: true,
+            });
         }
         else if (route === 'user-locations') {
             window.location.reload();
+        }
+        else if (route === 'user-locations-cluster') {
+            this.setState({
+                cluster: true,
+            });
         }
         else if (route === 'close') {
             this.setState({
@@ -275,6 +284,9 @@ class Users extends Component {
             });
         }
         else {
+            this.setState({
+                cluster: false,
+            });
             this.setState({
                 userFilter: false,
                 showAlert: true,
@@ -293,6 +305,7 @@ class Users extends Component {
                     parkingUsers={[]}
                     markers={this.state.markers}
                     fences={[]}
+                    cluster={this.state.cluster}
                     googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                     loadingElement={<div className='map'/>}
                     containerElement={<div className='map'/>}
@@ -323,7 +336,7 @@ class Users extends Component {
                                     size='2x'
                                     className='nav-image'/>
                             </li>
-                            <li onClick={() => this.onSideBarClick('user-locations-circles')}>
+                            <li onClick={() => this.onSideBarClick('user-locations-cluster')}>
                                 <FontAwesome
                                     name='circle'
                                     size='2x'

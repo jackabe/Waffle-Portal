@@ -6,7 +6,11 @@ import {
     GoogleMap,
     Marker,
     Circle
-} from "react-google-maps";
+} from "react-google-maps"
+
+const { compose, withProps, withHandlers } = require("recompose");
+const fetch = require("isomorphic-fetch");
+const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 class MapComponent extends Component {
 
@@ -23,6 +27,7 @@ class MapComponent extends Component {
         let markers = this.props.markers;
         let parkers = this.props.parkingUsers;
         let fences = this.props.fences;
+        let showCluster = this.props.cluster;
         let showFences = false;
 
         if (parkers.length !== 0) {
@@ -35,6 +40,7 @@ class MapComponent extends Component {
         else {
             markersToShow = markers
         }
+
         return (
             <GoogleMap
                 defaultZoom={12}
@@ -52,12 +58,31 @@ class MapComponent extends Component {
                     </div>
                     :
                     <div>
-                        {markersToShow.map(marker => (
-                            <Marker
-                                key={marker.details.lot_id}
-                                position={{ lat: marker.coords.latitude, lng: marker.coords.longitude }}
-                            />
-                        ))}
+                        {showCluster ?
+                            <div>
+                                <MarkerClusterer
+                                    averageCenter
+                                    enableRetinaIcons
+                                    gridSize={60}
+                                >
+                                    {markersToShow.map(marker => (
+                                        <Marker
+                                            key={marker.details.lot_id}
+                                            position={{lat: marker.coords.latitude, lng: marker.coords.longitude}}
+                                        />
+                                    ))}
+                                </MarkerClusterer>
+                            </div>
+                            :
+                            <div>
+                                {markersToShow.map(marker => (
+                                    <Marker
+                                        key={marker.details.lot_id}
+                                        position={{lat: marker.coords.latitude, lng: marker.coords.longitude}}
+                                    />
+                                ))}
+                            </div>
+                        }
                     </div>
                 }
             </GoogleMap>

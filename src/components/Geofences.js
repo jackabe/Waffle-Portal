@@ -196,6 +196,7 @@ class Geofences extends Component {
                             data={this.state.region}
                             parkingUsers={[]}
                             markers={[]}
+                            cluser={false}
                             fences={this.state.fences}
                             googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                             loadingElement={<div className='map'/>}

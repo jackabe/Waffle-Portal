@@ -259,6 +259,7 @@ class App extends Component {
                 data={this.state.region}
                 markers={this.state.markers}
                 fences={[]}
+                cluser={false}
                 parkingUsers={this.state.parkingUsers}
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                 loadingElement={<div className='map'/>}
