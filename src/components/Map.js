@@ -4,7 +4,8 @@ import {
     withScriptjs,
     withGoogleMap,
     GoogleMap,
-    Marker
+    Marker,
+    Circle
 } from "react-google-maps";
 
 class MapComponent extends Component {
@@ -41,9 +42,11 @@ class MapComponent extends Component {
             >
                 {showFences ?  <div>
                         {markersToShow.map(fence => (
-                            <Marker
-                                key={fence['fence_id']}
-                                position={{ lat: fence['fence_latitude'], lng: fence['fence_longitude'] }}
+                            <Circle
+                                radius={Number(fence['radius'])}
+                                options={{strokeColor: '#ff6347', fillColor: '#ff6347' }}
+                                key={fence['id']}
+                                center={{ lat: Number(fence['latitude']), lng: Number(fence['longitude']) }}
                             />
                         ))}
                     </div>

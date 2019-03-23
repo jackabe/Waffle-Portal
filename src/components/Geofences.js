@@ -62,7 +62,6 @@ class Geofences extends Component {
         })
             .then((response) => {
                 let data = response.data;
-                console.log(data);
                 let i = 0;
                 let fences = [];
                 for (i; i < data.length; i++) {
@@ -222,24 +221,24 @@ class Geofences extends Component {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {this.state.fences.sort((a, b) => a.itemM > b.itemM).map(fence => (
-                                                    <tr>
-                                                        <td className="column1" key={fence['fence_id']}>
+                                            {this.state.fences.map(fence => (
+                                                    <tr id={fence['id']}>
+                                                        <td className="column1">
                                                             {fence['id']}
                                                         </td>
-                                                        <td className="column2" key={fence['fence_id']}>
+                                                        <td className="column2">
                                                             {fence['name']}
                                                         </td>
-                                                        <td className="column3" key={fence['fence_id']}>
+                                                        <td className="column3">
                                                             {fence['latitude']}
                                                         </td>
-                                                        <td className="column4" key={fence['fence_id']}>
+                                                        <td className="column4">
                                                             {fence['longitude']}
                                                         </td>
-                                                        <td className="column5" key={fence['fence_id']}>
+                                                        <td className="column5">
                                                             {fence['radius']}
                                                         </td>
-                                                        <td className="column6" key={fence['fence_id']}>
+                                                        <td className="column6">
                                                             <FontAwesome
                                                                 name='trash'
                                                                 className='table-icon'
