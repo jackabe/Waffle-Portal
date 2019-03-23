@@ -21,9 +21,15 @@ class MapComponent extends Component {
         let markersToShow = [];
         let markers = this.props.markers;
         let parkers = this.props.parkingUsers;
+        let fences = this.props.fences;
+        let showFences = false;
 
         if (parkers.length !== 0) {
             markersToShow = parkers;
+        }
+        else if (fences.length !== 0) {
+            markersToShow = fences;
+            showFences = true;
         }
         else {
             markersToShow = markers
@@ -33,12 +39,24 @@ class MapComponent extends Component {
                 defaultZoom={12}
                 defaultCenter={{ lat: data.latitude, lng: data.longitude }}
             >
-                {markersToShow.map(marker => (
-                    <Marker
-                        key={marker.details.lot_id}
-                        position={{ lat: marker.coords.latitude, lng: marker.coords.longitude }}
-                    />
-                ))}
+                {showFences ?  <div>
+                        {markersToShow.map(fence => (
+                            <Marker
+                                key={fence['fence_id']}
+                                position={{ lat: fence['fence_latitude'], lng: fence['fence_longitude'] }}
+                            />
+                        ))}
+                    </div>
+                    :
+                    <div>
+                        {markersToShow.map(marker => (
+                            <Marker
+                                key={marker.details.lot_id}
+                                position={{ lat: marker.coords.latitude, lng: marker.coords.longitude }}
+                            />
+                        ))}
+                    </div>
+                }
             </GoogleMap>
         );
     }

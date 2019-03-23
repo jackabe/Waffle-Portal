@@ -9,6 +9,7 @@ import LotHandler from "./scripts/LotHandler";
 import MapComponent from "./components/Map";
 import Dashboard from "./components/Dashboard";
 import Offers from "./components/Offers";
+import Geofences from "./components/Geofences";
 import Settings from "./components/Settings";
 import Prices from "./components/Prices";
 import ParkingManagement from "./components/ParkingManagement";
@@ -176,6 +177,14 @@ class App extends Component {
                                     className='nav-image'/>
                             </li>
                         </Link>
+                        <Link to="/geofences">
+                            <li>
+                                <FontAwesome
+                                    name='street-view'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                        </Link>
                         <Link to="/parking">
                             <li>
                                 <FontAwesome
@@ -233,6 +242,7 @@ class App extends Component {
 
                 <Route exact path="/" component={this.Map}/>
                 <Route exact path="/dashboard" component={this.Dashboard}/>
+                <Route exact path="/geofences" component={this.Geofences}/>
                 <Route exact path="/parking" component={this.ParkingManagement}/>
                 <Route exact path="/users" component={this.Users}/>
                 <Route exact path="/offers" component={this.Offers}/>
@@ -248,6 +258,7 @@ class App extends Component {
             <MapComponent
                 data={this.state.region}
                 markers={this.state.markers}
+                fences={[]}
                 parkingUsers={this.state.parkingUsers}
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                 loadingElement={<div className='map'/>}
@@ -284,6 +295,12 @@ class App extends Component {
     Prices = () => {
         return (
             <Prices/>
+        )
+    };
+
+    Geofences = () => {
+        return (
+            <Geofences/>
         )
     };
 

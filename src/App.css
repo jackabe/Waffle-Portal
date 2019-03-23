@@ -215,3 +215,124 @@ ul {
   cursor: pointer;
 }
 
+.geofences-manage {
+  margin-left: 120px;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.geofences-manage h3 {
+  padding: 10px;
+  color: tomato;
+}
+
+.container-table100 {
+  width: 80%;
+  max-height: 70%;
+  overflow-y: scroll;
+  padding: 33px 30px;
+}
+
+.geofences-manage table {
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  height: 200px;
+}
+
+.geofences-manage table * {
+  position: relative;
+}
+
+.geofences-manage table thead tr {
+  height: 60px;
+  background-color: tomato;
+  color: white;
+}
+
+.geofences-manage table tbody tr {
+  height: 50px;
+}
+
+.table100-head th{
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+.geofences-manage tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+.geofences-manage tbody tr {
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+.geofences-manage tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.column1 {
+  width: 180px;
+  text-align: center;
+}
+
+.column2 {
+  width: 300px;
+  text-align: center;
+}
+
+.column3 {
+  width: 245px;
+  text-align: center;
+}
+
+.column4 {
+  width: 110px;
+  text-align: center;
+}
+
+.column5 {
+  width: 170px;
+  text-align: center;
+}
+
+.column6 {
+  width: 150px;
+  text-align: center;
+  padding-right: 62px;
+}
+
+.add-button {
+  color: tomato;
+  margin-left: 40px;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.container-table100::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.container-table100::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset transparent;
+}
+
+.container-table100::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  outline: 1px solid transparent;
+}
