@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import '../App.css';
 import axios from "axios";
 import LotHandler from "../scripts/LotHandler";
+import FontAwesome from "react-fontawesome";
+
 
 
 export default class ParkingManagement extends Component {
@@ -9,15 +11,20 @@ export default class ParkingManagement extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            // Form
             city: null,
             name: "",
             lot_id: "",
             capacity: "",
             latitude: "",
-            longitude: ""
+            longitude: "",
+            // Table
+            carParks: [],
+            openForm: false,
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
+        this.openForm = this.openForm.bind(this);
     };
 
     inputOnChange(event) {
@@ -49,6 +56,19 @@ export default class ParkingManagement extends Component {
             });
     };
 
+    openForm() {
+        if (this.state.openForm) {
+            this.setState({
+                openForm: false,
+            });
+        }
+        else {
+            this.setState({
+                openForm: true,
+            });
+        }
+    }
+
     render() {
 
         return (
@@ -71,12 +91,36 @@ export default class ParkingManagement extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                
+
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
+                <FontAwesome
+                    name='plus-circle'
+                    onClick={this.openForm}
+                    className='add-button'
+                    size='3x'
+                />
+
+                {this.state.openForm ?
+                    <div className='lot-form'>
+                        <h3>Add a new parking lot</h3>
+                        <input type="text" value={this.state.lot_id} onChange={this.inputOnChange} name="lot_id" placeholder="id"/> <br />
+                        <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name" placeholder="name"/> <br />
+                        <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city" placeholder="city"/> <br />
+                        <input type="text" value={this.state.capacity} onChange={this.inputOnChange} name="capacity" placeholder="capacity"/> <br />
+                        <input type="text" value={this.state.latitude} onChange={this.inputOnChange} name="latitude" placeholder="latitude"/> <br />
+                        <input type="text" value={this.state.longitude} onChange={this.inputOnChange} name="longitude" placeholder="longitude"/> <br />
+
+                        <button onClick={this.postLotData}>Post</button>
+                    </div>
+                    :
+                    null
+                }
+
             </div>
         );
     }
