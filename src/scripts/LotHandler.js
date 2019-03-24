@@ -42,8 +42,13 @@ function getLotSpaces(data, details) {
     return capacity;
 }
 
+function getSpacesAndBookings(data) {
+    return data[2];
+}
+
 module.exports = {
     getLotDetails,
     getLotPrices,
-    getLotSpaces
+    getLotSpaces,
+    getSpacesAndBookings
 };

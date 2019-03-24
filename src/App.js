@@ -92,6 +92,7 @@ class App extends Component {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
                     let spaces = LotHandler.getLotSpaces(data[i], details);
+                    let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i]);
 
                     let marker = {
                         details: details,
@@ -100,7 +101,8 @@ class App extends Component {
                         coords: {
                             latitude: details.lat,
                             longitude: details.long
-                        }
+                        },
+                        spacesAndBookings: spacesAndBookings
                     };
 
                     markers.push(marker);

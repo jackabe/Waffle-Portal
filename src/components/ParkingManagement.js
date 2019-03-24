@@ -3,6 +3,7 @@ import '../App.css';
 import axios from "axios";
 import LotHandler from "../scripts/LotHandler";
 import FontAwesome from "react-fontawesome";
+import UltraView from "./UltraView";
 
 
 export default class ParkingManagement extends Component {
@@ -10,15 +11,13 @@ export default class ParkingManagement extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lotId: '',
-            lotName: '',
+            lot: {details: {lot_id: ''}},
             city: null,
             name: "",
-            lot_id: "",
             capacity: "",
-            map: false,
+            map: true,
             charts: false,
-            manage: true,
+            manage: false,
             latitude: "",
             longitude: "",
             showNav: false,
@@ -133,10 +132,10 @@ export default class ParkingManagement extends Component {
             <div className='parking-management'>
                 <div className='lot-selector'>
                     <div className='selector-inline'>
-                        {this.state.lotId === '' ?
+                        {this.state.lot['details']['lot_id'] === '' ?
                             <p className='selector-text'>Select a lot to view data for</p>
                             :
-                            <p className='selector-text'>{this.state.lotName}</p>
+                            <p className='selector-text'>{this.state.lot['details']['name']}</p>
                         }
                         <FontAwesome
                             onClick={this.openSelector}
@@ -150,8 +149,7 @@ export default class ParkingManagement extends Component {
                             <ul>
                                 {this.props.lots.map(lot => (
                                     <li onClick={() => this.setState({
-                                        lotId: lot['details']['lot_id'],
-                                        lotName: lot['details']['name'],
+                                        lot: lot,
                                         openSelector: false
                                     })}>
                                         <span className='lot-list-item'>{lot['details']['name']}</span>
@@ -181,6 +179,7 @@ export default class ParkingManagement extends Component {
                 {this.state.map ?
                     <div>
                         <h3>Ultra View</h3>
+                        <UltraView lot={this.state.lot} openSelector={this.openSelector}/>
                     </div>
                     :
                     null
