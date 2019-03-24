@@ -38,6 +38,7 @@ class App extends Component {
             markersStatic: [],
             loading: true,
             parkingUsers: [],
+            lots: []
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
     }
@@ -102,13 +103,12 @@ class App extends Component {
                         }
                     };
 
-                    console.log(marker)
-
                     markers.push(marker);
 
                     // As not async, check all done before updating state
                     if (i === data.length - 1) {
                         this.setState({markers: markers});
+                        this.setState({lots: markers});
                         this.setState({loading: false});
                     }
                 }
@@ -277,7 +277,7 @@ class App extends Component {
 
     ParkingManagement = () => {
         return (
-            <ParkingManagement/>
+            <ParkingManagement lots={this.state.lots}/>
         )
     };
 

@@ -303,16 +303,16 @@ class Geofences extends Component {
                                     size='2x'
                                     className='nav-image'/>
                             </li>
+                            <li onClick={() => this.onSideBarClick('geofence-locations')}>
+                                <FontAwesome
+                                    name='location-arrow'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
                             <li>
                                 <FontAwesome
                                     onClick={() => this.onSideBarClick('geofence-table')}
                                     name='table'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                            <li onClick={() => this.onSideBarClick('geofence-locations')}>
-                                <FontAwesome
-                                    name='location-arrow'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
