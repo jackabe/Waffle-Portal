@@ -29,6 +29,7 @@ class MapComponent extends Component {
         let fences = this.props.fences;
         let showCluster = this.props.cluster;
         let showFences = false;
+        let showPins = this.props.fencePins;
 
         if (parkers.length !== 0) {
             markersToShow = parkers;
@@ -46,15 +47,32 @@ class MapComponent extends Component {
                 defaultZoom={12}
                 defaultCenter={{ lat: data.latitude, lng: data.longitude }}
             >
-                {showFences ?  <div>
-                        {markersToShow.map(fence => (
-                            <Circle
-                                radius={Number(fence['radius'])}
-                                options={{strokeColor: '#ff6347', fillColor: '#ff6347' }}
-                                key={fence['id']}
-                                center={{ lat: Number(fence['latitude']), lng: Number(fence['longitude']) }}
-                            />
-                        ))}
+                {showFences ?
+                    <div>
+                        {showPins ?
+                            <div>
+                                {markersToShow.map(fence => (
+                                    <Marker
+                                        key={fence['id']}
+                                        position={{lat: Number(fence['latitude']), lng: Number(fence['longitude'])}}
+                                    />
+                                ))}
+                            </div>
+                            :
+                            <div>
+                                {markersToShow.map(fence => (
+                                    <Circle
+                                        radius={Number(fence['radius'])}
+                                        options={{strokeColor: '#ff6347', fillColor: '#ff6347'}}
+                                        key={fence['id']}
+                                        center={{
+                                            lat: Number(fence['latitude']),
+                                            lng: Number(fence['longitude'])
+                                        }}
+                                    />
+                                ))}
+                            </div>
+                        }
                     </div>
                     :
                     <div>

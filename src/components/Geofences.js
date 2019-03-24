@@ -18,6 +18,7 @@ class Geofences extends Component {
             value: true,
             showNav: false,
             geofenceMap: true,
+            showLocationPins: false,
             geofenceTable: false,
             region: {
                 latitude: 51.482171,
@@ -128,17 +129,11 @@ class Geofences extends Component {
             });
         }
         else if (route === 'geofence-map') {
-            if (this.state.geofenceMap) {
-                this.setState({
-                    geofenceMap: false,
-                });
-            }
-            else {
-                this.setState({
-                    geofenceMap: true,
-                    geofenceTable: false,
-                });
-            }
+            this.setState({
+                geofenceMap: true,
+                geofenceTable: false,
+                showLocationPins: false
+            });
         }
         else if (route === 'geofence-table') {
             if (this.state.geofenceTable) {
@@ -152,6 +147,12 @@ class Geofences extends Component {
                     geofenceMap: false,
                 });
             }
+        }
+        else if (route === 'geofence-locations') {
+            this.setState({
+                showLocationPins: true,
+                geofenceMap: true,
+            })
         }
         else {
             this.setState({
@@ -197,6 +198,7 @@ class Geofences extends Component {
                             parkingUsers={[]}
                             markers={[]}
                             cluser={false}
+                            fencePins={this.state.showLocationPins}
                             fences={this.state.fences}
                             googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
                             loadingElement={<div className='map'/>}
@@ -305,6 +307,12 @@ class Geofences extends Component {
                                 <FontAwesome
                                     onClick={() => this.onSideBarClick('geofence-table')}
                                     name='table'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li onClick={() => this.onSideBarClick('geofence-locations')}>
+                                <FontAwesome
+                                    name='location-arrow'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
