@@ -21,6 +21,7 @@ export default class ParkingManagement extends Component {
             // Table
             carParks: [],
             openForm: false,
+            search_city: "",
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -28,7 +29,7 @@ export default class ParkingManagement extends Component {
     };
 
     componentDidMount() {
-        this.loadCarparks();
+        // this.loadCarparks();
     }
 
 
@@ -64,28 +65,41 @@ export default class ParkingManagement extends Component {
     };
 
     loadCarparks = () => {
+
+        let defaultLat = 51;
+        let defaultLong = 3;
+        let formData = new FormData();
+        formData.append('city', this.state.search_city);
+        formData.append('latitude', defaultLat);
+        formData.append('longitude', defaultLong);
+
+
         axios({
-            method: 'get',
-            url: 'http://18.188.105.214/carparks/get',
+            method: 'post',
+            url: 'http://127.0.0.1/getCarParks',
+            data: formData,
+            config: { headers: {'Content-Type': 'multipart/form-data' }}
         })
             .then((response) => {
                 let data = response.data;
                 let i = 0;
                 let carParks = [];
+                console.log(data)
                 for(i; i < data.length; i++){
                     let carpark = {
-                        id: data[i]['id'],
-                        name: data[i]['name'],
-                        latitude: data[i]['latitude'],
-                        longitude: data[i]['longitude'],
-                        city: data[i]['city'],
-                        capacity: data[i]['capacity'],
+                        id: data[i][i]['id'],
+                        name: data[i][i]['name'],
+                        latitude: data[i][i]['latitude'],
+                        longitude: data[i][i]['longitude'],
+                        city: data[i][i]['city'],
+                        capacity: data[i][i]['capacity'],
                     };
                     carParks.push(carpark);
 
                     if(i === carParks.length - 1){
                         this.setState({carParks: carParks});
                     }
+
                 }
             })
             .catch((response) => {
@@ -113,6 +127,10 @@ export default class ParkingManagement extends Component {
 
             <div className="carpark-manage">
                 <h3>Manage Car Parks</h3>
+                <div className='lot-form'>
+                    <input type="text" value={this.state.search_city} onChange={this.inputOnChange} name="search_city" placeholder="Enter a City"/> <br />
+                    <button onClick={this.loadCarparks}>Post</button>
+                </div>
                 <div className="container-table100">
                     <div className="wrap-table100">
                         <div className="table100">
