@@ -6,6 +6,7 @@ function getLotDetails(data) {
         lat: details['latitude'],
         long: details['longitude'],
         lot_id: details['id'],
+        city: details['city'],
         favourite: false
     };
 }
