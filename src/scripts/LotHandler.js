@@ -10,17 +10,6 @@ function getLotDetails(data) {
     };
 }
 
-// function addNewLot(){
-//     const db = firebase.firestore();
-//     db.settings({
-//         timestampsInSnapshots: true
-//     });
-//     const userRef = db.collection(“parking_lots”).add({
-//         fullname: this.state.fullname,
-//         email: this.state.email
-//     });
-// }
-
 function getLotPrices(data) {
     let prices = data[1];
     return prices;
@@ -42,8 +31,44 @@ function getLotSpaces(data, details) {
     return capacity;
 }
 
+function getSpacesAndBookings(data, details) {
+    let bookings = data[2];
+    let baysWithBookings = [];
+    let i = 0;
+    for (i; i < bookings.length; i++) {
+        let bayId = bookings[i][0];
+        let previousId = false;
+        if (i > 0) {
+            previousId = bookings[i-1][0];
+        }
+        if (previousId !== bayId) {
+            baysWithBookings.push(bayId);
+        }
+    }
+    let capacity = details['capacity'];
+    let bays = [];
+    i = 1;
+    for (i; i <= capacity; i++) {
+        let j = 0;
+        let bay;
+        let booked = false;
+        for (j; j < baysWithBookings.length; j++) {
+            if (baysWithBookings[j] == i) {
+              booked = true;
+            }
+        }
+        bay = {
+            bayId: i,
+            booked: booked
+        };
+        bays.push(bay);
+    }
+    return bays;
+}
+
 module.exports = {
     getLotDetails,
     getLotPrices,
-    getLotSpaces
+    getLotSpaces,
+    getSpacesAndBookings
 };

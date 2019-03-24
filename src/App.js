@@ -38,6 +38,7 @@ class App extends Component {
             markersStatic: [],
             loading: true,
             parkingUsers: [],
+            lots: []
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
     }
@@ -91,6 +92,7 @@ class App extends Component {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
                     let spaces = LotHandler.getLotSpaces(data[i], details);
+                    let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
 
                     let marker = {
                         details: details,
@@ -99,16 +101,16 @@ class App extends Component {
                         coords: {
                             latitude: details.lat,
                             longitude: details.long
-                        }
+                        },
+                        spacesAndBookings: spacesAndBookings
                     };
-
-                    console.log(marker)
 
                     markers.push(marker);
 
                     // As not async, check all done before updating state
                     if (i === data.length - 1) {
                         this.setState({markers: markers});
+                        this.setState({lots: markers});
                         this.setState({loading: false});
                     }
                 }
@@ -277,7 +279,7 @@ class App extends Component {
 
     ParkingManagement = () => {
         return (
-            <ParkingManagement/>
+            <ParkingManagement lots={this.state.lots}/>
         )
     };
 

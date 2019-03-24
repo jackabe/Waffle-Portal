@@ -116,7 +116,6 @@ ul {
 }
 
 .lot-form {
-  margin-left: 120px;
   padding: 10px;
 }
 
@@ -124,11 +123,6 @@ ul {
   margin: 10px;
   padding:10px;
   width: 400px;
-}
-
-.lot-form h3 {
-  padding: 10px;
-  color: tomato;
 }
 
 .lot-form button {
@@ -193,6 +187,13 @@ ul {
 .dashboard {
   margin-left: 120px;
 }
+
+.parking-management {
+  height: 96vh;
+  margin-left: 120px;
+  padding: 10px
+}
+
 
 .prices {
   margin-left: 120px;
@@ -348,3 +349,137 @@ tbody tr:hover {
   background-color: transparent;
   outline: 1px solid transparent;
 }
+
+.parking-management h3 {
+  padding: 10px;
+  color: tomato;
+}
+
+.lot-selector {
+  margin-top: 30px;
+  position: absolute;
+  right: 200px
+}
+
+.lot-selector .selector-inline {
+  display: flex;
+}
+
+.lot-selector-icon {
+  margin-top: 10px;
+  flex: 1;
+  color: tomato;
+  cursor: pointer;
+}
+
+.selector-text {
+  color: #282c34;
+  padding-right: 10px;
+}
+
+.lot-list {
+  position: relative;
+  margin-top: -55px;
+  z-index: 99 !important;
+  background-color: white;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15)
+}
+
+.lot-list ul {
+  padding: 10px;
+}
+
+.lot-list li {
+  padding-bottom: 10px;
+}
+
+.lot-list span {
+  color: tomato;
+  text-align: center;
+}
+
+.lot-list ul li span {
+  display:block;
+  cursor: pointer;
+}
+
+.lot-list ul li span:hover, ul li span:focus {
+  color: #282c34;
+}
+
+.ultra-view-layout {
+  margin-top: 20px;
+  border-radius: 30px;
+  width: 95%;
+  height: 85vh;
+  background-color: #282c34;
+}
+
+.no-selection {
+  text-align: center;
+  margin-left: calc(50% - 200px);
+  padding-top: 20%;
+  width: 400px;
+  height: 150px;
+}
+
+.no-selection h3 {
+  font-size: 14pt;
+  color: white;
+}
+
+.no-selection-icon {
+  color: tomato;
+  cursor: pointer;
+}
+
+.lot-info {
+  display: flex;
+  padding-top: 40px;
+  padding-left: 55px;
+  color: white;
+  font-size: 10pt;
+}
+
+.lot-info span {
+  padding-right: 30px;
+}
+
+.space {
+  width: 50px;
+  height: 80px;
+  margin-left: 10px;
+  border: 1px solid white;
+}
+
+.space-filled {
+  width: 50px;
+  height: 80px;
+  margin-left: 10px;
+  border: 1px solid white;
+  background: tomato;
+}
+
+.space span {
+  color: white;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.space-filled span {
+  color: white;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.spaces {
+  height: 100%;
+  padding: 50px;
+  display: flex;
+}
+
+
