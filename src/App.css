@@ -226,6 +226,18 @@ ul {
   color: tomato;
 }
 
+
+.carpark-manage {
+  margin-left: 120px;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.carpark-manage h3 {
+  padding: 10px;
+  color: tomato;
+}
+
 .container-table100 {
   width: 80%;
   max-height: 70%;

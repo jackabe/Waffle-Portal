@@ -52,16 +52,31 @@ export default class ParkingManagement extends Component {
     render() {
 
         return (
-            <div className='lot-form'>
-                <h3>Add a new parking lot</h3>
-                <input type="text" value={this.state.lot_id} onChange={this.inputOnChange} name="lot_id" placeholder="id"/> <br />
-                <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name" placeholder="name"/> <br />
-                <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city" placeholder="city"/> <br />
-                <input type="text" value={this.state.capacity} onChange={this.inputOnChange} name="capacity" placeholder="capacity"/> <br />
-                <input type="text" value={this.state.latitude} onChange={this.inputOnChange} name="latitude" placeholder="latitude"/> <br />
-                <input type="text" value={this.state.longitude} onChange={this.inputOnChange} name="longitude" placeholder="longitude"/> <br />
 
-                <button onClick={this.postLotData}>Post</button>
+
+            <div className="carpark-manage">
+                <h3>Manage Car Parks</h3>
+                <div className="container-table100">
+                    <div className="wrap-table100">
+                        <div className="table100">
+                            <table>
+                                <thead>
+                                    <tr className="carpark-table-header">
+                                        <th className="column1">ID</th>
+                                        <th className="column2">Name</th>
+                                        <th className="column3">Latitude</th>
+                                        <th className="column4">Longitude</th>
+                                        <th className="column5">City</th>
+                                        <th className="column6">Capacity</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
