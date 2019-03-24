@@ -3,7 +3,7 @@ import '../App.css';
 import axios from "axios";
 import LotHandler from "../scripts/LotHandler";
 import FontAwesome from "react-fontawesome";
-
+import SweetAlert from "sweetalert-react";
 
 
 export default class ParkingManagement extends Component {
@@ -73,7 +73,6 @@ export default class ParkingManagement extends Component {
 
         return (
 
-
             <div className="carpark-manage">
                 <h3>Manage Car Parks</h3>
                 <div className="container-table100">
@@ -91,7 +90,29 @@ export default class ParkingManagement extends Component {
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    {this.state.carParks.map(carpark => (
+                                            <tr id={carpark['id']}>
+                                                <td className="column1">
+                                                    {carpark['id']}
+                                                </td>
+                                                <td className="column2">
+                                                    {carpark['name']}
+                                                </td>
+                                                <td className="column3">
+                                                    {carpark['latitude']}
+                                                </td>
+                                                <td className="column4">
+                                                    {carpark['longitude']}
+                                                </td>
+                                                <td className="column5">
+                                                    {carpark['city']}
+                                                </td>
+                                                <td className="column6">
+                                                    {carpark['capacity']}
+                                                </td>
+                                            </tr>
 
+                                        ))}
                                 </tbody>
                             </table>
                         </div>
