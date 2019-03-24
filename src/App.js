@@ -92,7 +92,7 @@ class App extends Component {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
                     let spaces = LotHandler.getLotSpaces(data[i], details);
-                    let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i]);
+                    let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
 
                     let marker = {
                         details: details,

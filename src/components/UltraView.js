@@ -28,12 +28,26 @@ export default class UltraView extends Component {
                         </div>
                     </div>
                     :
-                    <div className='spaces'>
-                        {lot['spacesAndBookings'].map(space => (
-                            <div className='space'>
-
-                            </div>
-                        ))}
+                    <div>
+                        <div className='lot-info'>
+                            <span>Name: {lot['details']['name']}</span>
+                            <span>Capacity: {lot['details']['capacity']}</span>
+                        </div>
+                        <div className='spaces'>
+                            {lot['spacesAndBookings'].map(space => (
+                                <div>
+                                    {space['booked'] ?
+                                        <div className='space-filled'>
+                                            <span>{space['bayId']}</span>
+                                        </div>
+                                        :
+                                        <div className='space'>
+                                            <span>{space['bayId']}</span>
+                                        </div>
+                                    }
+                                </div>
+                            ))}
+                        </div>
                     </div>
                 }
             </div>
