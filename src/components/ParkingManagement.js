@@ -238,26 +238,6 @@ export default class ParkingManagement extends Component {
                 {this.state.manage ?
                     <div>
                         <h3>Manage Car Parks</h3>
-                        {this.state.openForm ?
-                            <div className='lot-form'>
-                                <h3>Add a new parking lot</h3>
-                                <input type="text" value={this.state.lot_id} onChange={this.inputOnChange} name="lot_id"
-                                       placeholder="id"/> <br/>
-                                <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name"
-                                       placeholder="name"/> <br/>
-                                <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city"
-                                       placeholder="city"/> <br/>
-                                <input type="text" value={this.state.capacity} onChange={this.inputOnChange}
-                                       name="capacity" placeholder="capacity"/>
-                                <input type="text" value={this.state.latitude} onChange={this.inputOnChange}
-                                       name="latitude" placeholder="latitude"/>
-                                <input type="text" value={this.state.longitude} onChange={this.inputOnChange}
-                                       name="longitude" placeholder="longitude"/>
-                                <button onClick={this.postLotData}>Post</button>
-                            </div>
-                            :
-                            null
-                        }
                         <div className="container-table100">
                             <div className="wrap-table100">
                                 <div className="table100">
@@ -301,6 +281,32 @@ export default class ParkingManagement extends Component {
                                 </div>
                             </div>
                         </div>
+                        <FontAwesome
+                            name='plus-circle'
+                            onClick={this.openForm}
+                            className='add-button'
+                            size='3x'
+                        />
+                        {this.state.openForm ?
+                            <div className='lot-form'>
+                                <h3>Add a new parking lot</h3>
+                                <input type="text" value={this.state.lot_id} onChange={this.inputOnChange} name="lot_id"
+                                       placeholder="id"/>
+                                <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name"
+                                       placeholder="name"/>
+                                <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city"
+                                       placeholder="city"/>
+                                <input type="text" value={this.state.capacity} onChange={this.inputOnChange}
+                                       name="capacity" placeholder="capacity"/>
+                                <input type="text" value={this.state.latitude} onChange={this.inputOnChange}
+                                       name="latitude" placeholder="latitude"/>
+                                <input type="text" value={this.state.longitude} onChange={this.inputOnChange}
+                                       name="longitude" placeholder="longitude"/>
+                                <button onClick={this.postLotData}>Save</button>
+                            </div>
+                            :
+                            null
+                        }
                     </div>
                     :
                     null
