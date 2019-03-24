@@ -27,6 +27,12 @@ export default class ParkingManagement extends Component {
         this.openForm = this.openForm.bind(this);
     };
 
+    componentDidMount() {
+        this.loadCarparks();
+    }
+
+
+
     inputOnChange(event) {
         let name = event.target.name;
         this.setState({[name]: event.target.value});
@@ -50,11 +56,43 @@ export default class ParkingManagement extends Component {
         })
             .then((response) => {
                 alert('Done')
+                this.loadCarparks()
             })
             .catch(function (response) {
                 console.log(response);
             });
     };
+
+    loadCarparks = () => {
+        axios({
+            method: 'get',
+            url: 'http://18.188.105.214/carparks/get',
+        })
+            .then((response) => {
+                let data = response.data;
+                let i = 0;
+                let carParks = [];
+                for(i; i < data.length; i++){
+                    let carpark = {
+                        id: data[i]['id'],
+                        name: data[i]['name'],
+                        latitude: data[i]['latitude'],
+                        longitude: data[i]['longitude'],
+                        city: data[i]['city'],
+                        capacity: data[i]['capacity'],
+                    };
+                    carParks.push(carpark);
+
+                    if(i === carParks.length - 1){
+                        this.setState({carParks: carParks});
+                    }
+                }
+            })
+            .catch((response) => {
+                console.log(response);
+            });
+    };
+
 
     openForm() {
         if (this.state.openForm) {
