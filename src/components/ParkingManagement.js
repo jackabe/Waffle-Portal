@@ -22,6 +22,7 @@ export default class ParkingManagement extends Component {
             carParks: [],
             openForm: false,
             search_city: "",
+            search: false,
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -98,6 +99,7 @@ export default class ParkingManagement extends Component {
 
                     if(i === carParks.length - 1){
                         this.setState({carParks: carParks});
+                        this.setState({search: true});
                     }
 
                 }
@@ -131,11 +133,13 @@ export default class ParkingManagement extends Component {
                     <input type="text" value={this.state.search_city} onChange={this.inputOnChange} name="search_city" placeholder="Enter a City"/> <br />
                     <button onClick={this.loadCarparks}>Post</button>
                 </div>
-                <div className="container-table100">
-                    <div className="wrap-table100">
-                        <div className="table100">
-                            <table>
-                                <thead>
+
+                {this.state.search ?
+                    <div className="container-table100">
+                        <div className="wrap-table100">
+                            <div className="table100">
+                                <table>
+                                    <thead>
                                     <tr className="carpark-table-header">
                                         <th className="column1">ID</th>
                                         <th className="column2">Name</th>
@@ -144,37 +148,40 @@ export default class ParkingManagement extends Component {
                                         <th className="column5">City</th>
                                         <th className="column6">Capacity</th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                    </thead>
+                                    <tbody>
                                     {this.state.carParks.map(carpark => (
-                                            <tr id={carpark['id']}>
-                                                <td className="column1">
-                                                    {carpark['id']}
-                                                </td>
-                                                <td className="column2">
-                                                    {carpark['name']}
-                                                </td>
-                                                <td className="column3">
-                                                    {carpark['latitude']}
-                                                </td>
-                                                <td className="column4">
-                                                    {carpark['longitude']}
-                                                </td>
-                                                <td className="column5">
-                                                    {carpark['city']}
-                                                </td>
-                                                <td className="column6">
-                                                    {carpark['capacity']}
-                                                </td>
-                                            </tr>
+                                        <tr id={carpark['id']}>
+                                            <td className="column1">
+                                                {carpark['id']}
+                                            </td>
+                                            <td className="column2">
+                                                {carpark['name']}
+                                            </td>
+                                            <td className="column3">
+                                                {carpark['latitude']}
+                                            </td>
+                                            <td className="column4">
+                                                {carpark['longitude']}
+                                            </td>
+                                            <td className="column5">
+                                                {carpark['city']}
+                                            </td>
+                                            <td className="column6">
+                                                {carpark['capacity']}
+                                            </td>
+                                        </tr>
 
-                                        ))}
-                                </tbody>
-                            </table>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
-                </div>
-
+                    :
+                    null
+                }
+                
                 <FontAwesome
                     name='plus-circle'
                     onClick={this.openForm}
