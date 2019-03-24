@@ -62,17 +62,17 @@ export default class ParkingManagement extends Component {
 
     postLotData = () => {
         let formData = new FormData();
-        formData.append('lot_id', this.state.city);
         formData.append('name', this.state.name);
         formData.append('city', this.state.city);
         formData.append('capacity', this.state.capacity);
-        formData.append('latitude', this.state.lat);
-        formData.append('longitude', this.state.lng);
+        formData.append('latitude', this.state.latitude);
+        formData.append('longitude', this.state.longitude);
 
         // Post to flask and get parking lot response
         axios({
             method: 'post',
-            url: 'http://18.188.105.214/newLot',
+            url: 'http://127.0.0.1:8000/lots/new',
+            // url: 'http://18.188.105.214/newLot',
             data: formData,
             config: {headers: {'Content-Type': 'multipart/form-data'}}
         })
@@ -290,8 +290,6 @@ export default class ParkingManagement extends Component {
                         {this.state.openForm ?
                             <div className='lot-form'>
                                 <h3>Add a new parking lot</h3>
-                                <input type="text" value={this.state.lot_id} onChange={this.inputOnChange} name="lot_id"
-                                       placeholder="id"/>
                                 <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name"
                                        placeholder="name"/>
                                 <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city"
@@ -302,6 +300,7 @@ export default class ParkingManagement extends Component {
                                        name="latitude" placeholder="latitude"/>
                                 <input type="text" value={this.state.longitude} onChange={this.inputOnChange}
                                        name="longitude" placeholder="longitude"/>
+                                <br/>
                                 <button onClick={this.postLotData}>Save</button>
                             </div>
                             :

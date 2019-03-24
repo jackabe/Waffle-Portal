@@ -448,6 +448,7 @@ tbody tr:hover {
 }
 
 .space {
+  margin-bottom: 10px;
   width: 50px;
   height: 80px;
   margin-left: 10px;
@@ -455,6 +456,7 @@ tbody tr:hover {
 }
 
 .space-filled {
+  margin-bottom: 10px;
   width: 50px;
   height: 80px;
   margin-left: 10px;
@@ -478,8 +480,10 @@ tbody tr:hover {
 
 .spaces {
   height: 100%;
+  max-width: 100%;
   padding: 50px;
   display: flex;
+  flex-wrap: wrap;
 }
 
 
