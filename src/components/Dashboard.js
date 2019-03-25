@@ -45,11 +45,11 @@ class Dashboard extends Component {
         let yyyy = today.getFullYear();
 
         if(dd<10) {
-            dd = '0'+dd
+            dd = '0'+dd;
         }
 
         if(mm<10) {
-            mm = '0'+mm
+            mm = '0'+mm;
         }
 
         let string_today = dd + '-' + mm + '-' + yyyy;
@@ -66,10 +66,6 @@ class Dashboard extends Component {
                 scans: offerList[i]['scans'],
                 redeem: offerList[i]['redeem'],
             };
-
-
-            console.log("redeem " + offer.redemptionDate);
-            console.log("today " + string_today);
 
             if ( offer.redemptionDate == string_today && offer.redeem === true){
                 dailyVouchers += 1;
@@ -89,13 +85,16 @@ class Dashboard extends Component {
                 <h3 className='heading'>Dashboard</h3>
                 <div className='container'>
                     <div className='Row'>
+
                         <div className='insight-circle'>
+                            <h1 className='invisible-text'>.</h1>
                             <h4>Number of offers redeemed today:</h4>
                             <h1>{this.state.dailyVouchers}</h1>
                         </div>
 
                         <div className='insight-circle'>
-                            <h4>Number of offers redeemed:</h4>
+                            <h1 className='invisible-text'>.</h1>
+                            <h4>Total number of offers redeemed:</h4>
                             <h1>{this.state.totalVouchers}</h1>
                         </div>
 
