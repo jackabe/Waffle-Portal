@@ -72,38 +72,34 @@ class App extends Component {
 
         this.onRegionChange(region);
 
-        let formData = new FormData();
-        formData.append('city', city);
-        formData.append('latitude', lat);
-        formData.append('longitude', lng);
-
         // Post to flask and get parking lot response
         fetch({
-            method: 'post',
-            url: 'http://18.188.105.214/getCarParks',
-            data: formData,
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
+            method: 'get',
+            url: 'http://127.0.0.1:8000/getAllCarParks',
         })
             .then((response) => {
                 let data = response.data;
+                console.log(data)
                 let i = 0;
                 let markers = [];
                 for (i; i < data.length; i++) {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
-                    let spaces = LotHandler.getLotSpaces(data[i], details);
+                    let capacity = details['capacity'];
                     let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
 
                     let marker = {
                         details: details,
                         price: prices['1'].toFixed(2),
-                        spaces: spaces,
+                        capacity: capacity,
                         coords: {
                             latitude: details.lat,
                             longitude: details.long
                         },
                         spacesAndBookings: spacesAndBookings
                     };
+
+                    console.log(marker)
 
                     markers.push(marker);
 

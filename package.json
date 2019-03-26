@@ -15,7 +15,8 @@
     "react-scripts": "2.1.5",
     "react-sidebar": "^3.0.2",
     "react-spinners": "^0.5.3",
-    "sweetalert-react": "^0.4.11"
+    "sweetalert-react": "^0.4.11",
+    "victory": "^32.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

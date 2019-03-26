@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
 import '../App.css';
 import axios from "axios";
-import LotHandler from "../scripts/LotHandler";
 import FontAwesome from "react-fontawesome";
-import SweetAlert from "sweetalert-react";
 import UltraView from "./UltraView";
+import LotChartsView from "./LotChartsView";
 
 export default class ParkingManagement extends Component {
 
@@ -193,6 +192,7 @@ export default class ParkingManagement extends Component {
                 {this.state.charts ?
                     <div>
                         <h3>Chart View</h3>
+                        <LotChartsView lot={this.state.lot}/>
                     </div>
                     :
                     null

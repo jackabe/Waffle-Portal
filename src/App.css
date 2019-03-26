@@ -486,4 +486,8 @@ tbody tr:hover {
   flex-wrap: wrap;
 }
 
+.chart {
+  width: 500px;
+}
+
 
