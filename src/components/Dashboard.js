@@ -17,6 +17,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.getInsights();
+        this.getBookingInsights();
     }
 
 
@@ -32,6 +33,25 @@ class Dashboard extends Component {
             .catch((response) => {
                 console.log(response)
             });
+    }
+
+    getBookingInsights = () => {
+        // Update methods POST, GET in flask
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1/getBookings'
+        })
+            .then((response) => {
+                let data = response.data;
+                this.getBookingInsights(data);
+            })
+            .catch((response) => {
+                console.log(response)
+            });
+    }
+
+    processBookingInsights(bookingList){
+
     }
 
     processOfferInsights(offerList){
