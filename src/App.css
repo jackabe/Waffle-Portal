@@ -60,13 +60,13 @@ body {
 }
 
 .nav-logo {
-    color: #ff6347;
-    font-size: 15pt;
+  color: #ff6347;
+  font-size: 15pt;
 }
 
 ul {
-    list-style: none;
-    padding: 0
+  list-style: none;
+  padding: 0
 }
 
 .logout {
@@ -116,19 +116,13 @@ ul {
 }
 
 .lot-form {
-    margin-left: 120px;
-    padding: 10px;
+  padding: 10px;
 }
 
 .lot-form input{
   margin: 10px;
   padding:10px;
   width: 400px;
-}
-
-.lot-form h3 {
-  padding: 10px;
-  color: tomato;
 }
 
 .lot-form button {
@@ -194,6 +188,13 @@ ul {
   margin-left: 120px;
 }
 
+.parking-management {
+  height: 96vh;
+  margin-left: 120px;
+  padding: 10px
+}
+
+
 .prices {
   margin-left: 120px;
 }
@@ -215,39 +216,277 @@ ul {
   cursor: pointer;
 }
 
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
+.geofences-manage {
+  margin-left: 120px;
+  height: 90vh;
+  overflow-y: scroll;
 }
 
-.row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
-
-
-
-.insight-circle {
-  margin: 30px;
-  display: inline-block;
-  background-color: tomato;
-  color: white;
-  width: 250px;
-  height: 250px;
-  border-radius: 50%;
-  text-align: center;
-  vertical-align: middle;
-}
-
-.invisible-text {
+.geofences-manage h3 {
+  padding: 10px;
   color: tomato;
 }
+
+
+.carpark-manage {
+  margin-left: 120px;
+  height: 90vh;
+  overflow-y: scroll;
+}
+
+.carpark-manage h3 {
+  padding: 10px;
+  color: tomato;
+}
+
+.container-table100 {
+  width: 80%;
+  max-height: 70%;
+  overflow-y: scroll;
+  padding: 33px 30px;
+}
+
+table {
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  width: 100%;
+  margin: 0 auto;
+  position: relative;
+  height: 200px;
+}
+
+table * {
+  position: relative;
+}
+
+table thead tr {
+  height: 60px;
+  background-color: tomato;
+  color: white;
+}
+
+table tbody tr {
+  height: 50px;
+}
+
+th{
+  font-size: 18px;
+  color: #fff;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f5f5f5;
+}
+
+tbody tr {
+  font-size: 15px;
+  color: #808080;
+  line-height: 1.2;
+  font-weight: unset;
+}
+
+tbody tr:hover {
+  color: #555555;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
+.column1 {
+  width: 180px;
+  text-align: center;
+}
+
+.column2 {
+  width: 300px;
+  text-align: center;
+}
+
+.column3 {
+  width: 245px;
+  text-align: center;
+}
+
+.column4 {
+  width: 110px;
+  text-align: center;
+}
+
+.column5 {
+  width: 170px;
+  text-align: center;
+}
+
+.column6 {
+  width: 150px;
+  text-align: center;
+  padding-right: 62px;
+}
+
+.add-button {
+  color: tomato;
+  margin-left: 40px;
+  cursor: pointer;
+  margin-top: 50px;
+}
+
+.button {
+  cursor: pointer;
+}
+
+.container-table100::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.container-table100::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset transparent;
+}
+
+.container-table100::-webkit-scrollbar-thumb {
+  background-color: transparent;
+  outline: 1px solid transparent;
+}
+
+.parking-management h3 {
+  padding: 10px;
+  color: tomato;
+}
+
+.lot-selector {
+  margin-top: 30px;
+  position: absolute;
+  right: 200px
+}
+
+.lot-selector .selector-inline {
+  display: flex;
+}
+
+.lot-selector-icon {
+  margin-top: 10px;
+  flex: 1;
+  color: tomato;
+  cursor: pointer;
+}
+
+.selector-text {
+  color: #282c34;
+  padding-right: 10px;
+}
+
+.lot-list {
+  position: relative;
+  margin-top: -55px;
+  z-index: 99 !important;
+  background-color: white;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15);
+  box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 2px 6px 2px rgba(60,64,67,.15)
+}
+
+.lot-list ul {
+  padding: 10px;
+}
+
+.lot-list li {
+  padding-bottom: 10px;
+}
+
+.lot-list span {
+  color: tomato;
+  text-align: center;
+}
+
+.lot-list ul li span {
+  display:block;
+  cursor: pointer;
+}
+
+.lot-list ul li span:hover, ul li span:focus {
+  color: #282c34;
+}
+
+.ultra-view-layout {
+  margin-top: 20px;
+  border-radius: 30px;
+  width: 95%;
+  height: 85vh;
+  background-color: #282c34;
+}
+
+.no-selection {
+  text-align: center;
+  margin-left: calc(50% - 200px);
+  padding-top: 20%;
+  width: 400px;
+  height: 150px;
+}
+
+.no-selection h3 {
+  font-size: 14pt;
+  color: white;
+}
+
+.no-selection-icon {
+  color: tomato;
+  cursor: pointer;
+}
+
+.lot-info {
+  display: flex;
+  padding-top: 40px;
+  padding-left: 55px;
+  color: white;
+  font-size: 10pt;
+}
+
+.lot-info span {
+  padding-right: 30px;
+}
+
+.space {
+  margin-bottom: 10px;
+  width: 50px;
+  height: 80px;
+  margin-left: 10px;
+  border: 1px solid white;
+}
+
+.space-filled {
+  margin-bottom: 10px;
+  width: 50px;
+  height: 80px;
+  margin-left: 10px;
+  border: 1px solid white;
+  background: tomato;
+}
+
+.space span {
+  color: white;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.space-filled span {
+  color: white;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.spaces {
+  height: 100%;
+  max-width: 100%;
+  padding: 50px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chart {
+  width: 500px;
+}
+
