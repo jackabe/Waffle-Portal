@@ -23,7 +23,7 @@ class Dashboard extends Component {
     getInsights = () => {
         axios({
             method: 'get',
-            url: 'http://127.0.0.1/getAllOffers'
+            url: 'http://18.188.105.214/getAllOffers'
         })
             .then((response) => {
                 let data = response.data;

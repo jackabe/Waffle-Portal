@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import { VictoryLine, VictoryChart, VictoryAxis, VictoryTheme } from 'victory';
+import Plot from 'react-plotly.js';
 
 
 export default class LotChartsView extends Component {
@@ -23,15 +24,19 @@ export default class LotChartsView extends Component {
         ];
         return (
             <div className='chart'>
-                <VictoryChart
-                    theme={VictoryTheme.material}
-                >
-                    <VictoryLine
-                        data={data}
-                        x={"date"}
-                        y={"bookings"}
-                    />
-                </VictoryChart>
+                <Plot
+                    data={[
+                        {
+                            x: [1, 2, 3],
+                            y: [2, 6, 3],
+                            type: 'scatter',
+                            mode: 'lines+points',
+                            marker: {color: 'red'},
+                        },
+                        {type: 'bar', x: [1, 2, 3], y: [2, 5, 3]},
+                    ]}
+                    layout={ {width: 320, height: 240, title: 'A Fancy Plot'} }
+                />
             </div>
         );
     }

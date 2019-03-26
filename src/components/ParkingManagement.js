@@ -70,8 +70,7 @@ export default class ParkingManagement extends Component {
         // Post to flask and get parking lot response
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/lots/new',
-            // url: 'http://18.188.105.214/newLot',
+            url: 'http://18.188.105.214/lots/new',
             data: formData,
             config: {headers: {'Content-Type': 'multipart/form-data'}}
         })

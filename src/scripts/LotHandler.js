@@ -17,7 +17,8 @@ function getLotPrices(data) {
 }
 
 function getSpacesAndBookings(data, details) {
-    let bays = data[2];
+    let bays = data[2]['bays'];
+    console.log(bays)
     return bays;
 }
 

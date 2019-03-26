@@ -75,11 +75,10 @@ class App extends Component {
         // Post to flask and get parking lot response
         fetch({
             method: 'get',
-            url: 'http://127.0.0.1:8000/getAllCarParks',
+            url: 'http://18.188.105.214/getAllCarParks',
         })
             .then((response) => {
                 let data = response.data;
-                console.log(data)
                 let i = 0;
                 let markers = [];
                 for (i; i < data.length; i++) {
