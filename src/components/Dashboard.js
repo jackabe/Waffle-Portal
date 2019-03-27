@@ -12,6 +12,7 @@ class Dashboard extends Component {
         this.state = {
             dailyVouchers: '',
             totalVouchers: '',
+            dailyBookings: '',
         };
     }
 
@@ -43,7 +44,7 @@ class Dashboard extends Component {
         })
             .then((response) => {
                 let data = response.data;
-                this.getBookingInsights(data);
+                this.processBookingInsights(data);
             })
             .catch((response) => {
                 console.log(response)
@@ -51,12 +52,36 @@ class Dashboard extends Component {
     }
 
     processBookingInsights(bookingList){
+        let dailyBooking = 0;
+        // Booking dates stored as UNIX Timestamp so converting current date into correct format to compare.
+        let date = new Date();
+        let dd = date.getUTCDate();
+        // This is 0-11 but it doesn't matter as we are converting the booking date the same way
+        let mm = date.getUTCMonth();
+        let yyyy = date.getUTCFullYear();
+        let dateCompare = ("" + dd + mm + yyyy);
+
+        let i =0;
+        for(i; i < bookingList.length; i++){
+            let bookingDate = bookingList[i]['arrival'];
+
+            let bookingUnix = new Date(bookingDate * 1000);
+            // Converting timestamp to date
+            let bookingDD = bookingUnix.getUTCDate();
+            let bookingMM = bookingUnix.getUTCMonth();
+            let bookingYYYY = bookingUnix.getUTCFullYear();
+
+            let bookingCompare = ("" + bookingDD + bookingMM + bookingYYYY);
+            if(dateCompare == bookingCompare){
+                dailyBooking +=1;
+            }
+        }
+
+        this.setState({dailyBookings: dailyBooking});
 
     }
 
     processOfferInsights(offerList){
-        console.log("offers: " + offerList);
-
         let totalVouchers = 0;
         let dailyVouchers = 0;
         let today = new Date();
@@ -102,22 +127,40 @@ class Dashboard extends Component {
     render() {
         return (
             <div className='dashboard'>
-                <h3 className='heading'>Dashboard</h3>
+                <h2 className='heading'>Welcome..</h2>
+                <h2 className='heading'>The daily insights for today are:</h2>
                 <div className='container'>
                     <div className='Row'>
 
                         <div className='insight-circle'>
                             <h1 className='invisible-text'>.</h1>
-                            <h4>Number of offers redeemed today:</h4>
-                            <h1>{this.state.dailyVouchers}</h1>
+                            <h4>Number of offers redeemed:</h4>
+                            <h2>{this.state.dailyVouchers}</h2>
+                        </div>
+
+                        {/*<div className='insight-circle'>*/}
+                            {/*<h1 className='invisible-text'>.</h1>*/}
+                            {/*<h4>Total number of offers redeemed:</h4>*/}
+                            {/*<h1>{this.state.totalVouchers}</h1>*/}
+                        {/*</div>*/}
+
+                        <div className='insight-circle'>
+                            <h1 className='invisible-text'>.</h1>
+                            <h4>Money made from surge pricing:</h4>
+                            <h2>{this.state.dailyBookings}</h2>
                         </div>
 
                         <div className='insight-circle'>
                             <h1 className='invisible-text'>.</h1>
-                            <h4>Total number of offers redeemed:</h4>
-                            <h1>{this.state.totalVouchers}</h1>
+                            <h4>Number of bookings due:</h4>
+                            <h2>£14.00</h2>
                         </div>
 
+                        <div className='insight-circle'>
+                            <h1 className='invisible-text'>.</h1>
+                            <h4>Most popular car park:</h4>
+                            <h2>NCP Rapports</h2>
+                        </div>
 
                     </div>
                 </div>
