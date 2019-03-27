@@ -6,6 +6,7 @@ import FontAwesome from "react-fontawesome";
 import {ClipLoader} from "react-spinners";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import LotHandler from "./scripts/LotHandler";
+import BookingService from "./scripts/BookingService";
 import MapComponent from "./components/Map";
 import Dashboard from "./components/Dashboard";
 import Offers from "./components/Offers";
@@ -16,6 +17,7 @@ import ParkingManagement from "./components/ParkingManagement";
 import Users from "./components/Users";
 import 'sweetalert/dist/sweetalert.css';
 import './App.css';
+import axios from 'axios';
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
@@ -75,48 +77,42 @@ class App extends Component {
         // Post to flask and get parking lot response
         fetch({
             method: 'get',
-            url: 'http://127.0.0.1:8000/getAllCarParks',
+            url: 'http://18.188.105.214/getAllCarParks',
         })
             .then((response) => {
                 let data = response.data;
-                console.log(data)
                 let i = 0;
                 let markers = [];
                 for (i; i < data.length; i++) {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
                     let capacity = details['capacity'];
-                    let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
+                    // let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
+                    let bookings = BookingService.getBookingsForLot(details['lot_id'])
+                        .then(response => {
+                            let marker = {
+                                details: details,
+                                price: prices['1'].toFixed(2),
+                                capacity: capacity,
+                                coords: {
+                                    latitude: details.lat,
+                                    longitude: details.long
+                                },
+                                bookings: response,
+                            };
 
-                    let marker = {
-                        details: details,
-                        price: prices['1'].toFixed(2),
-                        capacity: capacity,
-                        coords: {
-                            latitude: details.lat,
-                            longitude: details.long
-                        },
-                        spacesAndBookings: spacesAndBookings
-                    };
+                            markers.push(marker)
 
-                    console.log(marker)
-
-                    markers.push(marker);
-
-                    // As not async, check all done before updating state
-                    if (i === data.length - 1) {
-                        this.setState({markers: markers});
-                        this.setState({lots: markers});
-                        this.setState({loading: false});
-                    }
-                }
-                if (markers.length === 0) {
-                    this.setState({loading: false});
-                    this.setState({
-                        showAlert: true,
-                        alertTitle: 'No Parking Lots',
-                        alertInfo: 'Sorry, but we currently do not support this area! Check our website to see when we are coming to you!'
+                            if (i === data.length) {
+                                console.log(markers)
+                                this.setState({markers: markers});
+                                this.setState({lots: markers});
+                                this.setState({loading: false});
+                            }
+                        }).catch(error => {
+                            console.log(error.message);
                     });
+                    // As not async, check all done before updating state
                 }
             })
             .catch(function (response) {
