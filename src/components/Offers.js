@@ -30,16 +30,19 @@ class Offers extends Component {
                 let offers = [];
 
                 for(i; i < data.length; i++){
+
                     let offer = {
                         logo: data[i]['logo'],
                         company: data[i]['store'],
-                        offer: data[i]['offer'],
+                        details: data[i]['offer'],
                         expiry: data[i]['expiry_date'],
                         offerId: data[i]['offer_id'],
                         redemptionDate: data[i]['redemption_date'],
                         scans: data[i]['scans'],
                         redeem: data[i]['redeem'],
+                        userId: data[i]['user_id']
                     };
+
                     offers.push(offer);
                     if(i === offers.length - 1){
                         this.setState({offers: offers});
@@ -59,6 +62,53 @@ class Offers extends Component {
         return (
             <div className='offers'>
                 <h3 className='heading'>Offers</h3>
+
+                <div className="container-table100">
+                    <div className="wrap-table100">
+                        <div className="table100">
+                            <table>
+                                <thead>
+                                <tr className="offer-table-header">
+                                    <th className="column1">ID</th>
+                                    <th className="column2">Details</th>
+                                    <th className="column3">User ID</th>
+                                    <th className="column4">Store</th>
+                                    <th className="column5">Expiry Date</th>
+                                    <th className="column6">Redemption Date</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.offers.map(offer => (
+                                    <tr id={offer['offerId']}>
+                                        <td className="column1">
+                                            {offer['offerId']}
+                                        </td>
+                                        <td className="column2">
+                                            {offer['details']}
+                                        </td>
+                                        <td className="column3">
+                                            {offer['userId']}
+                                        </td>
+                                        <td className="column4">
+                                            {offer['company']}
+                                        </td>
+                                        <td className="column5">
+                                            {offer['expiry']}
+                                        </td>
+
+                                        <td className="column6">
+                                            {offer['redemptionDate']}
+                                        </td>
+
+                                    </tr>
+
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         );
     }
