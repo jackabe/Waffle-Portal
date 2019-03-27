@@ -96,9 +96,15 @@ class Offers extends Component {
                                             {offer['expiry']}
                                         </td>
 
-                                        <td className="column6">
-                                            {offer['redemptionDate']}
-                                        </td>
+                                        {(offer['redemptionDate']) != "" ?
+                                            <td className="column6">
+                                                {offer['redemptionDate']}
+                                            </td>
+                                            :
+                                            <td className="column6">
+                                                This offer has yet to be redeemed
+                                            </td>
+                                        }
 
                                     </tr>
 
