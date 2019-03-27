@@ -490,31 +490,13 @@ tbody tr:hover {
   width: 500px;
 }
 
-.container {
-  width: 100%;
-  padding-right: 15px;
-  padding-left: 15px;
-  margin-right: auto;
-  margin-left: auto;
-}
-
-.row {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -ms-flex-wrap: wrap;
-  flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
-}
-
 .insight-circle {
   margin: 30px;
   display: inline-block;
   background-color: tomato;
   color: white;
-  width: 250px;
-  height: 250px;
+  width: 240px;
+  height: 240px;
   border-radius: 50%;
   text-align: center;
   vertical-align: middle;
@@ -523,5 +505,3 @@ tbody tr:hover {
 .invisible-text {
   color: tomato;
 }
-
-
