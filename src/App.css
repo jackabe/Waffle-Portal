@@ -532,7 +532,7 @@ tbody tr:hover {
 }
 
 .chart {
-  width: 500px;
+  width: 400px;
 }
 
 .insight-circle {
@@ -551,6 +551,25 @@ tbody tr:hover {
   overflow: hidden;
   transform-style: preserve-3d;
   perspective: 100px;
+}
+
+.insight-graph {
+  margin: 30px;
+  padding: 90px;
+  color: white;
+  width: 250px;
+  height: 250px;
+  text-align: center;
+  align-items: center;
+  display: inline-flex;
+  justify-content: center;
+  overflow: hidden;
+  transform-style: preserve-3d;
+  perspective: 100px;
+}
+
+.insight-graph div {
+  display: block;
 }
 
 .insight-circle div {

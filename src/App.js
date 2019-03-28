@@ -19,9 +19,12 @@ import 'sweetalert/dist/sweetalert.css';
 import './App.css';
 import axios from 'axios';
 import {GoogleMap} from "react-google-maps";
+import LotChartsView from "./components/LotChartsView";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
+
+const maxStep = 4;
 
 class App extends Component {
 
@@ -49,7 +52,7 @@ class App extends Component {
             lotName: '',
             lotCapacity: '',
             lotCity: '',
-            welcome: true,
+            insights: true,
             step: 1
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
@@ -77,7 +80,10 @@ class App extends Component {
         let step = this.state.step + 1;
         this.setState({
             step: step
-        })
+        });
+        if (step === maxStep) {
+            this.setState({insights: false})
+        }
     };
 
     handleBackStep = () => {
@@ -106,10 +112,6 @@ class App extends Component {
                 console.error(error);
             }
         );
-    };
-
-    handleWelcome = () => {
-        this.setState({welcome: false})
     };
 
     getLotsByLocation (lat, lng, city)  {
@@ -186,247 +188,220 @@ class App extends Component {
 
     render() {
 
-      return (
-          <Router>
+        return (
+            <Router>
 
-            <div className='app'>
+                <div className='app'>
 
-                {this.state.welcome ?
-                    <div>
-                        <span className='skip'><a>Skip insights</a></span>
-                        <div className='welcome-container'>
-                            {this.state.step === 1 ?
-                                <section className="header-content">
-                                    <h1 className="header-title animate-pop-in">waffle</h1>
-                                    <h3 className="header-subtitle animate-pop-in">Parking management in one place</h3>
-                                    <p  onClick={this.handleStep} className="header-button animate-pop-in"><a>Begin insights</a></p>
-                                </section>
-                                :
-                                null
-                            }
-                            {this.state.step === 2 ?
-                                <section className="header-content">
-                                    <div className='arrows'>
-                                        <div>
+                    {this.state.insights ?
+                        <div>
+                            <span onClick={() => this.setState({insights: false})} className='skip'><a>Skip insights</a></span>
+                            <div className='welcome-container'>
+                                {this.state.step === 1 ?
+                                    <section className="header-content">
+                                        <h1 className="header-title animate-pop-in">waffle</h1>
+                                        <h3 className="header-subtitle animate-pop-in">Parking management in one
+                                            place</h3>
+                                        <p onClick={this.handleStep} className="header-button animate-pop-in"><a>Begin
+                                            insights</a></p>
+                                    </section>
+                                    :
+                                    null
+                                }
+                                {this.state.step === 2 ?
+                                    <section className="header-content">
+                                        <div className='arrows'>
+                                            <div>
                                             <span onClick={this.handleBackStep} className='back'>
                                                 <FontAwesome
                                                     name='caret-left'
                                                     size='lg'/>
                                              </span>
-                                        </div>
-                                        <div>
-                                            <p className='welcome-title animate-pop-in'>Today, in terms of revenue, bookings and lot popularity</p>
-                                        </div>
-                                        <div>
+                                            </div>
+                                            <div>
+                                                <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
+                                                    bookings and lot popularity</p>
+                                            </div>
+                                            <div>
                                             <span onClick={this.handleStep} className='next-insight'>
                                                 <FontAwesome
                                                     name='caret-right'
                                                     size='lg'/>
                                              </span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <div className='insight-circle animate-pop-in-1'>
-                                        <div>
-                                            <h4>Revenue</h4>
-                                            <h2>£54.54</h2>
+                                        <div className='insight-circle animate-pop-in-1'>
+                                            <div>
+                                                <h4>Revenue</h4>
+                                                <h2>£54.54</h2>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='insight-circle animate-pop-in-2'>
-                                        <div>
-                                            <h4>Bookings</h4>
-                                            <h2>132</h2>
+                                        <div className='insight-circle animate-pop-in-2'>
+                                            <div>
+                                                <h4>Bookings</h4>
+                                                <h2>132</h2>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div className='insight-circle animate-pop-in-3'>
-                                        <div>
-                                            <h4>Popular</h4>
-                                            <h2>NCP Rapports</h2>
+                                        <div className='insight-circle animate-pop-in-3'>
+                                            <div>
+                                                <h4>Popular</h4>
+                                                <h2>NCP Rapports</h2>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <p className='welcome-date'>Data last updated at {new Date(new Date().getTime()/1000 * 1e3).toISOString().slice(-13, -5)}</p>
-                                </section>
-                                :
-                                null
-                            }
-                            {this.state.step === 3 ?
-                                <section className="header-content">
-                                    <div className='arrows'>
-                                        <div>
+                                        <p className='welcome-date'>Data last updated
+                                            at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                    </section>
+                                    :
+                                    null
+                                }
+                                {this.state.step === 3 ?
+                                    <section className="header-content">
+                                        <div className='arrows'>
+                                            <div>
                                             <span onClick={this.handleBackStep} className='back'>
                                                 <FontAwesome
                                                     name='caret-left'
                                                     size='lg'/>
                                              </span>
-                                        </div>
-                                        <div>
-                                            <p className='welcome-title animate-pop-in'>Today, in terms of revenue, bookings and lot popularity</p>
-                                        </div>
-                                        <div>
+                                            </div>
+                                            <div>
+                                                <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
+                                                    bookings and lot popularity</p>
+                                            </div>
+                                            <div>
                                             <span onClick={this.handleStep} className='next-insight'>
                                                 <FontAwesome
                                                     name='caret-right'
                                                     size='lg'/>
                                              </span>
+                                            </div>
                                         </div>
-                                    </div>
 
-                                    <p className='welcome-date'>Data last updated at {new Date(new Date().getTime()/1000 * 1e3).toISOString().slice(-13, -5)}</p>
-                                </section>
-                                :
-                                null
-                            }
-                      </div>
-                    </div>
-                    :
-                    null
-                }
+                                        <div className='insight-graph animate-pop-in-1'>
+                                            <div>
+                                                <LotChartsView type='revenue' chartType='line'/>
+                                            </div>
+                                        </div>
+                                        <div className='insight-graph animate-pop-in-2'>
+                                            <div>
+                                                <LotChartsView type='bookings' chartType='line'/>
+                                            </div>
+                                        </div>
+                                        <div className='insight-graph animate-pop-in-3'>
+                                            <div>
+                                                <LotChartsView type='popular' chartType='bar'/>
+                                            </div>
+                                        </div>
 
-                {this.state.loading ?
-                    <div className='sweet-loading'>
-                        <ClipLoader
-                            sizeUnit={"px"}
-                            size={50}
-                            color={'#ffffff'}
-                            loading={this.state.loading}
-                        />
-                    </div>
-                    : null
-                }
+                                        <p className='welcome-date'>Data last updated
+                                            at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                    </section>
+                                    :
+                                    null
+                                }
+                            </div>
+                        </div>
+                        :
+                        null
+                    }
 
-                <div className="side-bar-container">
-                    <h3 className='nav-logo'>waffle</h3>
-                    <ul>
-                        <Link to="/dashboard">
-                            <li>
+                    {this.state.loading ?
+                        <div className='sweet-loading'>
+                            <ClipLoader
+                                sizeUnit={"px"}
+                                size={50}
+                                color={'#ffffff'}
+                                loading={this.state.loading}
+                            />
+                        </div>
+                        : null
+                    }
+
+                    <div className="side-bar-container">
+                        <h3 className='nav-logo'>waffle</h3>
+                        <ul>
+                            <li onClick={() => this.setState({insights: true, step: 1})}>
                                 <FontAwesome
                                     name='rocket'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
-                        </Link>
-                        <Link to="/geofences">
-                            <li>
-                                <FontAwesome
-                                    name='street-view'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                        <Link to="/parking">
-                            <li>
-                                <FontAwesome
-                                    name='car'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                        <Link to="/users">
-                            <li>
-                                <FontAwesome
-                                    name='users'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                        <Link to="/offers">
-                            <li>
-                                <FontAwesome
-                                    name='money'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                        <Link to="/prices">
-                            <li>
-                                <FontAwesome
-                                    name='dollar'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                        <Link to="/settings">
-                            <li>
-                                <FontAwesome
-                                    name='cog'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
-                    </ul>
+                            <Link to="/geofences">
+                                <li>
+                                    <FontAwesome
+                                        name='street-view'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                            <Link to="/parking">
+                                <li>
+                                    <FontAwesome
+                                        name='car'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                            <Link to="/users">
+                                <li>
+                                    <FontAwesome
+                                        name='users'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                            <Link to="/offers">
+                                <li>
+                                    <FontAwesome
+                                        name='money'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                            <Link to="/prices">
+                                <li>
+                                    <FontAwesome
+                                        name='dollar'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                            <Link to="/settings">
+                                <li>
+                                    <FontAwesome
+                                        name='cog'
+                                        size='2x'
+                                        className='nav-image'/>
+                                </li>
+                            </Link>
+                        </ul>
 
-                    <FontAwesome
-                        onClick={() => this.onSideBarClick('logout')}
-                        name='sign-out'
-                        className='logout'
-                        size='2x'
-                        style={{ color: 'tomato' }}
-                    />
+                        <FontAwesome
+                            onClick={() => this.onSideBarClick('logout')}
+                            name='sign-out'
+                            className='logout'
+                            size='2x'
+                            style={{color: 'tomato'}}
+                        />
+                    </div>
+
+                    <div className='logo-container'>
+                        <h3 className='logo'>waffle</h3>
+                    </div>
+
+                    <Route exact path="/geofences" component={this.Geofences}/>
+                    <Route exact path="/parking" component={this.ParkingManagement}/>
+                    <Route exact path="/users" component={this.Users}/>
+                    <Route exact path="/offers" component={this.Offers}/>
+                    <Route exact path="/prices" component={this.Prices}/>
+                    <Route exact path="/settings" component={this.Settings}/>
                 </div>
-
-                <div className='logo-container'>
-                    <h3 className='logo'>waffle</h3>
-                </div>
-
-                <Route exact path="/" component={this.Map}/>
-                <Route exact path="/dashboard" component={this.Dashboard}/>
-                <Route exact path="/geofences" component={this.Geofences}/>
-                <Route exact path="/parking" component={this.ParkingManagement}/>
-                <Route exact path="/users" component={this.Users}/>
-                <Route exact path="/offers" component={this.Offers}/>
-                <Route exact path="/prices" component={this.Prices}/>
-                <Route exact path="/settings" component={this.Settings}/>
-            </div>
-          </Router>
-    );
+            </Router>
+        );
   }
-
-    Map = () => {
-        return (
-            <div>
-                {this.state.openBox ?
-                    <div className='map-marker-box'>
-                        <p><span>Name: </span> {this.state.lotName}</p>
-                        <p><span>Capacity: </span> {this.state.lotCapacity}</p>
-                        <p><span>City:</span> {this.state.lotCity}</p>
-                    </div>
-                    :
-                    null
-                }
-                <MapComponent
-                    openLotBox={this.openLotBox}
-                    data={this.state.region}
-                    markers={this.state.markers}
-                    fences={[]}
-                    cluser={false}
-                    parkingUsers={this.state.parkingUsers}
-                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                    loadingElement={<div className='map'/>}
-                    containerElement={<div className='map'/>}
-                    mapElement={<div className='map'/>
-                    }
-            />
-            </div>
-        )
-    };
-
-    Dashboard = () => {
-        return (
-            <div>
-                {this.state.welcome ?
-                    <div className='blur'>
-                        <Dashboard welcome={this.state.welcome} handleWelcome={this.handleWelcome}/>
-                    </div>
-                    :
-                    <div>
-                        <Dashboard/>
-                    </div>
-                }
-            </div>
-        )
-    };
-
+  
     ParkingManagement = () => {
         return (
             <ParkingManagement lots={this.state.lots}/>
