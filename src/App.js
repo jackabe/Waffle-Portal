@@ -328,7 +328,7 @@ class App extends Component {
                                     size='2x'
                                     className='nav-image'/>
                             </li>
-                            <Link to="/geofences">
+                            <Link to="/">
                                 <li>
                                     <FontAwesome
                                         name='street-view'
@@ -391,7 +391,7 @@ class App extends Component {
                         <h3 className='logo'>waffle</h3>
                     </div>
 
-                    <Route exact path="/geofences" component={this.Geofences}/>
+                    <Route exact path="/" component={this.Geofences}/>
                     <Route exact path="/parking" component={this.ParkingManagement}/>
                     <Route exact path="/users" component={this.Users}/>
                     <Route exact path="/offers" component={this.Offers}/>
@@ -401,7 +401,7 @@ class App extends Component {
             </Router>
         );
   }
-  
+
     ParkingManagement = () => {
         return (
             <ParkingManagement lots={this.state.lots}/>

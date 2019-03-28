@@ -5,6 +5,7 @@ import FontAwesome from "react-fontawesome";
 import UltraView from "./UltraView";
 import LotChartsView from "./LotChartsView";
 import SweetAlert from 'sweetalert-react';
+import MapComponent from "../App";
 
 export default class ParkingManagement extends Component {
 
@@ -30,6 +31,7 @@ export default class ParkingManagement extends Component {
             alertTitle: '',
             alertInfo: '',
             type: '',
+            viewMarkers: true
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -129,6 +131,14 @@ export default class ParkingManagement extends Component {
                 showNav: true,
             });
         }
+        else if (route === 'lot-view') {
+            this.setState({
+                manage: false,
+                map: false,
+                viewMarkers: true,
+                charts: false
+            });
+        }
         else if (route === 'lot-manage') {
             this.setState({
                 manage: true,
@@ -194,6 +204,35 @@ export default class ParkingManagement extends Component {
                     }
                 </div>
 
+                {this.state.viewMarkers ?
+                    <div>
+                        {this.state.openBox ?
+                            <div className='map-marker-box'>
+                                <p><span>Name: </span> {this.state.lotName}</p>
+                                <p><span>Capacity: </span> {this.state.lotCapacity}</p>
+                                <p><span>City:</span> {this.state.lotCity}</p>
+                            </div>
+                            :
+                            null
+                        }
+                        <MapComponent
+                            openLotBox={this.openLotBox}
+                            data={this.state.region}
+                            markers={this.state.markers}
+                            fences={[]}
+                            cluser={false}
+                            parkingUsers={this.state.parkingUsers}
+                            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                            loadingElement={<div className='map'/>}
+                            containerElement={<div className='map'/>}
+                            mapElement={<div className='map'/>
+                            }
+                        />
+                    </div>
+                    :
+                    null
+                }
+
                 {this.state.map ?
                     <div>
                         <h3>Ultra View</h3>
@@ -223,6 +262,13 @@ export default class ParkingManagement extends Component {
                 {this.state.showNav ?
                     <div className='users-side-nav'>
                         <ul>
+                            <li>
+                                <FontAwesome
+                                    onClick={() => this.onSideBarClick('lot-view')}
+                                    name='table'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
                             <li>
                                 <FontAwesome
                                     onClick={() => this.onSideBarClick('lot-manage')}
