@@ -89,13 +89,13 @@ class App extends Component {
                     let bays = LotHandler.getBays(data[i]);
                     let capacity = details['capacity'];
                     // let spacesAndBookings = LotHandler.getSpacesAndBookings(data[i], details);
-                    let bookings = BookingService.getBookingsForLot(details['lot_id'])
+                    BookingService.getBookingsForLot(details['lot_id'])
                         .then(response => {
                             let marker = {
                                 details: details,
                                 price: prices['1'].toFixed(2),
                                 capacity: capacity,
-                                bays: bays,
+                                bays: LotHandler.getAvailableSpaces(bays, response),
                                 coords: {
                                     latitude: details.lat,
                                     longitude: details.long
@@ -103,7 +103,7 @@ class App extends Component {
                                 bookings: response,
                             };
 
-                            LotHandler.getAvailableSpaces(marker);
+                            markers.push(marker);
 
                             if (i === data.length) {
                                 console.log(markers)
