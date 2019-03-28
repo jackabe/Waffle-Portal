@@ -106,7 +106,6 @@ class App extends Component {
                             markers.push(marker);
 
                             if (i === data.length) {
-                                console.log(markers)
                                 this.setState({markers: markers});
                                 this.setState({lots: markers});
                                 this.setState({loading: false});

@@ -33,7 +33,6 @@ export default class UltraView extends Component {
     }
 
     viewBooking = (booking) => {
-        console.log(booking)
         this.setState({showBooking: true});
         this.setState({reg: booking['reg']});
         this.setState({arrival: booking['arrival']});

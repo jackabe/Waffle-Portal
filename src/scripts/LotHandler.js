@@ -43,9 +43,6 @@ function getAvailableSpaces(data, response) {
         // Check if booking is today
         if (timeToArrival >= -12 && timeToArrival < 12) {
             // Check if booking is active
-            console.log('c ' +currentHour);
-            console.log('d ' +bookingDepartureTime);
-            console.log('a ' +bookingArrivalTime);
             if (currentHour <= bookingDepartureTime && currentHour >= bookingArrivalTime)  {
                 let booking = bookings[i];
                 booking = {
