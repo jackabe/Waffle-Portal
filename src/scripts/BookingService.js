@@ -2,7 +2,7 @@ function getBookingsForLot(lotId) {
     return new Promise(function(resolve, reject) {
         let formData = new FormData();
         formData.append('lot_id', lotId);
-        fetch('http://127.0.0.1:8000/getBookingsForLot', {
+        fetch('http://18.188.105.214/getBookingsForLot', {
             method: 'post',
             config: { headers: {'Content-Type': 'multipart/form-data' }},
             body: formData

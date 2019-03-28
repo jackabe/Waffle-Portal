@@ -455,13 +455,22 @@ tbody tr:hover {
   border: 1px solid white;
 }
 
+.space-filled-active {
+   margin-bottom: 10px;
+   width: 50px;
+   height: 80px;
+   margin-left: 10px;
+   border: 1px solid white;
+   background: tomato;
+ }
+
 .space-filled {
   margin-bottom: 10px;
   width: 50px;
   height: 80px;
   margin-left: 10px;
   border: 1px solid white;
-  background: tomato;
+  background: lightskyblue;
 }
 
 .space span {
@@ -472,6 +481,13 @@ tbody tr:hover {
 }
 
 .space-filled span {
+  color: white;
+  position: absolute;
+  margin-top: 50px;
+  margin-left: 5px;
+}
+
+.space-filled-active span {
   color: white;
   position: absolute;
   margin-top: 50px;
@@ -504,4 +520,19 @@ tbody tr:hover {
 
 .invisible-text {
   color: tomato;
+}
+
+.booking-info {
+  padding: 30px;
+  position: absolute;
+  border-radius: 40px;
+  width: 300px;
+  height: 200px;
+  color: tomato;
+  background-color: white;
+  margin-left: 50px;
+}
+
+.booking-info h3 {
+  padding: 0!important;
 }
