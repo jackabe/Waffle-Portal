@@ -4,6 +4,7 @@ import axios from "axios";
 import FontAwesome from "react-fontawesome";
 import UltraView from "./UltraView";
 import LotChartsView from "./LotChartsView";
+import SweetAlert from 'sweetalert-react';
 
 export default class ParkingManagement extends Component {
 
@@ -24,7 +25,11 @@ export default class ParkingManagement extends Component {
             search_city: "",
             search: false,
             showNav: false,
-            openSelector: false
+            openSelector: false,
+            showAlert: false,
+            alertTitle: '',
+            alertInfo: '',
+            type: '',
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -33,7 +38,6 @@ export default class ParkingManagement extends Component {
     };
 
     componentDidMount() {
-        // this.loadCarparks();
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
@@ -75,10 +79,21 @@ export default class ParkingManagement extends Component {
             config: {headers: {'Content-Type': 'multipart/form-data'}}
         })
             .then((response) => {
-
+                this.setState({
+                    showAlert: true,
+                    type: 'success',
+                    alertTitle: 'Lot added!',
+                    alertInfo: 'You have successfully created the parking lot ' +this.state.name
+                });
             })
             .catch(function (response) {
                 console.log(response);
+                this.setState({
+                    showAlert: true,
+                    type: 'info',
+                    alertTitle: 'Error',
+                    alertInfo: 'There was a problem with that request'
+                });
             });
     };
 
@@ -309,6 +324,19 @@ export default class ParkingManagement extends Component {
                     :
                     null
                 }
+
+                <SweetAlert
+                    show={this.state.showAlert}
+                    title={this.state.alertTitle}
+                    text={this.state.alertInfo}
+                    showConfirmButton={false}
+                    showCancelButton
+                    cancelButtonText='Close'
+                    animation="slide-from-top"
+                    type={this.state.type}
+                    onCancel={() => this.setState({ showAlert: false })}
+                />
+
             </div>
         )
     }
