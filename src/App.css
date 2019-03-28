@@ -554,7 +554,6 @@ tbody tr:hover {
 }
 
 .insight-graph {
-  margin: 30px;
   padding: 90px;
   color: white;
   width: 250px;
@@ -566,6 +565,13 @@ tbody tr:hover {
   overflow: hidden;
   transform-style: preserve-3d;
   perspective: 100px;
+}
+
+.labels span {
+  padding-left: 230px;
+  padding-right: 230px;
+  font-size: 10pt;
+  color: white;
 }
 
 .insight-graph div {
@@ -642,7 +648,6 @@ tbody tr:hover {
 .animate-pop-in-3 {
   animation: pop-in 1.5s ease-in forwards;
 }
-
 
 .welcome-container {
   position: absolute;

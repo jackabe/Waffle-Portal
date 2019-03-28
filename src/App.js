@@ -37,9 +37,6 @@ class App extends Component {
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1,
             },
-            blur: {
-                filter: 'blur(5px)'
-            },
             showAlert: false,
             alertTitle: '',
             alertInfo: '',
@@ -53,7 +50,8 @@ class App extends Component {
             lotCapacity: '',
             lotCity: '',
             insights: true,
-            step: 1
+            step: 1,
+            showLotMap: false
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -98,6 +96,14 @@ class App extends Component {
         this.setState({lotName: lot['details']['name']});
         this.setState({lotCapacity: lot['details']['capacity']});
         this.setState({lotCity: lot['details']['city']});
+    };
+
+    showMap = () => {
+        this.setState({showLotMap: true})
+    };
+
+    hideMap = () => {
+        this.setState({showLotMap: false})
     };
 
     findLocation = () => {
@@ -182,10 +188,6 @@ class App extends Component {
         this.setState({markers: locations});
     };
 
-    lastLocations = (locations) => {
-        this.setState({parkingUsers: locations});
-    };
-
     render() {
 
         return (
@@ -268,7 +270,7 @@ class App extends Component {
                                             </div>
                                             <div>
                                                 <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
-                                                    bookings and lot popularity</p>
+                                                    bookings and offers</p>
                                             </div>
                                             <div>
                                             <span onClick={this.handleStep} className='next-insight'>
@@ -277,6 +279,12 @@ class App extends Component {
                                                     size='lg'/>
                                              </span>
                                             </div>
+                                        </div>
+
+                                        <div className='labels'>
+                                            <span>Revenue</span>
+                                            <span>Bookings</span>
+                                            <span>Offers</span>
                                         </div>
 
                                         <div className='insight-graph animate-pop-in-1'>
@@ -291,7 +299,7 @@ class App extends Component {
                                         </div>
                                         <div className='insight-graph animate-pop-in-3'>
                                             <div>
-                                                <LotChartsView type='popular' chartType='bar'/>
+                                                <LotChartsView type='offers' chartType='bar'/>
                                             </div>
                                         </div>
 
@@ -391,6 +399,35 @@ class App extends Component {
                         <h3 className='logo'>waffle</h3>
                     </div>
 
+                    {this.state.showLotMap ?
+                        <div>
+                            {this.state.openBox ?
+                                <div className='map-marker-box'>
+                                    <p><span>Name: </span> {this.state.lotName}</p>
+                                    <p><span>Capacity: </span> {this.state.lotCapacity}</p>
+                                    <p><span>City:</span> {this.state.lotCity}</p>
+                                </div>
+                                :
+                                null
+                            }
+                            <MapComponent
+                                openLotBox={this.openLotBox}
+                                data={this.state.region}
+                                markers={this.state.markers}
+                                fences={[]}
+                                cluser={false}
+                                parkingUsers={this.state.parkingUsers}
+                                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                                loadingElement={<div className='map'/>}
+                                containerElement={<div className='map'/>}
+                                mapElement={<div className='map'/>
+                                }
+                            />
+                        </div>
+                        :
+                        null
+                    }
+
                     <Route exact path="/" component={this.Geofences}/>
                     <Route exact path="/parking" component={this.ParkingManagement}/>
                     <Route exact path="/users" component={this.Users}/>
@@ -404,7 +441,7 @@ class App extends Component {
 
     ParkingManagement = () => {
         return (
-            <ParkingManagement lots={this.state.lots}/>
+            <ParkingManagement lots={this.state.lots} hideLotMap={this.hideMap} openLotMap={this.showMap}/>
         )
     };
 

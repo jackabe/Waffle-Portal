@@ -31,7 +31,6 @@ export default class ParkingManagement extends Component {
             alertTitle: '',
             alertInfo: '',
             type: '',
-            viewMarkers: true
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -135,9 +134,9 @@ export default class ParkingManagement extends Component {
             this.setState({
                 manage: false,
                 map: false,
-                viewMarkers: true,
                 charts: false
             });
+            this.props.openLotMap();
         }
         else if (route === 'lot-manage') {
             this.setState({
@@ -145,6 +144,7 @@ export default class ParkingManagement extends Component {
                 map: false,
                 charts: false
             });
+            this.props.hideLotMap();
         }
         else if (route === 'lot-map') {
             this.setState({
@@ -152,6 +152,7 @@ export default class ParkingManagement extends Component {
                 manage: false,
                 charts: false
             });
+            this.props.hideLotMap();
         }
         else if (route === 'lot-graphs') {
             this.setState({
@@ -159,6 +160,7 @@ export default class ParkingManagement extends Component {
                 manage: false,
                 map: false
             });
+            this.props.hideLotMap();
         }
         else {
             this.setState({
@@ -204,35 +206,6 @@ export default class ParkingManagement extends Component {
                     }
                 </div>
 
-                {this.state.viewMarkers ?
-                    <div>
-                        {this.state.openBox ?
-                            <div className='map-marker-box'>
-                                <p><span>Name: </span> {this.state.lotName}</p>
-                                <p><span>Capacity: </span> {this.state.lotCapacity}</p>
-                                <p><span>City:</span> {this.state.lotCity}</p>
-                            </div>
-                            :
-                            null
-                        }
-                        <MapComponent
-                            openLotBox={this.openLotBox}
-                            data={this.state.region}
-                            markers={this.state.markers}
-                            fences={[]}
-                            cluser={false}
-                            parkingUsers={this.state.parkingUsers}
-                            googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                            loadingElement={<div className='map'/>}
-                            containerElement={<div className='map'/>}
-                            mapElement={<div className='map'/>
-                            }
-                        />
-                    </div>
-                    :
-                    null
-                }
-
                 {this.state.map ?
                     <div>
                         <h3>Ultra View</h3>
@@ -264,15 +237,15 @@ export default class ParkingManagement extends Component {
                         <ul>
                             <li>
                                 <FontAwesome
-                                    onClick={() => this.onSideBarClick('lot-view')}
+                                    onClick={() => this.onSideBarClick('lot-manage')}
                                     name='table'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
                             <li>
                                 <FontAwesome
-                                    onClick={() => this.onSideBarClick('lot-manage')}
-                                    name='table'
+                                    onClick={() => this.onSideBarClick('lot-view')}
+                                    name='location-arrow'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
