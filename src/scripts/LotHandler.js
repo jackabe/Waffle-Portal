@@ -57,7 +57,7 @@ function getAvailableSpaces(data, response) {
                 bays.find(bay => bay['bay_id'] === bayId)['booked'] = booking
             }
             // Coming in next hour
-            else if (currentHour - bookingArrivalTime > -2)  {
+            else if (-2 < currentHour - bookingArrivalTime < 0)  {
                 let booking = bookings[i];
                 booking = {
                     'bay_id': booking['bay_id'],

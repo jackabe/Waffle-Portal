@@ -5,6 +5,7 @@ import FontAwesome from "react-fontawesome";
 import UltraView from "./UltraView";
 import LotChartsView from "./LotChartsView";
 import SweetAlert from 'sweetalert-react';
+import MapComponent from "../App";
 
 export default class ParkingManagement extends Component {
 
@@ -129,12 +130,21 @@ export default class ParkingManagement extends Component {
                 showNav: true,
             });
         }
+        else if (route === 'lot-view') {
+            this.setState({
+                manage: false,
+                map: false,
+                charts: false
+            });
+            this.props.openLotMap();
+        }
         else if (route === 'lot-manage') {
             this.setState({
                 manage: true,
                 map: false,
                 charts: false
             });
+            this.props.hideLotMap();
         }
         else if (route === 'lot-map') {
             this.setState({
@@ -142,6 +152,7 @@ export default class ParkingManagement extends Component {
                 manage: false,
                 charts: false
             });
+            this.props.hideLotMap();
         }
         else if (route === 'lot-graphs') {
             this.setState({
@@ -149,6 +160,7 @@ export default class ParkingManagement extends Component {
                 manage: false,
                 map: false
             });
+            this.props.hideLotMap();
         }
         else {
             this.setState({
@@ -227,6 +239,13 @@ export default class ParkingManagement extends Component {
                                 <FontAwesome
                                     onClick={() => this.onSideBarClick('lot-manage')}
                                     name='table'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li>
+                                <FontAwesome
+                                    onClick={() => this.onSideBarClick('lot-view')}
+                                    name='location-arrow'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
