@@ -17,9 +17,16 @@ class MapComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            openBox: false,
+            lotName: '',
+            lotCapacity: '',
+            lotCity: '',
         };
     }
+
+    openBox = (lot) => {
+        this.props.openLotBox(lot);
+    };
 
     render() {
         let data = this.props.data;
@@ -95,6 +102,7 @@ class MapComponent extends Component {
                             <div>
                                 {markersToShow.map(marker => (
                                     <Marker
+                                        onClick={() => this.openBox(marker)}
                                         key={marker.details.lot_id}
                                         position={{lat: marker.coords.latitude, lng: marker.coords.longitude}}
                                     />

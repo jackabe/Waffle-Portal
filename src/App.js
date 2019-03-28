@@ -18,6 +18,7 @@ import Users from "./components/Users";
 import 'sweetalert/dist/sweetalert.css';
 import './App.css';
 import axios from 'axios';
+import {GoogleMap} from "react-google-maps";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
@@ -40,14 +41,39 @@ class App extends Component {
             markersStatic: [],
             loading: true,
             parkingUsers: [],
-            lots: []
+            lots: [],
+            openBox: false,
+            lotName: '',
+            lotCapacity: '',
+            lotCity: '',
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
+        this.handleClickOutside = this.handleClickOutside.bind(this);
     }
 
     componentDidMount() {
         this.findLocation();
+        document.addEventListener('mousedown', this.handleClickOutside);
     }
+
+    componentWillUnmount() {
+        document.removeEventListener('mousedown', this.handleClickOutside);
+    }
+
+    handleClickOutside(event) {
+        if (event.target.className !== 'map-marker-box') {
+            this.setState({
+                openBox: false,
+            });
+        }
+    }
+
+    openLotBox = (lot) => {
+        this.setState({openBox: true});
+        this.setState({lotName: lot['details']['name']});
+        this.setState({lotCapacity: lot['details']['capacity']});
+        this.setState({lotCity: lot['details']['city']});
+    };
 
     findLocation = () => {
         // Get latidude & longitude from address.
@@ -250,17 +276,30 @@ class App extends Component {
 
     Map = () => {
         return (
-            <MapComponent
-                data={this.state.region}
-                markers={this.state.markers}
-                fences={[]}
-                cluser={false}
-                parkingUsers={this.state.parkingUsers}
-                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
-                loadingElement={<div className='map'/>}
-                containerElement={<div className='map'/>}
-                mapElement={<div className='map'/>}
+            <div>
+                {this.state.openBox ?
+                    <div className='map-marker-box'>
+                        <p><span>Name: </span> {this.state.lotName}</p>
+                        <p><span>Capacity: </span> {this.state.lotCapacity}</p>
+                        <p><span>City:</span> {this.state.lotCity}</p>
+                    </div>
+                    :
+                    null
+                }
+                <MapComponent
+                    openLotBox={this.openLotBox}
+                    data={this.state.region}
+                    markers={this.state.markers}
+                    fences={[]}
+                    cluser={false}
+                    parkingUsers={this.state.parkingUsers}
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M&v=3.exp&libraries=geometry,drawing,places"
+                    loadingElement={<div className='map'/>}
+                    containerElement={<div className='map'/>}
+                    mapElement={<div className='map'/>
+                    }
             />
+            </div>
         )
     };
 
