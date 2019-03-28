@@ -34,6 +34,9 @@ class App extends Component {
                 latitudeDelta: 0.1,
                 longitudeDelta: 0.1,
             },
+            blur: {
+                filter: 'blur(5px)'
+            },
             showAlert: false,
             alertTitle: '',
             alertInfo: '',
@@ -46,6 +49,8 @@ class App extends Component {
             lotName: '',
             lotCapacity: '',
             lotCity: '',
+            welcome: true,
+            step: 1
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -68,6 +73,20 @@ class App extends Component {
         }
     }
 
+    handleStep = () => {
+        let step = this.state.step + 1;
+        this.setState({
+            step: step
+        })
+    };
+
+    handleBackStep = () => {
+        let step = this.state.step - 1;
+        this.setState({
+            step: step
+        })
+    };
+
     openLotBox = (lot) => {
         this.setState({openBox: true});
         this.setState({lotName: lot['details']['name']});
@@ -87,6 +106,10 @@ class App extends Component {
                 console.error(error);
             }
         );
+    };
+
+    handleWelcome = () => {
+        this.setState({welcome: false})
     };
 
     getLotsByLocation (lat, lng, city)  {
@@ -165,7 +188,100 @@ class App extends Component {
 
       return (
           <Router>
+
             <div className='app'>
+
+                {this.state.welcome ?
+                    <div>
+                        <span className='skip'><a>Skip insights</a></span>
+                        <div className='welcome-container'>
+                            {this.state.step === 1 ?
+                                <section className="header-content">
+                                    <h1 className="header-title animate-pop-in">waffle</h1>
+                                    <h3 className="header-subtitle animate-pop-in">Parking management in one place</h3>
+                                    <p  onClick={this.handleStep} className="header-button animate-pop-in"><a>Begin insights</a></p>
+                                </section>
+                                :
+                                null
+                            }
+                            {this.state.step === 2 ?
+                                <section className="header-content">
+                                    <div className='arrows'>
+                                        <div>
+                                            <span onClick={this.handleBackStep} className='back'>
+                                                <FontAwesome
+                                                    name='caret-left'
+                                                    size='lg'/>
+                                             </span>
+                                        </div>
+                                        <div>
+                                            <p className='welcome-title animate-pop-in'>Today, in terms of revenue, bookings and lot popularity</p>
+                                        </div>
+                                        <div>
+                                            <span onClick={this.handleStep} className='next-insight'>
+                                                <FontAwesome
+                                                    name='caret-right'
+                                                    size='lg'/>
+                                             </span>
+                                        </div>
+                                    </div>
+
+                                    <div className='insight-circle animate-pop-in-1'>
+                                        <div>
+                                            <h4>Revenue</h4>
+                                            <h2>£54.54</h2>
+                                        </div>
+                                    </div>
+                                    <div className='insight-circle animate-pop-in-2'>
+                                        <div>
+                                            <h4>Bookings</h4>
+                                            <h2>132</h2>
+                                        </div>
+                                    </div>
+                                    <div className='insight-circle animate-pop-in-3'>
+                                        <div>
+                                            <h4>Popular</h4>
+                                            <h2>NCP Rapports</h2>
+                                        </div>
+                                    </div>
+
+                                    <p className='welcome-date'>Data last updated at {new Date(new Date().getTime()/1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                </section>
+                                :
+                                null
+                            }
+                            {this.state.step === 3 ?
+                                <section className="header-content">
+                                    <div className='arrows'>
+                                        <div>
+                                            <span onClick={this.handleBackStep} className='back'>
+                                                <FontAwesome
+                                                    name='caret-left'
+                                                    size='lg'/>
+                                             </span>
+                                        </div>
+                                        <div>
+                                            <p className='welcome-title animate-pop-in'>Today, in terms of revenue, bookings and lot popularity</p>
+                                        </div>
+                                        <div>
+                                            <span onClick={this.handleStep} className='next-insight'>
+                                                <FontAwesome
+                                                    name='caret-right'
+                                                    size='lg'/>
+                                             </span>
+                                        </div>
+                                    </div>
+
+                                    <p className='welcome-date'>Data last updated at {new Date(new Date().getTime()/1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                </section>
+                                :
+                                null
+                            }
+                      </div>
+                    </div>
+                    :
+                    null
+                }
 
                 {this.state.loading ?
                     <div className='sweet-loading'>
@@ -182,14 +298,6 @@ class App extends Component {
                 <div className="side-bar-container">
                     <h3 className='nav-logo'>waffle</h3>
                     <ul>
-                        <Link to="/">
-                            <li>
-                                <FontAwesome
-                                    name='home'
-                                    size='2x'
-                                    className='nav-image'/>
-                            </li>
-                        </Link>
                         <Link to="/dashboard">
                             <li>
                                 <FontAwesome
@@ -305,7 +413,17 @@ class App extends Component {
 
     Dashboard = () => {
         return (
-            <Dashboard/>
+            <div>
+                {this.state.welcome ?
+                    <div className='blur'>
+                        <Dashboard welcome={this.state.welcome} handleWelcome={this.handleWelcome}/>
+                    </div>
+                    :
+                    <div>
+                        <Dashboard/>
+                    </div>
+                }
+            </div>
         )
     };
 
