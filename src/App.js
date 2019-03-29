@@ -7,8 +7,8 @@ import {ClipLoader} from "react-spinners";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import LotHandler from "./scripts/LotHandler";
 import BookingService from "./scripts/BookingService";
+import InsightsHandler from "./scripts/InsightsHandler";
 import MapComponent from "./components/Map";
-import Dashboard from "./components/Dashboard";
 import Offers from "./components/Offers";
 import Geofences from "./components/Geofences";
 import Settings from "./components/Settings";
@@ -51,7 +51,8 @@ class App extends Component {
             lotCity: '',
             insights: true,
             step: 1,
-            showLotMap: false
+            showLotMap: false,
+            todayBookings: 0
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -82,6 +83,9 @@ class App extends Component {
         if (step === maxStep) {
             this.setState({insights: false})
         }
+        else if (step === 2) {
+            this.gatherInsights();
+        }
     };
 
     handleBackStep = () => {
@@ -89,6 +93,16 @@ class App extends Component {
         this.setState({
             step: step
         })
+    };
+
+    gatherInsights = () => {
+        let bookings = [];
+        let lots = this.state.lots;
+        let i = 0;
+        for (i; i < lots.length; i++) {
+            bookings.push(lots[i]['bookings'])
+        }
+        this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
     };
 
     openLotBox = (lot) => {
@@ -242,7 +256,7 @@ class App extends Component {
                                         <div className='insight-circle animate-pop-in-2'>
                                             <div>
                                                 <h4>Bookings</h4>
-                                                <h2>132</h2>
+                                                <h2>{this.state.todayBookings}</h2>
                                             </div>
                                         </div>
                                         <div className='insight-circle animate-pop-in-3'>

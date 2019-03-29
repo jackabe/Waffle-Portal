@@ -9,7 +9,6 @@ function getBookingsForLot(lotId) {
         }).then(response => response.json())
         .then(jsonBody => { resolve(jsonBody); })
         .catch(error => {
-            const { code, message } = error;
             reject(error);
         });
     });

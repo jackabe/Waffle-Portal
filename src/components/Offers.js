@@ -3,6 +3,9 @@ import '../App.css';
 import axios from "axios";
 import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
+import OffersService from "../scripts/OffersService";
+import BookingService from "../scripts/BookingService";
+import LotHandler from "../scripts/LotHandler";
 
 class Offers extends Component {
 
@@ -20,12 +23,9 @@ class Offers extends Component {
 
 
     getOffers = () => {
-        axios({
-            method: 'get',
-            url: 'http://18.188.105.214/getAllOffers'
-        })
-            .then((response) => {
-                let data = response.data;
+        OffersService.getOffers()
+            .then(response => {
+                let data = response;
                 let i= 0;
                 let offers = [];
 
@@ -44,17 +44,14 @@ class Offers extends Component {
                     };
 
                     offers.push(offer);
-                    if(i === offers.length - 1){
+                    if (i === offers.length - 1){
                         this.setState({offers: offers});
-
                     }
-                }
-
-            })
+            }})
             .catch((response) => {
                 console.log(response)
             });
-    }
+    };
 
 
 
