@@ -92,7 +92,7 @@ class App extends Component {
         let step = this.state.step - 1;
         this.setState({
             step: step
-        })
+        });
     };
 
     gatherInsights = () => {
@@ -103,6 +103,8 @@ class App extends Component {
             bookings.push(lots[i]['bookings'])
         }
         bookings = BookingService.formatBookings(bookings);
+        console.log(InsightsHandler.getTotalRevenueForWeek(bookings))
+        this.setState({bookings: bookings});
         this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
         this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
     };
@@ -213,118 +215,126 @@ class App extends Component {
 
                     {this.state.insights ?
                         <div>
-                            <span onClick={() => this.setState({insights: false})} className='skip'><a>Skip insights</a></span>
-                            <div className='welcome-container'>
-                                {this.state.step === 1 ?
-                                    <section className="header-content">
-                                        <h1 className="header-title animate-pop-in">waffle</h1>
-                                        <h3 className="header-subtitle animate-pop-in">Parking management in one
-                                            place</h3>
-                                        <a onClick={this.handleStep} className="header-button animate-pop-in">Begin</a>
-                                    </section>
-                                    :
-                                    null
-                                }
-                                {this.state.step === 2 ?
-                                    <section className="header-content">
-                                        <div className='arrows'>
-                                            <div>
-                                            <span onClick={this.handleBackStep} className='back'>
-                                                <FontAwesome
-                                                    name='caret-left'
-                                                    size='lg'/>
-                                             </span>
+                        {!this.state.loading ?
+                            <div>
+                                <span onClick={() => this.setState({insights: false})} className='skip'><a>Skip insights</a></span>
+                                <div className='welcome-container'>
+                                    {this.state.step === 1 ?
+                                        <section className="header-content">
+                                            <h1 className="header-title animate-pop-in">waffle</h1>
+                                            <h3 className="header-subtitle animate-pop-in">Parking management in one
+                                                place</h3>
+                                            <a onClick={this.handleStep} className="header-button animate-pop-in">Begin</a>
+                                        </section>
+                                        :
+                                        null
+                                    }
+                                    {this.state.step === 2 ?
+                                        <section className="header-content">
+                                            <div className='arrows'>
+                                                <div>
+                                                <span onClick={this.handleBackStep} className='back'>
+                                                    <FontAwesome
+                                                        name='caret-left'
+                                                        size='lg'/>
+                                                 </span>
+                                                </div>
+                                                <div>
+                                                    <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
+                                                        bookings and lot popularity</p>
+                                                </div>
+                                                <div>
+                                                <span onClick={this.handleStep} className='next-insight'>
+                                                    <FontAwesome
+                                                        name='caret-right'
+                                                        size='lg'/>
+                                                 </span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
-                                                    bookings and lot popularity</p>
-                                            </div>
-                                            <div>
-                                            <span onClick={this.handleStep} className='next-insight'>
-                                                <FontAwesome
-                                                    name='caret-right'
-                                                    size='lg'/>
-                                             </span>
-                                            </div>
-                                        </div>
 
-                                        <div className='insight-circle animate-pop-in-1'>
-                                            <div>
-                                                <h4>Revenue</h4>
-                                                <h2>£{this.state.revenue}</h2>
+                                            <div className='insight-circle animate-pop-in-1'>
+                                                <div>
+                                                    <h4>Revenue</h4>
+                                                    <h2>£{this.state.revenue}</h2>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='insight-circle animate-pop-in-2'>
-                                            <div>
-                                                <h4>Bookings</h4>
-                                                <h2>{this.state.todayBookings}</h2>
+                                            <div className='insight-circle animate-pop-in-2'>
+                                                <div>
+                                                    <h4>Bookings</h4>
+                                                    <h2>{this.state.todayBookings}</h2>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='insight-circle animate-pop-in-3'>
-                                            <div>
-                                                <h4>Popular</h4>
-                                                <h2>NCP Rapports</h2>
+                                            <div className='insight-circle animate-pop-in-3'>
+                                                <div>
+                                                    <h4>Popular</h4>
+                                                    <h2>NCP Rapports</h2>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <p className='welcome-date'>Data last updated
-                                            at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
-                                    </section>
-                                    :
-                                    null
-                                }
-                                {this.state.step === 3 ?
-                                    <section className="header-content">
-                                        <div className='arrows'>
-                                            <div>
-                                            <span onClick={this.handleBackStep} className='back'>
-                                                <FontAwesome
-                                                    name='caret-left'
-                                                    size='lg'/>
-                                             </span>
+                                            <p className='welcome-date'>Data last updated
+                                                at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                        </section>
+                                        :
+                                        null
+                                    }
+                                    {this.state.step === 3 ?
+                                        <section className="header-content">
+                                            <div className='arrows'>
+                                                <div>
+                                                <span onClick={this.handleBackStep} className='back'>
+                                                    <FontAwesome
+                                                        name='caret-left'
+                                                        size='lg'/>
+                                                 </span>
+                                                </div>
+                                                <div>
+                                                    <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
+                                                        bookings and offers</p>
+                                                </div>
+                                                <div>
+                                                <span onClick={this.handleStep} className='next-insight'>
+                                                    <FontAwesome
+                                                        name='caret-right'
+                                                        size='lg'/>
+                                                 </span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <p className='welcome-title animate-pop-in'>Today, in terms of revenue,
-                                                    bookings and offers</p>
-                                            </div>
-                                            <div>
-                                            <span onClick={this.handleStep} className='next-insight'>
-                                                <FontAwesome
-                                                    name='caret-right'
-                                                    size='lg'/>
-                                             </span>
-                                            </div>
-                                        </div>
 
-                                        <div className='labels'>
-                                            <span>Revenue</span>
-                                            <span>Bookings</span>
-                                            <span>Offers</span>
-                                        </div>
+                                            <div className='labels'>
+                                                <span>Revenue</span>
+                                                <span>Bookings</span>
+                                                <span>Offers</span>
+                                            </div>
 
-                                        <div className='insight-graph animate-pop-in-1'>
-                                            <div>
-                                                <LotChartsView type='revenue' chartType='line'/>
+                                            <div className='insight-graph animate-pop-in-1'>
+                                                <div>
+                                                    <LotChartsView data={this.state.bookings} type='revenue' chartType='line'/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='insight-graph animate-pop-in-2'>
-                                            <div>
-                                                <LotChartsView type='bookings' chartType='line'/>
+                                            <div className='insight-graph animate-pop-in-2'>
+                                                <div>
+                                                    <LotChartsView data={this.state.bookings} type='bookings' chartType='line'/>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div className='insight-graph animate-pop-in-3'>
-                                            <div>
-                                                <LotChartsView type='offers' chartType='bar'/>
+                                            <div className='insight-graph animate-pop-in-3'>
+                                                <div>
+                                                    <LotChartsView type='offers' chartType='bar'/>
+                                                </div>
                                             </div>
-                                        </div>
 
-                                        <p className='welcome-date'>Data last updated
-                                            at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
-                                    </section>
-                                    :
-                                    null
-                                }
+                                            <p className='welcome-date'>Data last updated
+                                                at {new Date(new Date().getTime() / 1000 * 1e3).toISOString().slice(-13, -5)}</p>
+                                        </section>
+                                        :
+                                        null
+                                    }
+                                </div>
                             </div>
+                            :
+                            <div>
+
+                            </div>
+                            }
                         </div>
                         :
                         null

@@ -1,60 +1,69 @@
 function processBookingInsights(bookingList) {
-    let dailyBooking = 0;
-    // Booking dates stored as UNIX Timestamp so converting current date into correct format to compare.
-    let date = new Date();
-    let dd = date.getUTCDate();
-    // This is 0-11 but it doesn't matter as we are converting the booking date the same way
-    let mm = date.getUTCMonth();
-    let yyyy = date.getUTCFullYear();
-    let dateCompare = ("" + dd + mm + yyyy);
+    let bookings = getBookingsForDate(bookingList, 'day');
+    return bookings.length;
+}
 
-    let i =0;
-    for (i; i < bookingList.length; i++){
-        let bookingDate = bookingList[i]['arrival'];
-            let bookingUnix = new Date(bookingDate * 1000);
-            // Converting timestamp to date
-            let bookingDD = bookingUnix.getUTCDate();
-            let bookingMM = bookingUnix.getUTCMonth();
-            let bookingYYYY = bookingUnix.getUTCFullYear();
-
-            let bookingCompare = ("" + bookingDD + bookingMM + bookingYYYY);
-
-            if(dateCompare == bookingCompare){
-                dailyBooking +=1;
-            }
+function getTotalRevenueForWeek(bookingList) {
+    let bookings = getBookingsForDate(bookingList, 'week');
+    let revenues = {};
+    let i = 0;
+    for (i; i < bookings.length; i++){
+        let date = bookings[i]['arrival'];
+        date = new Date(date * 1000);
+        date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
+        if (revenues[date]) {
+            revenues[date] = revenues[date] + bookings[i]['price'];
+        }
+        else {
+            revenues[date] = bookings[i]['price'];
+        }
     }
-    return dailyBooking;
+    return revenues;
 }
 
 function getRevenueInsight(bookingList) {
-    let date = new Date();
-    let dd = date.getUTCDate();
-    // This is 0-11 but it doesn't matter as we are converting the booking date the same way
-    let mm = date.getUTCMonth();
-    let yyyy = date.getUTCFullYear();
-    let dateCompare = ("" + dd + mm + yyyy);
+    let bookings = getBookingsForDate(bookingList, 'day');
     let revenue = 0;
-    let i =0;
+    let i = 0;
+    for (i; i < bookings.length; i++){
+        revenue += bookings[i]['price'];
+    }
+    return revenue;
+}
+
+function getBookingsForDate(bookingList, dateType) {
+    let i = 0;
+    let bookings = [];
     for (i; i < bookingList.length; i++){
         let bookingDate = bookingList[i]['arrival'];
         let bookingUnix = new Date(bookingDate * 1000);
-        // Converting timestamp to date
         let bookingDD = bookingUnix.getUTCDate();
         let bookingMM = bookingUnix.getUTCMonth();
         let bookingYYYY = bookingUnix.getUTCFullYear();
 
         let bookingCompare = ("" + bookingDD + bookingMM + bookingYYYY);
 
-        if(dateCompare == bookingCompare){
-            console.log(bookingList[i]['price']);
-            revenue += bookingList[i]['price'];
+        if (dateType === 'today') {
+            let date = new Date();
+            let dd = date.getUTCDate();
+            let mm = date.getUTCMonth();
+            let yyyy = date.getUTCFullYear();
+            let dateCompare = ("" + dd + mm + yyyy);
+            if (dateCompare === bookingCompare) {
+                bookings.push(bookingList[i])
+            }
+        }
+        else if (dateType === 'week') {
+            let today = new Date();
+            let previousWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
+            today = ("" + today.getUTCDate() + today.getUTCMonth() + today.getUTCFullYear());
+            let dateCompare = ("" + previousWeek.getUTCDate() + previousWeek.getUTCMonth() + previousWeek.getUTCFullYear());
+            if ((parseInt(bookingCompare) >= parseInt(dateCompare)) && (parseInt(bookingCompare) <= parseInt(today)) ) {
+                bookings.push(bookingList[i])
+            }
         }
     }
-    return revenue;
-}
-
-function getAllBookingsForLot() {
-
+    return bookings;
 }
 
 function processOfferInsights(offerList) {
@@ -62,7 +71,7 @@ function processOfferInsights(offerList) {
     let dailyVouchers = 0;
     let today = new Date();
     let dd = today.getDate();
-    let mm = today.getMonth() + 1; //January is 0!
+    let mm = today.getMonth() + 1; // January is 0!
     let yyyy = today.getFullYear();
 
     if (dd < 10) {
@@ -103,4 +112,5 @@ module.exports = {
     processBookingInsights,
     processOfferInsights,
     getRevenueInsight,
+    getTotalRevenueForWeek
 };
