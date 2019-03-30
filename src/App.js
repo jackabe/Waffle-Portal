@@ -102,7 +102,9 @@ class App extends Component {
         for (i; i < lots.length; i++) {
             bookings.push(lots[i]['bookings'])
         }
+        bookings = BookingService.formatBookings(bookings);
         this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
+        this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
     };
 
     openLotBox = (lot) => {
@@ -218,8 +220,7 @@ class App extends Component {
                                         <h1 className="header-title animate-pop-in">waffle</h1>
                                         <h3 className="header-subtitle animate-pop-in">Parking management in one
                                             place</h3>
-                                        <p onClick={this.handleStep} className="header-button animate-pop-in"><a>Begin
-                                            insights</a></p>
+                                        <a onClick={this.handleStep} className="header-button animate-pop-in">Begin</a>
                                     </section>
                                     :
                                     null
@@ -250,7 +251,7 @@ class App extends Component {
                                         <div className='insight-circle animate-pop-in-1'>
                                             <div>
                                                 <h4>Revenue</h4>
-                                                <h2>£54.54</h2>
+                                                <h2>£{this.state.revenue}</h2>
                                             </div>
                                         </div>
                                         <div className='insight-circle animate-pop-in-2'>
