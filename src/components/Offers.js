@@ -10,12 +10,14 @@ class Offers extends Component {
         super(props);
         this.state = {
             offers: [],
+            partners: [],
 
         };
     }
 
     componentDidMount() {
         this.getOffers();
+        this.getPartners();
     }
 
 
@@ -56,11 +58,43 @@ class Offers extends Component {
             });
     }
 
+    getPartners = () => {
+        axios({
+            method: 'get',
+            url: 'http://18.188.105.214/getAllPartners'
+        })
+            .then((response) => {
+                let data = response.data;
+                let i= 0;
+                let partners = [];
+
+                for(i; i < data.length; i++){
+
+                    let partner = {
+                        logo: data[i]['logo'],
+                        name: data[i]['name'],
+                        offer: data[i]['offer']
+                    };
+
+                    partners.push(partner);
+                    if(i === partners.length - 1){
+                        this.setState({partners: partners});
+
+                    }
+                }
+
+            })
+            .catch((response) => {
+                console.log(response)
+            });
+    }
+
 
 
     render() {
         return (
             <div className='offers'>
+            <div className='partners'>
                 <h3 className='heading'>Offers</h3>
 
                 <div className="container-table100">
@@ -115,6 +149,38 @@ class Offers extends Component {
                     </div>
                 </div>
 
+            </div>
+                <h3 className='heading'>Partners</h3>
+                <div className="container-table100">
+                    <div className="wrap-table100">
+                        <div className="table100">
+                            <table>
+                                <thead>
+                                <tr className="offer-table-header">
+                                    <th className="column1">Partner Name</th>
+                                    <th className="column2">Offer provided</th>
+
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {this.state.partners.map(partner => (
+                                    <tr id={partner['name']}>
+                                        <td className="column1">
+                                            {partner['name']}
+                                        </td>
+                                        <td className="column2">
+                                            {partner['offer']}
+                                        </td>
+
+
+                                    </tr>
+
+                                ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }
