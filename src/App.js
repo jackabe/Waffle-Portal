@@ -7,6 +7,7 @@ import {ClipLoader} from "react-spinners";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 import LotHandler from "./scripts/LotHandler";
 import BookingService from "./scripts/BookingService";
+import OffersService from "./scripts/OffersService";
 import InsightsHandler from "./scripts/InsightsHandler";
 import MapComponent from "./components/Map";
 import Offers from "./components/Offers";
@@ -52,7 +53,10 @@ class App extends Component {
             insights: true,
             step: 1,
             showLotMap: false,
-            todayBookings: 0
+            todayBookings: 0,
+            bookingsWeekly: {},
+            revenueWeekly: {},
+            offers: []
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -60,6 +64,7 @@ class App extends Component {
 
     componentDidMount() {
         this.findLocation();
+        this.gatherInsights();
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
@@ -83,9 +88,6 @@ class App extends Component {
         if (step === maxStep) {
             this.setState({insights: false})
         }
-        else if (step === 2) {
-            this.gatherInsights();
-        }
     };
 
     handleBackStep = () => {
@@ -96,17 +98,22 @@ class App extends Component {
     };
 
     gatherInsights = () => {
-        let bookings = [];
         let lots = this.state.lots;
+        let bookings = [];
         let i = 0;
         for (i; i < lots.length; i++) {
             bookings.push(lots[i]['bookings'])
         }
         bookings = BookingService.formatBookings(bookings);
-        console.log(InsightsHandler.getTotalRevenueForWeek(bookings))
-        this.setState({bookings: bookings});
-        this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
-        this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
+        OffersService.getOffers().then(response => {
+            this.setState({offers: InsightsHandler.processOfferInsights(response)});
+            this.setState({bookings: bookings});
+            this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
+            this.setState({revenueWeekly: InsightsHandler.getTotalRevenueForWeek(bookings)});
+            this.setState({bookingsWeekly: InsightsHandler.getTotalBookingsForWeek(bookings)});
+            this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
+            console.log(this.state.offers)
+        });
     };
 
     openLotBox = (lot) => {
@@ -308,17 +315,17 @@ class App extends Component {
 
                                             <div className='insight-graph animate-pop-in-1'>
                                                 <div>
-                                                    <LotChartsView data={this.state.bookings} type='revenue' chartType='line'/>
+                                                    <LotChartsView data={this.state.revenueWeekly} type='revenue' chartType='line'/>
                                                 </div>
                                             </div>
                                             <div className='insight-graph animate-pop-in-2'>
                                                 <div>
-                                                    <LotChartsView data={this.state.bookings} type='bookings' chartType='line'/>
+                                                    <LotChartsView data={this.state.bookingsWeekly} type='bookings' chartType='line'/>
                                                 </div>
                                             </div>
                                             <div className='insight-graph animate-pop-in-3'>
                                                 <div>
-                                                    <LotChartsView type='offers' chartType='bar'/>
+                                                    <LotChartsView data={{}} type='offers' chartType='bar'/>
                                                 </div>
                                             </div>
 

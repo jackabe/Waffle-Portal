@@ -12,36 +12,13 @@ export default class LotChartsView extends Component {
 
     render() {
         const type = this.props.type;
-        let data = [];
-        if (type === 'bookings') {
-            data = [
-                {date: '24', bookings: 12},
-                {date: '25', bookings: 5},
-                {date: '26', bookings: 8},
-                {date: '27', bookings: 32},
-                {date: '28', bookings: 77},
-                {date: '29', bookings: 12},
-                {date: '30', bookings: 5},
-            ];
+        const data = this.props.data;
+        let dataToPlot = [];
+        for (let [key, value] of Object.entries(data)){
+            dataToPlot.push({'date': key.split('/')[0], bookings: value});
         }
-        else if (type === 'revenue') {
-            data = [
-                {date: '24', bookings: 58},
-                {date: '25', bookings: 28},
-                {date: '26', bookings: 33},
-                {date: '27', bookings: 88},
-                {date: '28', bookings: 66},
-                {date: '29', bookings: 130},
-                {date: '30', bookings: 120},
-            ];
-        }
-        else if (type === 'offers') {
-            data = [
-                {date: 'McDonalds', bookings: 12},
-                {date: 'Subway', bookings: 5},
-                {date: 'Burger King', bookings: 8},
-            ];
-        }
+        dataToPlot.reverse();
+        console.log(dataToPlot)
         return (
             <div className='chart'>
                 {this.props.chartType === 'line' ?
@@ -56,7 +33,7 @@ export default class LotChartsView extends Component {
                                     duration: 3000,
                                     onLoad: { duration: 1000 }
                                 }}
-                                data={data}
+                                data={dataToPlot}
                                 x={"date"}
                                 y={"bookings"}
                             />
@@ -74,7 +51,7 @@ export default class LotChartsView extends Component {
                                     duration: 3000,
                                     onLoad: { duration: 1000 }
                                 }}
-                                data={data}
+                                data={dataToPlot}
                                 x={"date"}
                                 y={"bookings"}
                             />

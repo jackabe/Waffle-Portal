@@ -1,5 +1,5 @@
 function processBookingInsights(bookingList) {
-    let bookings = getBookingsForDate(bookingList, 'day');
+    let bookings = getBookingsForDate(bookingList, 'today');
     return bookings.length;
 }
 
@@ -9,26 +9,67 @@ function getTotalRevenueForWeek(bookingList) {
     let i = 0;
     for (i; i < bookings.length; i++){
         let date = bookings[i]['arrival'];
-        date = new Date(date * 1000);
-        date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
-        if (revenues[date]) {
-            revenues[date] = revenues[date] + bookings[i]['price'];
+        if (bookings[i]['booked']) {
+            date = new Date(date * 1000);
+            date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
+            if (revenues[date]) {
+                revenues[date] = revenues[date] + bookings[i]['price'];
+            }
+            else {
+                revenues[date] = bookings[i]['price'];
+            }
         }
         else {
-            revenues[date] = bookings[i]['price'];
+            date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
+            revenues[date] = 0;
+        }
+    }
+    console.log(revenues)
+    return revenues;
+}
+
+function getTotalBookingsForWeek(bookingList) {
+    let bookings = getBookingsForDate(bookingList, 'week');
+    let revenues = {};
+    let i = 0;
+    for (i; i < bookings.length; i++){
+        let date = bookings[i]['arrival'];
+        if (bookings[i]['booked']) {
+            date = new Date(date * 1000);
+            date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
+            if (revenues[date]) {
+                revenues[date] = revenues[date] + 1
+            }
+            else {
+                revenues[date] = 1;
+            }
+        }
+        else {
+            date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
+            revenues[date] = 0;
         }
     }
     return revenues;
 }
 
 function getRevenueInsight(bookingList) {
-    let bookings = getBookingsForDate(bookingList, 'day');
+    let bookings = getBookingsForDate(bookingList, 'today');
     let revenue = 0;
     let i = 0;
     for (i; i < bookings.length; i++){
         revenue += bookings[i]['price'];
     }
     return revenue;
+}
+
+function getDateArray(start, end) {
+    let week = [];
+    let startDate = start;
+    while (startDate <= end) {
+        week.push(new Date(startDate));
+        startDate.setDate(startDate.getDate() + 1);
+    }
+    return week;
 }
 
 function getBookingsForDate(bookingList, dateType) {
@@ -55,11 +96,34 @@ function getBookingsForDate(bookingList, dateType) {
         }
         else if (dateType === 'week') {
             let today = new Date();
-            let previousWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
+            let lastWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
             today = ("" + today.getUTCDate() + today.getUTCMonth() + today.getUTCFullYear());
-            let dateCompare = ("" + previousWeek.getUTCDate() + previousWeek.getUTCMonth() + previousWeek.getUTCFullYear());
+            let dateCompare = ("" + lastWeek.getUTCDate() + lastWeek.getUTCMonth() + lastWeek.getUTCFullYear());
             if ((parseInt(bookingCompare) >= parseInt(dateCompare)) && (parseInt(bookingCompare) <= parseInt(today)) ) {
+                bookingList[i]['booked'] = true;
                 bookings.push(bookingList[i])
+            }
+        }
+    }
+
+    if (bookings.length > 0 && dateType === 'week') {
+        let today = new Date();
+        let lastWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
+        let week = getDateArray(lastWeek, today);
+        let dayCounter = 0;
+        for (dayCounter; dayCounter < week.length; dayCounter++) {
+            let booked = false;
+            i = 0;
+            for (i; i < bookings.length; i++) {
+                let bookingUnix = new Date(bookings[i]['arrival'] * 1000);
+                let bookingDate = ("" + bookingUnix.getUTCDate() + bookingUnix.getUTCMonth() + bookingUnix.getUTCFullYear());
+                let date = ("" + week[dayCounter].getUTCDate() + week[dayCounter].getUTCMonth() + week[dayCounter].getUTCFullYear());
+                if (bookingDate === date) {
+                    booked = true
+                }
+            }
+            if (!booked) {
+                bookings.push({booked: false, arrival: week[dayCounter]})
             }
         }
     }
@@ -67,50 +131,16 @@ function getBookingsForDate(bookingList, dateType) {
 }
 
 function processOfferInsights(offerList) {
-    let totalVouchers = 0;
-    let dailyVouchers = 0;
     let today = new Date();
-    let dd = today.getDate();
-    let mm = today.getMonth() + 1; // January is 0!
-    let yyyy = today.getFullYear();
-
-    if (dd < 10) {
-        dd = '0' + dd;
-    }
-
-    if (mm < 10) {
-        mm = '0' + mm;
-    }
-
-    let string_today = dd + '-' + mm + '-' + yyyy;
-
-    let i = 0;
-    for (i; i < offerList.length; i++) {
-        let offer = {
-            logo: offerList[i]['logo'],
-            company: offerList[i]['store'],
-            offer: offerList[i]['offer'],
-            expiry: offerList[i]['expiry_date'],
-            offerId: offerList[i]['offer_id'],
-            redemptionDate: offerList[i]['redemption_date'],
-            scans: offerList[i]['scans'],
-            redeem: offerList[i]['redeem'],
-        };
-
-        if (offer.redemptionDate == string_today && offer.redeem === true) {
-            dailyVouchers += 1;
-            totalVouchers += 1;
-        } else if (offer.redeem === true) {
-            totalVouchers += 1;
-        }
-
-        return {'daily': dailyVouchers, 'total': totalVouchers};
-    }
+    let lastWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
+    let offer = 0;
+    for (offer;)
 }
 
 module.exports = {
     processBookingInsights,
     processOfferInsights,
     getRevenueInsight,
-    getTotalRevenueForWeek
+    getTotalRevenueForWeek,
+    getTotalBookingsForWeek
 };
