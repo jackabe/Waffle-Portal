@@ -11,13 +11,69 @@ class Offers extends Component {
         this.state = {
             offers: [],
             partners: [],
+            openForm: false,
+            name: "",
+            logo:"",
+            offer:"",
 
         };
+        this.openForm = this.openForm.bind(this);
+        this.inputOnChange = this.inputOnChange.bind(this);
     }
 
     componentDidMount() {
         this.getOffers();
         this.getPartners();
+    }
+
+    inputOnChange(event) {
+        let name = event.target.name;
+        this.setState({[name]: event.target.value});
+    };
+
+    postPartnerData = () => {
+        let formData = new FormData();
+        formData.append('name', this.state.name);
+        formData.append('logo', this.state.logo);
+        formData.append('offer', this.state.offer);
+
+        // Post to flask and get parking lot response
+        axios({
+            method: 'post',
+            url: 'http://127.0.0.1:8000/partner/create',
+            data: formData,
+            config: {headers: {'Content-Type': 'multipart/form-data'}}
+        })
+            .then((response) => {
+                this.setState({
+                    showAlert: true,
+                    type: 'success',
+                    alertTitle: 'Partner Created!',
+                    alertInfo: 'You have successfully added a new partner: ' +this.state.name
+                });
+            })
+            .catch(function (response) {
+                console.log(response);
+                this.setState({
+                    showAlert: true,
+                    type: 'info',
+                    alertTitle: 'Error',
+                    alertInfo: 'There was a problem with that request'
+                });
+            });
+    };
+
+    openForm() {
+        if (this.state.openForm) {
+            this.setState({
+                openForm: false,
+            });
+        }
+        else {
+            this.setState({
+                openForm: true,
+            });
+        }
     }
 
 
@@ -94,6 +150,7 @@ class Offers extends Component {
     render() {
         return (
             <div className='offers'>
+            <div className='add-partner'>
             <div className='partners'>
                 <h3 className='heading'>Offers</h3>
 
@@ -182,6 +239,31 @@ class Offers extends Component {
                     </div>
                 </div>
             </div>
+                <FontAwesome
+                    name='plus-circle'
+                    onClick={this.openForm}
+                    className='add-button'
+                    size='3x'
+                />
+                {this.state.openForm ?
+                    <div className='lot-form'>
+                        <h3>Add a new partner</h3>
+                        <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name"
+                               placeholder="Name"/>
+                        <input type="text" value={this.state.logo} onChange={this.inputOnChange} name="logo"
+                               placeholder="Logo"/>
+                        <input type="text" value={this.state.offer} onChange={this.inputOnChange}
+                               name="offer" placeholder="Offer"/>
+
+                        <br/>
+                        <button onClick={this.postPartnerData}>Save</button>
+                    </div>
+                    :
+                    null
+                }
+
+    </div>
+
         );
     }
 }
