@@ -24,32 +24,31 @@ function getTotalRevenueForWeek(bookingList) {
             revenues[date] = 0;
         }
     }
-    console.log(revenues)
     return revenues;
 }
 
 function getTotalBookingsForWeek(bookingList) {
     let bookings = getBookingsForDate(bookingList, 'week');
-    let revenues = {};
+    let total_bookings = {};
     let i = 0;
     for (i; i < bookings.length; i++){
         let date = bookings[i]['arrival'];
         if (bookings[i]['booked']) {
             date = new Date(date * 1000);
             date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
-            if (revenues[date]) {
-                revenues[date] = revenues[date] + 1
+            if (total_bookings[date]) {
+                total_bookings[date] = total_bookings[date] + 1
             }
             else {
-                revenues[date] = 1;
+                total_bookings[date] = 1;
             }
         }
         else {
             date = ("" + date.getUTCDate() + '/' + date.getUTCMonth() + '/' + date.getUTCFullYear());
-            revenues[date] = 0;
+            total_bookings[date] = 0;
         }
     }
-    return revenues;
+    return total_bookings;
 }
 
 function getRevenueInsight(bookingList) {
@@ -133,8 +132,24 @@ function getBookingsForDate(bookingList, dateType) {
 function processOfferInsights(offerList) {
     let today = new Date();
     let lastWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
-    let offer = 0;
-    for (offer;)
+    let offerCounter = 0;
+    let offersThisWeek = {};
+    for (offerCounter; offerCounter < offerList.length; offerCounter++) {
+        let offer = offerList[offerCounter];
+        if (offer.redeem) {
+            let offerRedemptionDate = new Date(offer['redemption_date'] * 1000);
+            if (offerRedemptionDate > lastWeek) {
+                let store = offer['store'];
+                if (offersThisWeek[store]) {
+                    offersThisWeek[store] = offersThisWeek[store] + 1;
+                }
+                else {
+                    offersThisWeek[store] = 1
+                }
+            }
+        }
+    }
+    return offersThisWeek
 }
 
 module.exports = {

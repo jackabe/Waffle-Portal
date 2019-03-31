@@ -56,7 +56,8 @@ class App extends Component {
             todayBookings: 0,
             bookingsWeekly: {},
             revenueWeekly: {},
-            offers: []
+            offers: [],
+            run: 0
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -64,7 +65,6 @@ class App extends Component {
 
     componentDidMount() {
         this.findLocation();
-        this.gatherInsights();
         document.addEventListener('mousedown', this.handleClickOutside);
     }
 
@@ -106,13 +106,16 @@ class App extends Component {
         }
         bookings = BookingService.formatBookings(bookings);
         OffersService.getOffers().then(response => {
-            this.setState({offers: InsightsHandler.processOfferInsights(response)});
             this.setState({bookings: bookings});
             this.setState({todayBookings: InsightsHandler.processBookingInsights(bookings)});
             this.setState({revenueWeekly: InsightsHandler.getTotalRevenueForWeek(bookings)});
             this.setState({bookingsWeekly: InsightsHandler.getTotalBookingsForWeek(bookings)});
             this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
-            console.log(this.state.offers)
+            this.setState({offers: InsightsHandler.processOfferInsights(response)})
+        })
+        .catch(error => {
+            console.log('Insights not available right now:');
+            console.log(error)
         });
     };
 
@@ -165,6 +168,7 @@ class App extends Component {
                 let data = response.data;
                 let i = 0;
                 let markers = [];
+                let j = 0 ;
                 for (i; i < data.length; i++) {
                     let details = LotHandler.getLotDetails(data[i]);
                     let prices = LotHandler.getLotPrices(data[i]);
@@ -187,10 +191,14 @@ class App extends Component {
 
                             markers.push(marker);
 
-                            if (i === data.length) {
+
+                            j += 1;
+
+                            if (j === data.length) {
                                 this.setState({markers: markers});
                                 this.setState({lots: markers});
                                 this.setState({loading: false});
+                                this.gatherInsights();
                             }
                         }).catch(error => {
                             console.log(error.message);
@@ -274,7 +282,7 @@ class App extends Component {
                                             <div className='insight-circle animate-pop-in-3'>
                                                 <div>
                                                     <h4>Popular</h4>
-                                                    <h2>NCP Rapports</h2>
+                                                    <h2>NCP Newport High Street</h2>
                                                 </div>
                                             </div>
 
@@ -325,7 +333,7 @@ class App extends Component {
                                             </div>
                                             <div className='insight-graph animate-pop-in-3'>
                                                 <div>
-                                                    <LotChartsView data={{}} type='offers' chartType='bar'/>
+                                                    <LotChartsView data={this.state.offers} type='offers' chartType='bar'/>
                                                 </div>
                                             </div>
 
