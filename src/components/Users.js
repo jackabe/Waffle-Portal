@@ -154,53 +154,6 @@ class Users extends Component {
         });
     }
 
-    // loadUserLocations = () => {
-    //     if (this.state.markersStatic.length === 0) {
-    //         this.setState({loading: true});
-    //         fetch('http://18.188.105.214/getUserLocations', {
-    //             method: 'get',
-    //             headers: {'Content-Type': 'multipart/form-data' }
-    //         })
-    //             .then((response) => {
-    //                 console.log('response');
-    //                 let data = response.body;
-    //                 console.log(data)
-    //                 let i = 0;
-    //                 let markers = [];
-    //                 for (i; i < data.length; i++) {
-    //                     let marker = {
-    //                         userId: data[i]['uuid'],
-    //                         show: true,
-    //                         details: {
-    //                             lot_id : i
-    //                         },
-    //                         coords: {
-    //                             latitude: data[i]['latitude'],
-    //                             longitude: data[i]['longitude']
-    //                         }
-    //                     };
-    //
-    //                     console.log(marker);
-    //                     markers.push(marker);
-    //
-    //                     // As not async, check all done before updating state
-    //                     if (i === data.length - 1) {
-    //                         this.setState({markers: markers});
-    //                         this.setState({markersStatic: markers});
-    //                         this.setState({loading: false});
-    //                     }
-    //                 }
-    //             })
-    //             .catch((response) => {
-    //                 this.setState({loading: false});
-    //                 console.log(response);
-    //             });
-    //     }
-    //     else {
-    //         this.setState({loading: false});
-    //     }
-    // };
-
     loadUserLocations = () => {
         let i = 0;
         let markers = this.state.markersStatic;
@@ -266,12 +219,11 @@ class Users extends Component {
                     userFilter: true,
                 });
             }
-            this.setState({
-                cluster: true,
-            });
         }
         else if (route === 'user-locations') {
-            window.location.reload();
+            this.setState({
+                cluster: false,
+            });
         }
         else if (route === 'user-locations-cluster') {
             this.setState({
