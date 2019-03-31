@@ -12,36 +12,20 @@ export default class LotChartsView extends Component {
 
     render() {
         const type = this.props.type;
-        let data = [];
-        if (type === 'bookings') {
-            data = [
-                {date: '24', bookings: 12},
-                {date: '25', bookings: 5},
-                {date: '26', bookings: 8},
-                {date: '27', bookings: 32},
-                {date: '28', bookings: 77},
-                {date: '29', bookings: 12},
-                {date: '30', bookings: 5},
-            ];
+        const data = this.props.data;
+        let dataToPlot = [];
+        if (type === 'offers') {
+            for (let [key, value] of Object.entries(data)){
+                dataToPlot.push({'date': key, 'offers': value});
+            }
         }
-        else if (type === 'revenue') {
-            data = [
-                {date: '24', bookings: 58},
-                {date: '25', bookings: 28},
-                {date: '26', bookings: 33},
-                {date: '27', bookings: 88},
-                {date: '28', bookings: 66},
-                {date: '29', bookings: 130},
-                {date: '30', bookings: 120},
-            ];
+        else {
+            for (let [key, value] of Object.entries(data)){
+                dataToPlot.push({'date': key.split('/')[0], bookings: value});
+            }
         }
-        else if (type === 'offers') {
-            data = [
-                {date: 'McDonalds', bookings: 12},
-                {date: 'Subway', bookings: 5},
-                {date: 'Burger King', bookings: 8},
-            ];
-        }
+        dataToPlot.reverse();
+        console.log(dataToPlot)
         return (
             <div className='chart'>
                 {this.props.chartType === 'line' ?
@@ -49,14 +33,29 @@ export default class LotChartsView extends Component {
                         <VictoryChart
                             theme={VictoryTheme.material}
                         >
+                            <VictoryAxis
+                                style={{ axis: { stroke: '#E0F2F1' },
+                                    axisLabel: { fontSize: 16, fill: '#E0F2F1' },
+                                    ticks: { stroke: '#ccc' },
+                                    tickLabels: { fontSize: 14, fill: '#E0F2F1', fontWeight: 'bold' },
+                                    grid: { stroke: '#B3E5FC', strokeWidth: 0.25 }
+                                }} dependentAxis
+                            />
+                            <VictoryAxis
+                                style={{ axis: { stroke: '#E0F2F1' },
+                                    axisLabel: { fontSize: 16 },
+                                    ticks: { stroke: '#ccc' },
+                                    tickLabels: { fontSize: 10, fill: '#E0F2F1', fontWeight: 'bold' }
+                                }}
+                            />
                             <VictoryLine
                                 style={{ data: { stroke: "tomato", strokeWidth: 5, strokeLinecap: "round" } }}
                                 padding={{ top: 20, bottom: 60 }}
                                 animate={{
-                                    duration: 3000,
+                                    duration: 4000,
                                     onLoad: { duration: 1000 }
                                 }}
-                                data={data}
+                                data={dataToPlot}
                                 x={"date"}
                                 y={"bookings"}
                             />
@@ -67,16 +66,32 @@ export default class LotChartsView extends Component {
                         <VictoryChart
                             theme={VictoryTheme.material}
                         >
+                            <VictoryAxis
+                                style={{ axis: { stroke: '#E0F2F1' },
+                                    axisLabel: { fontSize: 16, fill: '#E0F2F1' },
+                                    ticks: { stroke: '#ccc' },
+                                    tickLabels: { fontSize: 14, fill: '#E0F2F1', fontWeight: 'bold' },
+                                    grid: { stroke: '#B3E5FC', strokeWidth: 0.25 }
+                                }} dependentAxis
+                            />
+                            <VictoryAxis
+                                style={{ axis: { stroke: '#E0F2F1' },
+                                    axisLabel: { fontSize: 8, fill: '#E0F2F1' },
+                                    ticks: { stroke: '#ccc' },
+                                    tickLabels: { fontSize: 8, fill: '#E0F2F1', fontWeight: 'bold', angle: 20},
+                                    grid: { stroke: '#B3E5FC', strokeWidth: 0.25 }
+                                }} independantAxis
+                            />
                             <VictoryBar
                                 style={{ data: { stroke: "tomato", strokeWidth: 5, strokeLinecap: "round" } }}
                                 padding={{ top: 20, bottom: 60 }}
                                 animate={{
-                                    duration: 3000,
+                                    duration: 4000,
                                     onLoad: { duration: 1000 }
                                 }}
-                                data={data}
+                                data={dataToPlot}
                                 x={"date"}
-                                y={"bookings"}
+                                y={"offers"}
                             />
                         </VictoryChart>
                     </div>

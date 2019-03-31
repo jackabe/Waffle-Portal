@@ -43,6 +43,7 @@ function getAvailableSpaces(data, response) {
         // Check if booking is today
         if (timeToArrival >= -12 && timeToArrival < 12) {
             // Check if booking is active
+            // Check if booking is now
             if (currentHour <= bookingDepartureTime && currentHour >= bookingArrivalTime)  {
                 let booking = bookings[i];
                 booking = {
@@ -57,7 +58,7 @@ function getAvailableSpaces(data, response) {
                 bays.find(bay => bay['bay_id'] === bayId)['booked'] = booking
             }
             // Coming in next hour
-            else if (-2 < currentHour - bookingArrivalTime < 0)  {
+            else if ((currentHour - bookingArrivalTime) > -2 && (currentHour - bookingArrivalTime) < 0)  {
                 let booking = bookings[i];
                 booking = {
                     'bay_id': booking['bay_id'],
@@ -74,8 +75,6 @@ function getAvailableSpaces(data, response) {
     }
     return bays;
 }
-
-
 
 module.exports = {
     getLotDetails,
