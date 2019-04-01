@@ -21,6 +21,7 @@ import './App.css';
 import axios from 'axios';
 import {GoogleMap} from "react-google-maps";
 import LotChartsView from "./components/LotChartsView";
+import BookingTimesGraph from "./components/BookingTimesGraph";
 
 Geocode.setApiKey("AIzaSyAblfAuUNvSw0MyuoUlGFAbzAmRlCW2B1M");
 Geocode.enableDebug();
@@ -474,6 +475,7 @@ class App extends Component {
                     <Route exact path="/offers" component={this.Offers}/>
                     <Route exact path="/prices" component={this.Prices}/>
                     <Route exact path="/settings" component={this.Settings}/>
+                    <Route exact path="/test" component={this.BookingGraph}/>
                 </div>
             </Router>
         );
@@ -530,6 +532,12 @@ class App extends Component {
             <Settings/>
         )
     };
+
+    BookingGraph = () => {
+        return (
+            <BookingTimesGraph/>
+        )
+    }
 
 }
 
