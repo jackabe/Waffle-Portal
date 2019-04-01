@@ -20,7 +20,7 @@ export default class UltraView extends Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
-        const socket = io('http://localhost:8000');
+        const socket = io('http://18.188.105.214');
         socket.on('connect', () => {
             socket.on('management', (data) => {
                 let logs = this.state.carLogs;
@@ -104,7 +104,14 @@ export default class UltraView extends Component {
                         {this.props.logs ?
                             <div className='logs'>
                                 {this.state.carLogs.map(log => (
-                                <span>{log}</span>
+                                    <div>
+                                        <FontAwesome
+                                            name='caret-right'
+                                            className='log-arrow'
+                                            color='grey'
+                                            size='lg'/>
+                                        <span>{log}</span>
+                                    </div>
                                 ))}
                             </div>
                             : null

@@ -805,7 +805,14 @@ tbody tr:hover {
 
 .logs span {
   padding: 5px;
-  display: block;
+}
+
+.logs div {
+  display: inline-block;
+}
+
+.log-arrow {
+  color: tomato;
 }
 
 .logs {
@@ -818,5 +825,4 @@ tbody tr:hover {
   width: 400px;
   height: 300px;
   background-color: white;
-  color: tomato;
 }
