@@ -475,7 +475,7 @@ class App extends Component {
                     <Route exact path="/offers" component={this.Offers}/>
                     <Route exact path="/prices" component={this.Prices}/>
                     <Route exact path="/settings" component={this.Settings}/>
-                    <Route exact path="/test" component={this.BookingGraph}/>
+                    <Route exact path="/bookings" component={this.BookingGraph}/>
                 </div>
             </Router>
         );
