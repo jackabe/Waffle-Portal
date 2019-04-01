@@ -40,6 +40,7 @@ export default class UltraView extends Component {
     };
 
     render() {
+        console.log(this.props.logs);
         const lot = this.props.lot;
         return (
             <div className='ultra-view-layout'>
@@ -84,6 +85,12 @@ export default class UltraView extends Component {
                                 </div>
                             ))}
                         </div>
+                        {this.props.logs ?
+                            <div className='logs'>
+                                <span>Registration BW57KBn entered</span>
+                            </div>
+                            : null
+                        }
                     </div>
                 }
                 {this.state.showBooking ?

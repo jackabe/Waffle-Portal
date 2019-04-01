@@ -31,6 +31,7 @@ export default class ParkingManagement extends Component {
             alertTitle: '',
             alertInfo: '',
             type: '',
+            logs: false
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -162,6 +163,18 @@ export default class ParkingManagement extends Component {
             });
             this.props.hideLotMap();
         }
+        else if (route === 'lot-logs') {
+            if (this.state.logs) {
+                this.setState({
+                    logs: false,
+                });
+            }
+            else {
+                this.setState({
+                    logs: true,
+                });
+            }
+        }
         else {
             this.setState({
                 showAlert: true,
@@ -209,7 +222,7 @@ export default class ParkingManagement extends Component {
                 {this.state.map ?
                     <div>
                         <h3>Ultra View</h3>
-                        <UltraView lot={this.state.lot} openSelector={this.openSelector}/>
+                        <UltraView logs={this.state.logs} lot={this.state.lot} openSelector={this.openSelector}/>
                     </div>
                     :
                     null
@@ -260,6 +273,13 @@ export default class ParkingManagement extends Component {
                                 <FontAwesome
                                     onClick={() => this.onSideBarClick('lot-graphs')}
                                     name='line-chart'
+                                    size='2x'
+                                    className='nav-image'/>
+                            </li>
+                            <li>
+                                <FontAwesome
+                                    onClick={() => this.onSideBarClick('lot-logs')}
+                                    name='file'
                                     size='2x'
                                     className='nav-image'/>
                             </li>
