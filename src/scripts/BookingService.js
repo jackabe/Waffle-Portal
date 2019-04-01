@@ -26,6 +26,26 @@ function formatBookings(bookings) {
     return bookings_list;
 }
 
+function mapBookingsToLot(bookings, lots){
+    let i=0;
+    let lotDict = {}
+
+    for(i; i < lots.length; i++){
+        let lotName = lots[i]['details']['name'];
+        lotDict.lotName = [];
+    }
+
+    let x=0;
+    for(x; x < bookings.length; x++){
+        let booking = bookings[x];
+        let bookingLot = booking['lot_name'];
+        if(bookingLot in lotDict){
+            lotDict[bookingLot] = lotDict[bookingLot].concat(booking);
+        }
+    }
+    return lotDict;
+}
+
 module.exports = {
     getBookingsForLot,
     formatBookings
