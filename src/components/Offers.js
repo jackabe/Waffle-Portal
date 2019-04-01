@@ -43,7 +43,7 @@ class Offers extends Component {
         // Post to flask and get parking lot response
         axios({
             method: 'post',
-            url: 'http://127.0.0.1:8000/partner/create',
+            url: 'http://18.188.105.214/partner/create',
             data: formData,
             config: {headers: {'Content-Type': 'multipart/form-data'}}
         })
