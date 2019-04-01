@@ -96,9 +96,7 @@ function getBookingsForDate(bookingList, dateType) {
         else if (dateType === 'week') {
             let today = new Date();
             let lastWeek = new Date(today - 7 * 24 * 60 * 60 * 1000);
-            today = ("" + today.getUTCDate() + today.getUTCMonth() + today.getUTCFullYear());
-            let dateCompare = ("" + lastWeek.getUTCDate() + lastWeek.getUTCMonth() + lastWeek.getUTCFullYear());
-            if ((parseInt(bookingCompare) >= parseInt(dateCompare)) && (parseInt(bookingCompare) <= parseInt(today)) ) {
+            if (bookingUnix <= today && bookingUnix >= lastWeek ) {
                 bookingList[i]['booked'] = true;
                 bookings.push(bookingList[i])
             }
