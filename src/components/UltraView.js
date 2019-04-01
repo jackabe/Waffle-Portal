@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import '../App.css';
 import FontAwesome from "react-fontawesome";
+import io from 'socket.io-client';
 
 export default class UltraView extends Component {
 
@@ -11,6 +12,7 @@ export default class UltraView extends Component {
             reg: '',
             arrival: '',
             departure: '',
+            carLogs: ['Connecting to Waffle Ultra View logging system. Please wait...']
         };
         this.handleClickOutside = this.handleClickOutside.bind(this);
 
@@ -18,6 +20,20 @@ export default class UltraView extends Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
+        const socket = io('http://18.188.105.214');
+        socket.on('connect', () => {
+            socket.on('management', (data) => {
+                let logs = this.state.carLogs;
+                logs.push(data);
+                this.setState({carLogs: logs});
+            });
+        });
+        socket.on('disconnect', () => {
+            let logs = this.state.carLogs;
+            let message = 'Disconnected, trying to reconnect';
+            logs.push(message);
+            this.setState({carLogs: logs});
+        });
     }
 
     componentWillUnmount() {
@@ -87,7 +103,16 @@ export default class UltraView extends Component {
                         </div>
                         {this.props.logs ?
                             <div className='logs'>
-                                <span>Registration BW57KBn entered</span>
+                                {this.state.carLogs.map(log => (
+                                    <div>
+                                        <FontAwesome
+                                            name='caret-right'
+                                            className='log-arrow'
+                                            color='grey'
+                                            size='lg'/>
+                                        <span>{log}</span>
+                                    </div>
+                                ))}
                             </div>
                             : null
                         }
