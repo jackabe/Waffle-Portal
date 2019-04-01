@@ -481,7 +481,7 @@ class App extends Component {
 
     ParkingManagement = () => {
         return (
-            <ParkingManagement lots={this.state.lots} hideLotMap={this.hideMap} openLotMap={this.showMap}/>
+            <ParkingManagement lots={this.state.lots} bookings={this.state.markers} hideLotMap={this.hideMap} openLotMap={this.showMap}/>
         )
     };
 

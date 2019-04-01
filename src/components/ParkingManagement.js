@@ -6,6 +6,7 @@ import UltraView from "./UltraView";
 import LotChartsView from "./LotChartsView";
 import SweetAlert from 'sweetalert-react';
 import MapComponent from "../App";
+import BookingService from "../scripts/BookingService";
 
 export default class ParkingManagement extends Component {
 
@@ -32,6 +33,7 @@ export default class ParkingManagement extends Component {
             alertInfo: '',
             type: '',
             logs: false,
+            bookings: {},
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
@@ -42,6 +44,8 @@ export default class ParkingManagement extends Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
+        BookingService.mapBookingsToLot(this.props.lots, this.props.bookings);
+
     }
 
     componentWillUnmount() {

@@ -26,27 +26,38 @@ function formatBookings(bookings) {
     return bookings_list;
 }
 
-function mapBookingsToLot(bookings, lots){
+function mapBookingsToLot(markers, lots){
     let i=0;
     let lotDict = {}
 
     for(i; i < lots.length; i++){
         let lotName = lots[i]['details']['name'];
-        lotDict.lotName = [];
+        lotDict[lotName] = [];
     }
 
     let x=0;
-    for(x; x < bookings.length; x++){
-        let booking = bookings[x];
-        let bookingLot = booking['lot_name'];
-        if(bookingLot in lotDict){
-            lotDict[bookingLot] = lotDict[bookingLot].concat(booking);
+    for(x; x < markers.length; x++){
+        // Receiving a list of markers with bookings already mapped.
+        // Therefore checking lot name and then appending each booking accordingly
+        let markerBooking = markers[x]['bookings'];
+        // Check if the Lot has Bookings first, else code crash as lot_name is undefined
+        if (markerBooking.length > 0){
+            let markerLot = markers[x]['bookings'][0]['lot_name'];
+            if (markerLot in lotDict){
+                for (let y =0; y < markerBooking.length; y++){
+                    console.log('BookingLot: ' + markerLot);
+                    lotDict[markerLot] = lotDict[markerLot].concat(markerBooking[y]);
+                }
+            }
         }
     }
+
+    console.log(lotDict);
     return lotDict;
 }
 
 module.exports = {
     getBookingsForLot,
-    formatBookings
+    formatBookings,
+    mapBookingsToLot
 };
