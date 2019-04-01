@@ -31,12 +31,13 @@ export default class ParkingManagement extends Component {
             alertTitle: '',
             alertInfo: '',
             type: '',
-            logs: false
+            logs: false,
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
         this.openForm = this.openForm.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+
     };
 
     componentDidMount() {

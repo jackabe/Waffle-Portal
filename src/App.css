@@ -804,12 +804,13 @@ tbody tr:hover {
 }
 
 .logs span {
-  padding: 20px;
+  padding: 5px;
+  display: block;
 }
 
 .logs {
   overflow-y: scroll;
-  padding: 10px;
+  padding: 20px;
   border-radius: 25px;
   position: absolute;
   right: 100px;
