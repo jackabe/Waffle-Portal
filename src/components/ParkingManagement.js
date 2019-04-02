@@ -345,15 +345,15 @@ export default class ParkingManagement extends Component {
                             <div className='lot-form'>
                                 <h3>Add a new parking lot</h3>
                                 <input type="text" value={this.state.name} onChange={this.inputOnChange} name="name"
-                                       placeholder="name"/>
+                                       placeholder="Name"/>
                                 <input type="text" value={this.state.city} onChange={this.inputOnChange} name="city"
-                                       placeholder="city"/>
+                                       placeholder="City"/>
                                 <input type="text" value={this.state.capacity} onChange={this.inputOnChange}
-                                       name="capacity" placeholder="capacity"/>
+                                       name="capacity" placeholder="Capacity"/>
                                 <input type="text" value={this.state.latitude} onChange={this.inputOnChange}
-                                       name="latitude" placeholder="latitude"/>
+                                       name="latitude" placeholder="Latitude"/>
                                 <input type="text" value={this.state.longitude} onChange={this.inputOnChange}
-                                       name="longitude" placeholder="longitude"/>
+                                       name="longitude" placeholder="Longitude"/>
                                 <br/>
                                 <button onClick={this.postLotData}>Save</button>
                             </div>
