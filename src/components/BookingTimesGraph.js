@@ -42,21 +42,46 @@ class BookingTimesGraph extends Component{
     // };
 
     render(){
+
+        let data = this.props.data;
+        let xAxis = [];
+        let yPriceAxis = [];
+        let yPriceRealAxis = [];
+        let yCountAxis = [];
+
+        for (let [key, value] of Object.entries(data)){
+            xAxis.push(key);
+            yPriceAxis.push(value['prices']);
+            yCountAxis.push(value['count']);
+        }
+
+        let i = 0;
+        for (i; i < yPriceAxis.length; i++) {
+            let j = 0;
+            for (j; j < yPriceAxis[i].length; j++) {
+                yPriceRealAxis.push(yPriceAxis[i][j])
+            }
+        }
+
         let bookings =  {
-            x: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-            y: [0, 2, 3, 5, 12, 7, 5, 15, 10, 7, 5, 3, 2, 1, 1, 3, 1, 1, 1, 0],
+            x: xAxis,
+            y: yCountAxis,
             type: 'scatter',
             marker: {color: 'white'},
             name: "Booking Count"
         };
 
+        console.log(bookings)
+
         let price = {
-            x: [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-            y: [1, 1, 2.24, 2.8, 3.4, 2.6, 2.4, 4.3, 2.7, 2.4, 2.24, 2.24, 2, 1, 1, 3, 1, 1, 1, 1],
-            type: 'bar',
+            x: xAxis,
+            y: yPriceRealAxis,
+            type: 'scatter',
             marker: {color: 'tomato'},
             name: "Price"
         };
+
+        console.log(price)
 
         return (
             <div className="price-chart">

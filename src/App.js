@@ -51,7 +51,7 @@ class App extends Component {
             lotName: '',
             lotCapacity: '',
             lotCity: '',
-            insights: true,
+            insights: false,
             step: 1,
             showLotMap: false,
             todayBookings: 0,
@@ -500,7 +500,7 @@ class App extends Component {
 
     Prices = () => {
         return (
-            <Prices/>
+            <Prices lots={this.state.lots} bookings={this.state.bookings}/>
         )
     };
 
