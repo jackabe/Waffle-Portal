@@ -6,6 +6,7 @@ import UltraView from "./UltraView";
 import LotChartsView from "./LotChartsView";
 import SweetAlert from 'sweetalert-react';
 import MapComponent from "../App";
+import BookingService from "../scripts/BookingService";
 
 export default class ParkingManagement extends Component {
 
@@ -32,16 +33,25 @@ export default class ParkingManagement extends Component {
             alertInfo: '',
             type: '',
             logs: false,
+            mappedBookings: {},
+            carParkDataForGraph:{},
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
         this.openForm = this.openForm.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        // this.bookingsPerLotData = this.bookingsPerLotData.bind(this);
 
     };
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
+        let mapBookings = BookingService.mapBookingsToLot(this.props.lots, this.props.bookings)
+        this.setState({
+            mappedBookings: mapBookings
+        });
+
+
     }
 
     componentWillUnmount() {
@@ -60,6 +70,18 @@ export default class ParkingManagement extends Component {
             });
         }
     }
+
+    // bookingsPerLotData = () =>{
+    //     let plotData = {};
+    //     let dict = this.state.mappedBookings;
+    //     console.log("Income dict" + dict)
+    //     for (var key in dict){
+    //         plotData.push({
+    //             key:  key.length,
+    //         });
+    //     }
+    //     return plotData;
+    // }
 
     inputOnChange(event) {
         let name = event.target.name;
@@ -376,6 +398,12 @@ export default class ParkingManagement extends Component {
                     type={this.state.type}
                     onCancel={() => this.setState({ showAlert: false })}
                 />
+
+                    <div>
+                        <LotChartsView data={this.state.mappedBookings} type='offers' chartType='bar'/>
+                    </div>
+
+
 
             </div>
         )
