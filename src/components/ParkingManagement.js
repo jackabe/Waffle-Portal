@@ -46,12 +46,6 @@ export default class ParkingManagement extends Component {
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
-        let mapBookings = BookingService.mapBookingsToLot(this.props.lots, this.props.bookings)
-        this.setState({
-            mappedBookings: mapBookings
-        });
-
-
     }
 
     componentWillUnmount() {
@@ -70,18 +64,6 @@ export default class ParkingManagement extends Component {
             });
         }
     }
-
-    // bookingsPerLotData = () =>{
-    //     let plotData = {};
-    //     let dict = this.state.mappedBookings;
-    //     console.log("Income dict" + dict)
-    //     for (var key in dict){
-    //         plotData.push({
-    //             key:  key.length,
-    //         });
-    //     }
-    //     return plotData;
-    // }
 
     inputOnChange(event) {
         let name = event.target.name;
@@ -254,7 +236,11 @@ export default class ParkingManagement extends Component {
                 {this.state.charts ?
                     <div>
                         <h3>Chart View</h3>
-                        <LotChartsView lot={this.state.lot}/>
+                        <div className='insight-graph animate-pop-in-3'>
+                            <div>
+                                <LotChartsView data={this.props.graphData} type='offers' chartType='bar'/>
+                            </div>
+                        </div>
                     </div>
                     :
                     null
@@ -398,13 +384,6 @@ export default class ParkingManagement extends Component {
                     type={this.state.type}
                     onCancel={() => this.setState({ showAlert: false })}
                 />
-
-                    <div>
-                        <LotChartsView data={this.state.mappedBookings} type='offers' chartType='bar'/>
-                    </div>
-
-
-
             </div>
         )
     }

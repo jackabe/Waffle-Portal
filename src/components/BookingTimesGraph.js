@@ -66,22 +66,18 @@ class BookingTimesGraph extends Component{
         let bookings =  {
             x: xAxis,
             y: yCountAxis,
-            type: 'scatter',
-            marker: {color: 'white'},
+            type: 'bar',
+            marker: {color: 'tomato'},
             name: "Booking Count"
         };
-
-        console.log(bookings)
 
         let price = {
             x: xAxis,
             y: yPriceRealAxis,
             type: 'scatter',
-            marker: {color: 'tomato'},
+            marker: {color: 'white'},
             name: "Price"
         };
-
-        console.log(price)
 
         return (
             <div className="price-chart">

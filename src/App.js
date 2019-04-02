@@ -51,14 +51,15 @@ class App extends Component {
             lotName: '',
             lotCapacity: '',
             lotCity: '',
-            insights: false,
+            insights: true,
             step: 1,
             showLotMap: false,
             todayBookings: 0,
             bookingsWeekly: {},
             revenueWeekly: {},
             offers: [],
-            run: 0
+            run: 0,
+            mappedBookings: {}
         };
         this.getLotsByLocation = this.getLotsByLocation.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
@@ -112,7 +113,11 @@ class App extends Component {
             this.setState({revenueWeekly: InsightsHandler.getTotalRevenueForWeek(bookings)});
             this.setState({bookingsWeekly: InsightsHandler.getTotalBookingsForWeek(bookings)});
             this.setState({revenue: InsightsHandler.getRevenueInsight(bookings)});
-            this.setState({offers: InsightsHandler.processOfferInsights(response)})
+            this.setState({offers: InsightsHandler.processOfferInsights(response)});
+            let mapBookings = BookingService.mapBookingsToLot(lots, this.state.markers);
+            this.setState({
+                mappedBookings: mapBookings
+            });
         })
         .catch(error => {
             console.log('Insights not available right now:');
@@ -271,7 +276,7 @@ class App extends Component {
                                             <div className='insight-circle animate-pop-in-1'>
                                                 <div>
                                                     <h4>Revenue</h4>
-                                                    <h2>£{this.state.revenue}</h2>
+                                                    <h2>£{this.state.revenue.toFixed(2)}</h2>
                                                 </div>
                                             </div>
                                             <div className='insight-circle animate-pop-in-2'>
@@ -482,7 +487,7 @@ class App extends Component {
 
     ParkingManagement = () => {
         return (
-            <ParkingManagement lots={this.state.lots} bookings={this.state.markers} hideLotMap={this.hideMap} openLotMap={this.showMap}/>
+            <ParkingManagement lots={this.state.lots} graphData={this.state.mappedBookings} hideLotMap={this.hideMap} openLotMap={this.showMap}/>
         )
     };
 
