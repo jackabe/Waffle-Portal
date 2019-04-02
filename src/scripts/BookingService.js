@@ -45,14 +45,12 @@ function mapBookingsToLot(markers, lots){
             let markerLot = markers[x]['bookings'][0]['lot_name'];
             if (markerLot in lotDict){
                 for (let y =0; y < markerBooking.length; y++){
-                    console.log('BookingLot: ' + markerLot);
                     lotDict[markerLot] = lotDict[markerLot].concat(markerBooking[y]);
                 }
             }
         }
     }
 
-    console.log(lotDict);
     return lotDict;
 }
 

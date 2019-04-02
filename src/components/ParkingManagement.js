@@ -33,18 +33,24 @@ export default class ParkingManagement extends Component {
             alertInfo: '',
             type: '',
             logs: false,
-            bookings: {},
+            mappedBookings: {},
+            carParkDataForGraph:{},
         };
         this.inputOnChange = this.inputOnChange.bind(this);
         this.postLotData = this.postLotData.bind(this);
         this.openForm = this.openForm.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
+        this.bookingsPerLotData = this.bookingsPerLotData.bind(this);
 
     };
 
     componentDidMount() {
         document.addEventListener('mousedown', this.handleClickOutside);
-        BookingService.mapBookingsToLot(this.props.lots, this.props.bookings);
+        let mapBookings = BookingService.mapBookingsToLot(this.props.lots, this.props.bookings)
+        this.setState({
+            mappedBookings: mapBookings
+        });
+
 
     }
 
@@ -63,6 +69,18 @@ export default class ParkingManagement extends Component {
                 showNav: false,
             });
         }
+    }
+
+    bookingsPerLotData = () =>{
+        let plotData = {};
+        let dict = this.state.mappedBookings;
+        console.log("Income dict" + dict)
+        for (var key in dict){
+            plotData.push({
+                key:  key.length,
+            });
+        }
+        return plotData;
     }
 
     inputOnChange(event) {
@@ -380,6 +398,11 @@ export default class ParkingManagement extends Component {
                     type={this.state.type}
                     onCancel={() => this.setState({ showAlert: false })}
                 />
+
+                    <div>
+                        <LotChartsView data={this.bookingsPerLotData()} type='booking' chartType='bar'/>
+                    </div>
+
 
             </div>
         )
