@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import '../App.css';
 import { ClipLoader } from 'react-spinners';
 import FontAwesome from "react-fontawesome";
+import BookingTimesGraph from "./BookingTimesGraph";
 
 class Prices extends Component {
 
@@ -18,6 +19,7 @@ class Prices extends Component {
         return (
             <div className='prices'>
                 <h3 className='heading'>Prices</h3>
+                <BookingTimesGraph/>
             </div>
         );
     }
