@@ -400,8 +400,9 @@ export default class ParkingManagement extends Component {
                 />
 
                     <div>
-                        <LotChartsView data={this.state.mappedBookings} type='booking' chartType='bar'/>
+                        <LotChartsView data={this.state.mappedBookings} type='offers' chartType='bar'/>
                     </div>
+
 
 
             </div>
