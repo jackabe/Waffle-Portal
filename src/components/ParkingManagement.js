@@ -40,7 +40,7 @@ export default class ParkingManagement extends Component {
         this.postLotData = this.postLotData.bind(this);
         this.openForm = this.openForm.bind(this);
         this.handleClickOutside = this.handleClickOutside.bind(this);
-        this.bookingsPerLotData = this.bookingsPerLotData.bind(this);
+        // this.bookingsPerLotData = this.bookingsPerLotData.bind(this);
 
     };
 
@@ -71,17 +71,17 @@ export default class ParkingManagement extends Component {
         }
     }
 
-    bookingsPerLotData = () =>{
-        let plotData = {};
-        let dict = this.state.mappedBookings;
-        console.log("Income dict" + dict)
-        for (var key in dict){
-            plotData.push({
-                key:  key.length,
-            });
-        }
-        return plotData;
-    }
+    // bookingsPerLotData = () =>{
+    //     let plotData = {};
+    //     let dict = this.state.mappedBookings;
+    //     console.log("Income dict" + dict)
+    //     for (var key in dict){
+    //         plotData.push({
+    //             key:  key.length,
+    //         });
+    //     }
+    //     return plotData;
+    // }
 
     inputOnChange(event) {
         let name = event.target.name;
@@ -400,7 +400,7 @@ export default class ParkingManagement extends Component {
                 />
 
                     <div>
-                        <LotChartsView data={this.bookingsPerLotData()} type='booking' chartType='bar'/>
+                        <LotChartsView data={this.state.mappedBookings} type='booking' chartType='bar'/>
                     </div>
 
 
