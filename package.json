@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@emotion/core": "^10.0.9",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "firebase": "^5.8.6",
     "plotly.js": "^1.45.3",
     "react": "^16.8.3",
